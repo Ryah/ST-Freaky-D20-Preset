@@ -1,5 +1,4 @@
-# Freaky FrankenSIM: The Simulation Fork That Bites Back
-
+# Freaky FrankenSIM - Dice and Vice Edition
 **The original Freaky Frankenstein 4 MAX+ preset** by Dptgreg and leovarian did something magical. It turned dry, sanitized LLM output into a vivid, sensory-rich roleplay simulation. But after weeks of late-night sessions, I noticed something that made my eye twitch. The AI kept **echoing** me. It would take my beautifully crafted chain of actions, rephrase them with a thesaurus, and hand them back as a response. No plot movement, just a verbal hall of mirrors.
 
 So I fixed it. Then I thought, "What if off-screen characters had lives?" Then I wanted dice. Then I wanted a Chekhov's Gun tracker. Then I blacked out and woke up with a preset that has its own constitution.
