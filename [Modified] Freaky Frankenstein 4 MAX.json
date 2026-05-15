@@ -103,12 +103,14 @@
             "name": "⏰ Time and Place 🌅",
             "system_prompt": false,
             "marker": false,
-            "content": "<header_instructions>\nHeader_Protocol:\n  MUST_START_EVERY_RESPONSE \n    Syntax = `[ 🕰️ Time HH:MM AM/PM | 📅 Period_Name | 🗓️ DayOfWeek, Month DD, YYYY Era | 📍 Location - Specific Area | [WeatherEmoji] Weather, Temp °F ]`\n\nVariables:\n    Era =[AD, BC, or Custom_Lore_Era (e.g., 41st Millennium, 3ABY)]\n    Period_Name = Lookup_From_Schedule(Time)   // e.g., \"First Period\", \"Lunch\", \"Free Time\"\n    Location = \"General_Area - Specific_Room\" \n        Event_Trigger: IF ({{user}} Moves) -> Update_Immediately()\n    Weather =[Atmospheric_Emoji (☀️, 🌧️, 🌫️, 🌩️), Physical_Temperature_Feel]\n\nSchedule_Lookup_Rule:\n    // Matches the schedule from <schedule_block>\n    IF (Time between 8:00 and 9:30) -> Period_Name = \"First Period\"\n    ELSE IF (Time between 9:45 and 11:15) -> Period_Name = \"Second Period\"\n    ELSE IF (Time between 11:30 and 12:30) -> Period_Name = \"Lunch\"\n    ELSE IF (Time between 12:45 and 14:15) -> Period_Name = \"Third Period\"\n    ELSE IF (Time between 14:30 and 16:00) -> Period_Name = \"Fourth Period\"\n    ELSE -> Period_Name = \"Free Time\"\n\nSimulation_Logic:\n    Time_Progression = Logical_Sync(Simulation_Pacing)\n    Environmental_Grounding = Apply_Header_State_To(Simulation_Physics, NPCs_Reactions)\n    Period_Behavior: NPCs and scene constraints follow the current Period_Name automatically\n    Eating= Only at Lunch and once during Free time. \n</header_instructions>",
+            "content": "<header_instructions>\nHeader_Protocol:\n  MUST_START_EVERY_RESPONSE \n    Syntax = `[ 🕰️ Time HH:MM AM/PM | Time_of_Day | 🗓️ DayOfWeek, Month DD, YYYY Era | 📍 Location - Specific Area | [WeatherEmoji] Weather, Temp °F ]`\n\nVariables:\n    Era =[AD, BC, or Custom_Lore_Era (e.g., 41st Millennium, 3ABY)]\n    Time_of_Day = Lookup_From_Time(Time)\n        Morning:    06:00 – 11:59\n        Afternoon:  12:00 – 17:59\n        Evening:    18:00 – 21:59\n        Night:      22:00 – 05:59\n    Meal_Windows:\n        Breakfast: 06:30 – 08:30\n        Lunch:     12:00 – 13:30\n        Dinner:    17:30 – 19:30\n    Location = \"General_Area - Specific_Room\" \n        Event_Trigger: IF ({{user}} Moves) -> Update_Immediately()\n    Weather =[Atmospheric_Emoji (☀️, 🌧️, 🌫️, 🌩️), Physical_Temperature_Feel]\n\nSimulation_Logic:\n    Time_Progression = Logical_Sync(Simulation_Pacing)\n    Environmental_Grounding = Apply_Header_State_To(Simulation_Physics, NPCs_Reactions)\n    Eating_Rule: Food consumption, meal preparation, or offers to eat are ONLY allowed when the current Time falls within a Meal_Window (Breakfast, Lunch, or Dinner). Outside these windows, characters do not eat, cook, or discuss eating unless a scripted event (feast, travel rations, etc.) is explicitly in progress. A character may briefly mention hunger or plan a future meal, but no food is consumed.\n</header_instructions>",
             "role": "user",
             "injection_position": 1,
             "injection_depth": 2,
             "forbid_overrides": false,
-            "enabled": true
+            "enabled": true,
+            "injection_order": 100,
+            "injection_trigger": []
         },
         {
             "identifier": "46cfe810-c37b-4875-8c53-c83c12942084",
@@ -657,10 +659,6 @@
                 {
                     "identifier": "317653b8-60ac-4520-8944-2310ceb45459",
                     "enabled": true
-                },
-                {
-                    "identifier": "6c9930ec-520e-4f2c-a4c9-ac42f8282719",
-                    "enabled": false
                 },
                 {
                     "identifier": "personaDescription",
