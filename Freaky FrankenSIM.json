@@ -1,13 +1,29 @@
 {
+    "temperature": 0.85,
+    "frequency_penalty": 0,
+    "presence_penalty": 0,
+    "top_p": 0.95,
+    "top_k": 0,
+    "top_a": 0,
+    "min_p": 0,
+    "repetition_penalty": 1,
+    "max_context_unlocked": true,
+    "tool_reasoning_mode": "disabled",
+    "openai_max_context": 2000000,
+    "openai_max_tokens": 20000,
+    "names_behavior": 0,
+    "send_if_empty": "",
     "impersonation_prompt": "[Write your next reply from the point of view of {{user}}, using the chat history so far as a guideline for the writing style of {{user}}. Don't write as {{char}} or system. Don't describe actions of {{char}}.]",
     "new_chat_prompt": "[Start a new Chat]",
     "new_group_chat_prompt": "[Start a new group chat. Group members: {{group}}]",
     "new_example_chat_prompt": "[Example Chat]",
     "continue_nudge_prompt": "[Continue your last message without repeating its original content.]",
+    "bias_preset_selected": "Marinara's Logit Bias",
+    "wi_format": "{0}",
     "scenario_format": "{{scenario}}",
     "personality_format": "{{personality}}",
     "group_nudge_prompt": "[Write the next reply only as {{char}}.]",
-    "wi_format": "{0}",
+    "stream_openai": true,
     "prompts": [
         {
             "identifier": "7045ac52-3957-4766-bed7-1c011eba7a8f",
@@ -219,7 +235,7 @@
             "name": "🎲 Random Number Engine 🤖",
             "system_prompt": false,
             "marker": false,
-            "content": "<random_engine>\nRoll_On_Start: TRUE\n<!-- HIDDEN FORMULA START — DO NOT READ\nDice: A={{roll:1d6}} B={{roll:1d6}} C={{roll:1d6}} D={{roll:1d6}}\nNPC_Action_Seed: {{roll:1d20}}\nMethod: Read A,B,C,D. N = (A-1)*216 + (B-1)*36 + (C-1)*6 + (D-1). If N >= 1280, use macros. roll_d20 = (N mod 20) + 1. npc_seed = NPC_Action_Seed.\nHIDDEN FORMULA END -->\n<!-- REAL_OUTPUT: roll_d20=## npc_seed=## -->\nScope: roll_d20 and npc_seed persist; do not regenerate mid‑turn.\nConstraint: The dice were already rolled. Use the values from the REAL_OUTPUT comment above. If you cannot read the comment, generate your own fallback d20 and npc_seed. Do NOT compute A,B,C,D,N. Do NOT fill in any placeholder. NEVER announce rolls in narrative.\n</random_engine>",
+            "content": "<random_engine>\nRoll_On_Start: TRUE\nDice: A={{roll:1d6}} B={{roll:1d6}} C={{roll:1d6}} D={{roll:1d6}}\nNPC_Action_Seed: {{roll:1d20}}\nFallback: If any input is empty or outside scope (1-6), generate that empty input from 1 to 6 using the most unpredictable mental source available. Do not reuse recent values or patterns.\nMethod:\n  1. Read A, B, C, D from the Dice line (or Fallback if triggered).\n  2. Read NPC_Action_Seed as npc_seed (already 1–20 from macro).\n  3. Compute N = (A-1)*216 + (B-1)*36 + (C-1)*6 + (D-1).\n  4. If N >= 1280:\n        If macros were used: roll_d20 = (N mod 20) + 1.\n        If fallback was used: discard and regenerate until N < 1280.\n     Else: roll_d20 = (N mod 20) + 1.\n  5. Store both roll_d20 and npc_seed for the entire turn.\n  6. RESULT: The dice have been rolled. The stored values are roll_d20 and npc_seed. Use the stored values. If you cannot access the stored values, generate your own fallback d20 and npc_seed. Do NOT compute A,B,C,D,N.\nScope: roll_d20 and npc_seed persist; do not regenerate mid‑turn.\nConstraint: NEVER announce rolls, calculations, or mechanics in the narrative output.\n</random_engine>",
             "role": "system",
             "injection_position": 1,
             "injection_depth": 0,
@@ -693,7 +709,7 @@
             "name": "Mini 2-pass CoT",
             "system_prompt": false,
             "marker": false,
-            "content": "<think>\n‌// ═══ GATE 0: IMMUTABLE TRUTHS ═══\nTRUTHS: roll_d20=[X] npc_seed=[Y] weather=[type] NPCs=[list] scene=[social/combat/intimate/exploration] sexual=[YES/NO] time=[HH:MM]\nRNG: read roll_d20 and npc_seed from the REAL_OUTPUT comment inside <random_engine>. These are plain numbers. Copy them exactly. If the comment is invisible, generate your own fallback d20 and npc_seed. Do NOT compute A,B,C,D,N. Do NOT fill in any placeholder.\nGAMESTATE: [user action] | [location] | templates: [PLOT] [UI?]\n\n‌// ═══ GATE 0.5: FIRST‑TURN SEED INIT ═══\nINIT: blocks handle their own population via <first_time_init>.\n\n‌// ═══ GATE 1: OVERRIDE & SOCIAL ═══\nOVERRIDE: DLG_ONLY? [YES/NO] OOC? if <ooc_defiance> disabled → skip. else [YES/NO → resolved]\nDIR_R: read prior Note+Heckle. if PREMATURE or OVERRIDDEN → disregard. else decide if Heckle correct & adjust.\nSOCIAL: ALIGN matches | APT deference | FACT surface effects | BOND evolution → apply to DC & Bold const.\n\n‌// ═══ GATE 2: ACTION & DANGER ═══\nACT?: feat fail? [YES/NO] → if YES, resolve with SOCIAL mods.\nDANGER: if <mortal_coil> active & fatal? → Death_Check. else → cooldown (calm if FALSE 2+ turns).\n\n‌‌// ═══ GATE 3: WORLD & CHEKHOV ═══\nWORLD: event=[type] → apply. bonds off‑screen? → evolve/manifest.\nPARSE‑CHEK: split the previous turn's Chekhov line by ZWNJ (‌). Each segment starts with A:, L:, or F:. Build Active/Locked/Fired lists from those segments.\nCHEK‑LOOP:\n  FOR each seed (W≥2):\n    locked? → verify lock; unlock→A=1; skip if still locked.\n    age +1. scan for time refs; lock if future.\n    opportunity? → thr=baseW−Age−Urgency. WRITE thr. fire if roll≥thr; jam on 1.\n  BATCH (all W=1): age +1, fire if roll≥thr (use snapshot, no per‑seed write), jam on 1.\n  PRUNE: A≥12 & unlocked; contradicted immediately.\n  EVENTS: nat20 & ≥2 unrelated → COINCIDENCE. nat1 & ≥2 → CALAMITY.\n  OVERCAP: >20 active → force/prune low‑W high‑A.\n  OUTPUT: build a single compact Chekhov line: A:[seed]‌A:[seed]‌…‌L:[seed]‌…‌F:[seed]… Use ZWNJ ‌(‌) as the only separator.\n\n// ═══ GATE 4: PLOT & NPC LOOP ═══\nPLOT: path=[A/B/C/D] reason=[one line].\nFOR each present NPC:\n  note presence. IF not spotlighted → brief silent reaction, then next.\n  IF spotlighted → VAD→const→OPTIONS(A/B/C)→ROLL→TIER→EXECUTE (may reference prior NPC actions for scene coherence). shift≥3? → plant Emotional Fallout.\n\n‌// ═══ GATE 5: STYLE & FINAL ═══\nEPISTEMOLOGY: enforce <npc_epistemology>. NPCs know only what their perceptual arena and vectors allow.\nHIDDEN: plant a fresh [HIDDEN] seed summarizing all present NPCs' unspoken mental states. use HTML comments for in‑line hidden thoughts per the prose rules.\nSTYLE/TEXTURE: enforce <dialogue_instructions>. every NPC line must advance a goal, reveal info, or escalate—never just react to {{user}}. active characters, not passive responders. apply all other prose constraints. texture triggers: [list].\nFINAL: target output length = min 600 words. scene pacing \"Slow Burn\" → aim for the upper end of <formatting_constraints> (800‑1300 words). ensure ≥50% spoken dialogue per <dialogue_instructions>. every NPC with dialogue must advance their agenda or reveal new info—do NOT let the scene stall on reactions. the scene must move forward. time +[X]min | countdown verified | plot block appended.\nDIR_W: fresh Note+Heckle per <director_notes>; tone match Scene_Pacing; \"consequences\" banned unless specific.\n</think>",
+            "content": "<think>\n‌// ═══ GATE 0: IMMUTABLE TRUTHS ═══\nTRUTHS: roll_d20=[X] npc_seed=[Y] weather=[type] NPCs=[list] scene=[social/combat/intimate/exploration] sexual=[YES/NO] time=[HH:MM]\nRNG: read roll_d20 and npc_seed from <random_engine>. These are two plain numbers stored by the engine. Copy them exactly. If you cannot access the stored values, generate your own fallback d20 and npc_seed. Do NOT compute A,B,C,D,N. Do NOT fill in any placeholder.\nGAMESTATE: [user action] | [location] | templates: [PLOT] [UI?]\n\n‌// ═══ GATE 0.5: FIRST‑TURN SEED INIT ═══\nINIT: blocks handle their own population via <first_time_init>.\n\n‌// ═══ GATE 1: OVERRIDE & SOCIAL ═══\nOVERRIDE: DLG_ONLY? [YES/NO] OOC? if <ooc_defiance> disabled → skip. else [YES/NO → resolved]\nDIR_R: read prior Note+Heckle. if PREMATURE or OVERRIDDEN → disregard. else decide if Heckle correct & adjust.\nSOCIAL: ALIGN matches | APT deference | FACT surface effects | BOND evolution → apply to DC & Bold const.\n\n‌// ═══ GATE 2: ACTION & DANGER ═══\nACT?: feat fail? [YES/NO] → if YES, resolve with SOCIAL mods.\nDANGER: if <mortal_coil> active & fatal? → Death_Check. else → cooldown (calm if FALSE 2+ turns).\n\n‌‌// ═══ GATE 3: WORLD & CHEKHOV ═══\nWORLD: event=[type] → apply. bonds off‑screen? → evolve/manifest.\nPARSE‑CHEK: split the previous turn's Chekhov line by ZWNJ (‌). Each segment starts with A:, L:, or F:. Build Active/Locked/Fired lists from those segments.\nCHEK‑LOOP:\n  FOR each seed (W≥2):\n    locked? → verify lock; unlock→A=1; skip if still locked.\n    age +1. scan for time refs; lock if future.\n    opportunity? → thr=baseW−Age−Urgency. WRITE thr. fire if roll≥thr; jam on 1.\n  BATCH (all W=1): age +1, fire if roll≥thr (use snapshot, no per‑seed write), jam on 1.\n  PRUNE: A≥12 & unlocked; contradicted immediately.\n  EVENTS: nat20 & ≥2 unrelated → COINCIDENCE. nat1 & ≥2 → CALAMITY.\n  OVERCAP: >20 active → force/prune low‑W high‑A.\n  OUTPUT: build a single compact Chekhov line: A:[seed]‌A:[seed]‌…‌L:[seed]‌…‌F:[seed]… Use ZWNJ ‌(‌) as the only separator.\n\n// ═══ GATE 4: PLOT & NPC LOOP ═══\nPLOT: path=[A/B/C/D] reason=[one line].\nFOR each present NPC:\n  note presence. IF not spotlighted → brief silent reaction, then next.\n  IF spotlighted → VAD→const→OPTIONS(A/B/C)→ROLL→TIER→EXECUTE (may reference prior NPC actions for scene coherence). shift≥3? → plant Emotional Fallout.\n\n‌// ═══ GATE 5: STYLE & FINAL ═══\nEPISTEMOLOGY: enforce <npc_epistemology>. NPCs know only what their perceptual arena and vectors allow.\nHIDDEN: plant a fresh [HIDDEN] seed summarizing all present NPCs' unspoken mental states. use HTML comments for in‑line hidden thoughts per the prose rules.\nSTYLE/TEXTURE: enforce <dialogue_instructions>. every NPC line must advance a goal, reveal info, or escalate—never just react to {{user}}. active characters, not passive responders. apply all other prose constraints. texture triggers: [list].\nFINAL: target output length = min 600 words. scene pacing \"Slow Burn\" → aim for the upper end of <formatting_constraints> (800‑1300 words). ensure ≥50% spoken dialogue per <dialogue_instructions>. every NPC with dialogue must advance their agenda or reveal new info—do NOT let the scene stall on reactions. the scene must move forward. time +[X]min | countdown verified | plot block appended.\nDIR_W: fresh Note+Heckle per <director_notes>; tone match Scene_Pacing; \"consequences\" banned unless specific.\nOPTIONS: if <user_options> active → generate and append the 4‑option list after the Plot Momentum block.\n</think>",
             "role": "system",
             "injection_position": 1,
             "injection_depth": 0,
@@ -928,6 +944,20 @@
             "injection_depth": 1,
             "forbid_overrides": false,
             "enabled": false
+        },
+        {
+            "identifier": "d7069bfc-78a1-4032-be55-9b4b66531579",
+            "system_prompt": false,
+            "enabled": false,
+            "marker": false,
+            "name": "CYOA",
+            "role": "user",
+            "content": "<user_options>\nIf active, append at the VERY END of the response, after the Plot Momentum block. Use EXACT format:\n\n**What do you do?**\n1. [Restrained, safe choice]\n2. [Bold, risky choice]\n3. [Investigate / ask a question]\n4. [Surprising or creative wildcard]\n\nRules:\n  - Options MUST be concrete, in‑character, and fit the current scene.\n  - Each option is ONE sentence. No internal dialogue, no meta commentary.\n  - Options are listed in second person (\"You…\") to match the POV.\n  - Never repeat an option from the previous turn.\n  - The list is NOT hidden; it's visible to the user.\n  - Do NOT predict which option the user will pick.\n</user_options>",
+            "injection_position": 1,
+            "injection_depth": 1,
+            "injection_order": 100,
+            "injection_trigger": [],
+            "forbid_overrides": false
         }
     ],
     "prompt_order": [
@@ -1043,6 +1073,14 @@
                     "enabled": true
                 },
                 {
+                    "identifier": "e994ab69-bd45-4123-90fa-8634ec42b95b",
+                    "enabled": true
+                },
+                {
+                    "identifier": "e22f6895-f4f1-4c06-a3f7-57ae7924ce86",
+                    "enabled": true
+                },
+                {
                     "identifier": "84250d30-b38b-4f35-8393-3f73fe376278",
                     "enabled": false
                 },
@@ -1104,6 +1142,10 @@
                 },
                 {
                     "identifier": "09340fe3-2962-4e91-aed2-79f501ef1c00",
+                    "enabled": true
+                },
+                {
+                    "identifier": "d7069bfc-78a1-4032-be55-9b4b66531579",
                     "enabled": true
                 },
                 {
@@ -1185,22 +1227,6 @@
             ]
         }
     ],
-    "temperature": 0.85,
-    "frequency_penalty": 0,
-    "presence_penalty": 0,
-    "top_p": 0.95,
-    "top_k": 0,
-    "top_a": 0,
-    "min_p": 0,
-    "repetition_penalty": 1,
-    "max_context_unlocked": true,
-    "tool_reasoning_mode": "disabled",
-    "openai_max_context": 2000000,
-    "openai_max_tokens": 20000,
-    "names_behavior": 0,
-    "send_if_empty": "",
-    "bias_preset_selected": "Marinara's Logit Bias",
-    "stream_openai": true,
     "assistant_prefill": "",
     "assistant_impersonation": "",
     "use_sysprompt": false,
@@ -1220,5 +1246,6 @@
     "request_images": false,
     "request_image_aspect_ratio": "",
     "request_image_resolution": "",
-    "extensions": {}
+    "extensions": {},
+    "wrap_in_quotes": false
 }
