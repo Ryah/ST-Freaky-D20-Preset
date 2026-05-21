@@ -1017,6 +1017,10 @@
                     "enabled": true
                 },
                 {
+                    "identifier": "16fbb70a-dbcf-4913-8b42-ec14848e6237",
+                    "enabled": false
+                },
+                {
                     "identifier": "bbbf6a00-b154-49c8-bab2-dc1adb65967e",
                     "enabled": true
                 },
@@ -1133,6 +1137,10 @@
                     "enabled": false
                 },
                 {
+                    "identifier": "52edc035-a24a-497b-b81d-5d320059336e",
+                    "enabled": false
+                },
+                {
                     "identifier": "9c2d3a83-f312-499c-b6c5-e709bc1e9c37",
                     "enabled": true
                 },
@@ -1169,8 +1177,36 @@
                     "enabled": false
                 },
                 {
+                    "identifier": "6da76e16-90dc-4966-9afb-d245f2a9d83b",
+                    "enabled": false
+                },
+                {
+                    "identifier": "72f724ba-2e3a-4267-87a4-56ffa3d67de0",
+                    "enabled": false
+                },
+                {
+                    "identifier": "927f9471-55c9-4ecb-851a-71309d71e48d",
+                    "enabled": false
+                },
+                {
+                    "identifier": "bcd497a8-cd3c-49ef-afbc-58ef30d1b5df",
+                    "enabled": false
+                },
+                {
+                    "identifier": "63a87089-a2e9-4ff1-8bfe-17b5d10e1dd5",
+                    "enabled": false
+                },
+                {
+                    "identifier": "7c6b89ab-33b5-42c7-929c-1e4320420b1c",
+                    "enabled": false
+                },
+                {
                     "identifier": "fe2ede59-38a9-4561-bede-4541445a95a6",
                     "enabled": true
+                },
+                {
+                    "identifier": "e5e10847-f81e-4bdf-842b-65e5255e702c",
+                    "enabled": false
                 },
                 {
                     "identifier": "22bc292e-c781-44db-9332-0e28f37be24a",
@@ -1223,6 +1259,30 @@
                 {
                     "identifier": "chatHistory",
                     "enabled": true
+                },
+                {
+                    "identifier": "46cfe810-c37b-4875-8c53-c83c12942084",
+                    "enabled": false
+                },
+                {
+                    "identifier": "3b4ec67c-68f8-4787-ba5b-44fc12a85b95",
+                    "enabled": false
+                },
+                {
+                    "identifier": "8f80599d-7ccc-495f-88b9-3031f3b6b0c9",
+                    "enabled": false
+                },
+                {
+                    "identifier": "enhanceDefinitions",
+                    "enabled": false
+                },
+                {
+                    "identifier": "nsfw",
+                    "enabled": false
+                },
+                {
+                    "identifier": "jailbreak",
+                    "enabled": false
                 }
             ]
         }
