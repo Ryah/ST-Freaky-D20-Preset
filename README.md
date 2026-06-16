@@ -1,261 +1,111 @@
-# Freaky FrankenSIM: FF4 MAX+1d20 (and a Gun)
-**The original Freaky Frankenstein 4 MAX+ preset** by Dptgreg and leovarian did something magical. It turned dry, sanitized LLM output into a vivid, sensory-rich roleplay simulation. But after weeks of late-night sessions, I noticed something that made my eye twitch. The AI kept **echoing** me. It would take my beautifully crafted chain of actions, rephrase them with a thesaurus, and hand them back as a response. No plot movement, just a verbal hall of mirrors.
+Hi, yes I was shadowbanned off of Reddit. 
 
-So I fixed it. Then I thought, "What if off-screen characters had lives?" Then I wanted dice. Then I wanted a Chekhov's Gun tracker. Then I blacked out and woke up with a preset that has its own constitution.
+Thankfully there is now a new account made by ***someone*** who types suspiciously like me, has access to FrankenSIM 2.0, and just has to wait 1 day for the automod to cool down on reddit.
 
-Freaky FrankenSIM is the result. It is not an update. It is a **fork** that respects the original MAX+ skeleton but replaces several organs and teaches the rest to swear.
+Golly gee willikers I don't know who this mysterious u/ok_strategy_2420 is but maybe in a day he woN'T GET BANNED AGAIN
 
----
+Thanks for all the support.
 
-## 📜 The Original Foundation (What You Already Love)
-
-From MAX+, we keep the core identity: the unbiased cinematographer role, the strict sensory physics, the turn economy, the POV systems, the colored dialogue, the immersive graphics, the HQ NPC generator, the VAD emotional matrix, and the species vocalization rules. All of that still hums underneath. Think of FrankenSIM as the same hot rod, but now there is a supercharger, a roll cage, and a very aggressive backseat driver named Chaos.
+Here was the post that got me banned:
 
 ---
 
-## 🔁 The Echo Protocol: How It All Started
+Hi. 27 days ago, I released a very rushed 1.5 update to FrankenSIM. The bugfix update that added 14 features.
 
-I posted this fix in the original Reddit thread. Deepseek v4 Pro had a habit of cloaking echo in character reactions. My character would do six things, and the NPC would narrate *"The words hit her like someone who just experienced [six things nearly verbatim]."* Then they would answer each line of dialogue sequentially. The whole response was a recap with a new paint job.
+And, uh, yeah I certainly added features. Too many features. Honestly, it was so much more of a mess than you all gave me credit for. To the point where I had to stealth patch the dice engine itself just an hour after releasing it because for some reason that broke.
 
-The **No Echo Protocol** is now embedded into the Writing Guidelines block:
+I went to get to work on 2.0 from there, and soon realized that 1.5 was just...not good. It was unstable, slow, token bloated to all hell, and overall just unreliable.
 
-```
-<no_echo_protocol>
-Echo_Ban = STRICTLY_FORBIDDEN(Rephrase, Repeat, Summarize, Quote)
-Pivot_Rule = Instead, the NPC must take physical action, ask a new question,
-             or introduce new info. Emotional validation alone is not a valid turn.
-Literal_Bans = "You said", "You told me", and any variant.
-</no_echo_protocol>
-```
+So. I scrapped it entirely. Burnt it to the ground. This is the reason I didn't post any beta builds on Github, because I kept rewriting the entire preset every other day.
 
-This single block forced the AI to invent new sensory details and push the plot forward. Combined with Bold NPCs, it turned reactive puppets into proactive agents. No more "You said the thing, and that makes me feel the feeling." The AI must now earn its dialogue like a street performer.
+But now, after almost a month of pretty constant work, and a solid group of actual beta testers testing this for the past few days, I can now present something I'm personally pretty proud of.
+
+Factions, Alignment, and Aptitude from 1.5 have been dropped completely to hone in the scope. But BOND has absolutely flourished as a result.
+
+There are so many small mechanics here that you might never actually see in action, and that's by design. You will only feel the results of it in the way your characters change and evolve in front of you. Every single block in this preset has been designed to work with each other in a way that can create a specific type of emotional complexity that I've *personally* never seen in a preset before (granted I've only tried like 6 but you know).
+
+There's a lot in this preset. So I will go over the really big selling points.
+
+Also, to the people for some reason saying that it's impossible for the AI to use dice to hurt the player, yeah. I wish that was the case. Then I wouldn't have had to make the ARC Engine. But instead now we have the AI not only blaming, but actively *cheering* the dice for my downfall.
+
+Life is pain.
+
+This is FrankenSIM 2.0.
+---
+
+## 👥 NPCs Now Have The Exact Same Relationship Systems As You
+
+In 1.5, NPCs had rudimentary relationships with you. In 2.0, they have the exact same BOND, CRUSH, SIMMER, jealousy, and pair‑flag tracking **with each other**, all off‑screen, all persistent, all invisible to you until the ripples reach the surface.
+
+#### **What this actually means, in practice:**
+
+Two NPCs who share a room can now go from strangers to friends to lovers without you ever interacting with them. They accumulate CRUSH via shared vulnerability, casual touch, quality time, the exact same triggers that would apply if you were in the room. They can cross relationship thresholds off‑screen. They can become a couple, complete with a "couple" flag, and the next time you walk into the cafeteria, they're holding hands and you have zero context.
+
+They can also break up. They can cheat. They can form love triangles that spawn jealousy subsystems. You see none of the mechanics. You just see a cold shoulder, a clipped reply, someone leaving the room when someone else enters, and you have to piece together why.
+
+### **🧠 The State Engine That Makes This Possible**
+
+Every named NPC is always being tracked via a dedicated location tag in the background. The off‑screen simulation knows where everyone is. When two NPCs share a location at the same time, a random encounter roll fires. If they meet, the engine applies CRUSH triggers directly, kindness, compliment, vulnerability, quality time, defense, affection, small gift, trust gesture. Max three per turn, per pair. This happens silently, every turn, whether you're watching or not.
+NPCs also now have a SIMMER counter. Slighted? Offended? Someone broke a promise? The simmer ticks up. At seven active simmer seeds from one NPC toward a specific target, the engine forces a conflict escalation, they argue WITH EACH OTHER, not at you. And each night, when the clock crosses midnight, every simmer count above three drains BOND by one. The day's resentments settle in during sleep. By morning, someone likes their coworker a little less. That's not a scripted event. That's accumulated friction.
+
+### **🎭 Jealousy, Love Triangles, and the RIVALRY Flag**
+
+When an NPC with a crush witnesses their target interacting with a rival, or when gossip about that interaction reaches them through the social network, the engine plants a SIMMER seed on the rival and sets a persistent RIVALRY flag. While this flag is active, the jealous NPC's Valence toward the rival drops by one, Arousal ticks up, and they get +1 Bold when the rival is present. They're more performative. More reactive. More likely to stake a claim.
+
+Rivalry expression varies by archetype: possessive types get territorial (frequent casual touch on the target, cold stares at the rival). Analytical types get competitive (pointed observations, proving superiority through competence). Aggressive types go direct (verbal challenges, open disdain). All of them escalate to raised voices only when simmer hits seven and conflict escalation triggers. Before that, it's friction. Not fire.
+
+### **💬 GOSSIP: The World Talks About You (And Each Other)**
+
+Gossip now propagates through BOND social links and shared locations. When a gossip‑worthy event happens, public flirtation, an argument, a lie exposed, an intimate moment witnessed, the engine plants a gossip seed. Every turn, that bullet spreads to one new NPC who shares a social connection or location with someone who already knows. The gossip network is literal. It traces friendships, dorm assignments, shared workplaces.
+
+When gossip reaches someone with a strong bond to the subject OR the subject's known rival, it fires immediately. The hearer reacts per their bond tier, confrontation, jealousy planting, simmer toward the subject, or quiet filing away of the information. The bullet remains in the system, marked resolved, with a complete list of everyone who now knows. The secret is out. The ripple spreads. The user may never even hear about it.
+
+### **🗣️ Character Card Calibration: Why Your NPC Still (mostly) Sounds Like Themself**
+
+All of this, the BOND tiers, the CRUSH accumulation, the simmering resentment, the jealousy spirals, operates inside a strict hierarchy that the preset enforces every single turn. The character card is law. BOND tier sets the behavioral fence: what an NPC can physically do and verbally express. VAD adds emotional intensity and shading *inside* that fence, but never override it.
+
+An NPC with +15 BOND who's shy and reserved will express attraction differently than a boisterous extrovert with the same +15. The shy NPC might press their forehead to yours in silence. The extrovert might shout it from a balcony. Both are valid. Both are in‑character. The preset doesn't flatten them into the same love confession, it filters the same gate through the card's voice.
+
+And when an NPC has to do something the dice demand, attack when they're a pacifist, lie when they're honest, the card still controls the *how*. The pacifist stabs clumsily, cries afterward, drops the weapon. The honest person's lie comes out stilted, their tells obvious even if they don't admit it. The action happens. The voice never breaks. That's the hierarchy in practice.
 
 ---
 
-## 🎲 The d20 Revolution: Randomness That Matters
+## 🎭 The ARC Engine - 9-Act Narrative Architecture
 
-The original preset had no dice. Every outcome was deterministic, which meant the AI always took the safe, boring path. FrankenSIM uses SillyTavern's `{{roll:1d6}}` macros to generate **true random numbers** at the start of every single turn. A bespoke `<random_engine>` combines four d6s with rejection sampling to produce a mathematically uniform `roll_d20` for world events, plus a separate `npc_seed` for character action variance.
+I told myself I wouldn’t make this the headline feature, because the relationship engine is sexier. But the ARC Engine is the spine that holds the whole thing together.
 
-```
-<random_engine>
-Dice: A={{roll:1d6}} B={{roll:1d6}} C={{roll:1d6}} D={{roll:1d6}}
-NPC_Action_Seed: {{roll:1d20}}
-Method: N = (A-1)*216 + (B-1)*36 + (C-1)*6 + (D-1)
-        roll_d20 = (N mod 20) + 1   (with rejection if needed)
-</random_engine>
-```
+It’s a dynamic, genre‑aware 9‑act story generator. It assigns a protagonist (sometimes an NPC, sometimes you), defines phase goals, bans resolution in early acts, and forces breathing room. It has its own BAN/ALLOW lists for every phase. Phase 0 cannot resolve anything, only observe, introduce, and foreshadow. Phase 5 allows everything. Phase 8 bans new conflicts entirely and forces closure.
 
-These numbers are locked for the entire turn and fed into **every other system**. This is the beating heart of unpredictability. When you reach for a shampoo bottle, the universe rolls a die. When a gossipy maid passes an open door, the universe rolls a die. When your rival decides whether to insult you or just seethe quietly, the universe rolls a die.
+The ARC Engine was born from a bug that I have been chasing since 1.0. A conflict-escalation loop so severe that I had to somehow find a way to force the story to not resolve itself on turn 3. After implementing, though, on Phase 0, the model generated a corruption plotline, a shadow fragment plotline, two made‑up NPCs essential to those plotlines, a backstory arc, a partial conclusion, a pet, and two romance options outside the BOND gate. It was a nuclear meltdown. I have since found the bug, but during the process I hardened the ARC Engine so much that it now is pretty much the main plot driver for 100+ turn narratives. And it works. It works really well, from my testing.
+
+Now? It can generate stories on the fly where YOU aren't the protagonist. You can be the side character, or the witness, or even the comedic relief. Your role is generated upon ARC generation, making your RP have the same pacing as established novels, doesn't matter if it's mundane slice-of-life or an epic. It forces the plot to progress in a new way that I personally very much enjoy.
 
 ---
 
-## ⚔️ Action Resolution: The D&D Check Engine
+## 👁️ Object Occlusion & The User's POV
 
-Why should combat, magic, or social gambits always auto-succeed? The `<action_resolution_engine>` intercepts any character action with plausible failure and applies a **Difficulty Class** based on context. Your `roll_d20` is the check.
+The world now has physics. Line of sight requires a clear path and a 120° forward arc. Solid obstructions, tables, counters, booth partitions, another person's torso, nullify vision at any distance. If two NPCs are on the same side of an obstruction from you, they can pass notes, touch, signal, or mouth words without you perceiving it. You find out only if you reposition to clear the obstruction.
 
-| DC Range | Difficulty | Example |
-|----------|------------|---------|
-| 1-5 | Trivial | Lifting a pillow |
-| 6-10 | Easy | Climbing a knotted rope |
-| 11-15 | Moderate | Kicking down a wooden door |
-| 16-20 | Hard | Bending iron bars |
-| 21+ | Nearly Impossible | Convincing the king you are his long-lost son with no evidence |
+Audio is gated the same way. Whispers behind a raised hand, under a table, or turned away halve their range. A conversation behind a closed door is muffled fragments. The reader is tied to the user's physical senses, what you can see, hear, and feel from your exact position. There is no omniscient narrator. No "meanwhile." No bridging. If you walk away mid‑conversation, the dialogue degrades through the audio gradient in real time: full sentences, then fragments, then tone, then warmth, then nothing.
 
-Success and failure now have **degrees**. A roll equal to the DC is a marginal win with a cost. A roll 5+ above is a great success. A natural 1 is a disaster. The engine also handles experimental magic (DC rises, failure consequences worsen), impossible tasks, and the golden rule: no automatic wins.
+This doesn't just extend to your character, it extends to everyone. The user, the NPCS, and even you, reader.
 
-**Real Testing Example:** I went to take a shower. Critical failure on grabbing the shampoo. Slipped, got a bloody nose. The AI narrated it with cinematic glee. My character limped through the next three scenes with tissue paper in his nostril.
+The narrator is now **physically tied to your character’s senses.** Vision is 120° forward only. Solid objects (tables, counters, other people’s backs) block line of sight. Audio has gradients, normal voice 10‑20m, whispering halved behind a hand or under a surface. Two NPCs on the other side of a booth can pass notes or mouth words without you perceiving them. And you can do the same back. No tells in prose, and they won't know about you either. Unless you're like me and rolled a nat 1 while flirting, and accidentally kicked the shit out of a table leg instead. Then they may know.
+If you fall asleep, the prose degrades through the audio gradient in real time. Full dialogue → fragments → single words → sensory only → nothing. The scene ends when your perception fades, not when the NPCs stop talking.
+
+You don’t see everything. You don’t hear everything. The world doesn’t pause when you look away.
 
 ---
 
-## 🏘️ The Living World Engine: Privacy Is Earned
+## Links
 
-The original MAX+ had a simple background simulation toggle. FrankenSIM replaces it with `<living_world_engine>`, a full simulation layer that makes every absent NPC live a parallel life.
+**Download:** https://github.com/Ryah/ST-Freaky-D20-Preset/releases/tag/2.0
 
-- Every named NPC has a last known state (location, task, mood, goal).
-- Each turn, they **advance** off-screen based on duties, personality, and elapsed time.
-- They can naturally enter the scene for mundane reasons (a maid with fresh towels, a wife seeking a book) or actively seek the user out of affection, jealousy, or curiosity.
-- They can **exit** when bored, offended, called away, or because someone they hate just walked in.
-- Relationships between NPCs evolve silently. Trust, rivalry, resentment build incrementally and may surface later as sudden betrayal or unexpected alliance.
-
-**Privacy is earned, not default.** In a busy household or a bustling academy, solitude is a privilege. Locked doors reduce interruption chance but never eliminate it. A determined NPC with a strong motive will bypass precautions. The privacy rule alone transformed my regency drama from a series of private conferences into a social obstacle course where every intimate conversation risked a footman walking in with a letter.
+For Regex, use FF4's Plot Momentum regex. Saves a ton of tokens.
 
 ---
 
-## 📋 The Random Event Table: 20 Flavors of Chaos
-
-Alongside the Living World Engine sits a `<random_event_table>` that fires every turn based on the stored `roll_d20`. It replaces the vague "random events" of the original with a precise lookup:
-
-| Roll | Outcome |
-|------|---------|
-| 1-2 | Calm |
-| 3-4 | Enter_Check (an absent NPC enters with purpose) |
-| 5-6 | Background_Incident (a dropped tray, a distant shout) |
-| 7-8 | Mood_Swing (one present NPC's VAD shifts unexpectedly) |
-| 9-10 | Gossip_Surge (a rumor reaches an unintended ear) |
-| 11-12 | Chance_Meeting (two off-screen NPCs collide and scheme) |
-| 13-14 | Overheard_Detail (an NPC picks up a useful tidbit) |
-| 15-16 | Offscreen_Task_Shift (something finishes early or late) |
-| 17-18 | Mundane_Interruption (a knock, a cough, a door slam) |
-| 19-20 | Calm |
-
-The Enter_Check has built-in safeguards: it will not trigger if more than 4 characters are already present, if the location is private or locked, or if a scene of intimacy is in progress. This prevents the bathhouse from turning into a town hall meeting.
-
-**Real Testing Example:** I whispered a secret to an NPC, who got so surprised they repeated it slightly louder than talking volume. A student at the next table overheard. That secret is now spreading off-screen through the school in a telephone-game fashion, mutating at every step. I haven't seen the consequences yet, but the Chekhov tracker assures me they are coming.
-
----
-
-## 🔫 Chekhov's Gun Rack: The Callback Tracker
-
-The feature that makes my GM heart sing. The `<chekhov_tracker>` is a full lifecycle system for narrative details. Any time an NPC picks up an object, defers an answer, or notices something subtle, the AI can **plant** a seed with a weight (1 = minor, 2 = moderate, 3 = major).
-
-Seeds can be locked by six different conditions:
-
-- **Time Lock**: "Answer at the end of the day" will not fire at lunch.
-- **Character Lock**: "Mina will confront Howard" stays locked until Mina enters the scene.
-- **State Lock**: An NPC who is unconscious or in blind rage cannot act on a seed.
-- **Dependency Lock**: "Cora reads the decoded message" waits until "Cora obtains the envelope" fires.
-- **Crowd Lock**: Secrets do not fire when too many ears are present.
-- **Contradiction Lock**: If the world has already disproved the seed, it is pruned.
-
-When a seed is unlocked, the stored `roll_d20` checks against Age-adjusted thresholds. A weight‑3 seed fires on 8‑20 at Age 0. A weight‑1 seed needs 18‑20. Every turn, Age ticks up, making older seeds more likely to fire. An Urgency Boost kicks in when a deadline is within two minutes or the next story beat.
-
-**Active seeds are capped at 20.** If the list overflows, the engine force-fires or prunes the lowest-weight, highest-age seeds. Duplicate seeds merge. Fired seeds are physically deleted from the next turn's list.
-
-**Real Testing Example:** Twenty turns earlier, my character grabbed a flashlight during a combat diagnostic. Chekhov planted it. Fifteen turns later, the NPC who owned the flashlight confronted me about not returning it. I had genuinely forgotten I picked it up. The AI did not.
-
-**Another Example:** I complimented a shy, timid NPC. The seed planted "Seraphina felt a surge of confidence." For the next ten to fifteen turns, she was noticeably more active, more engaged, more willing to speak in group scenes. The AI never announced this. I only discovered the reason by reading the reasoning trace. The seed was silently steering her behavior the entire time.
-
----
-
-## ⚖️ Neutral Bias: The Constitution of Fuck Around and Find Out
-
-The original Challenge Me PLS toggle was a handful of hard-code rules. FrankenSIM expands `<neutral_bias>` into a full constitution. Key additions:
-
-- **Protagonist Immunity = FALSE.** You are not special. No plot armor.
-- **Character Inertia**: Established beliefs and traumas resist change. A single clever phrase does not rewrite a personality.
-- **Persuasion Resistance**: Loyalties shift only through leverage, repeated proof, shared risk, or material cost. Rhetoric alone is insufficient.
-- **Persistence of Disposition**: Hostile characters stay hostile. No softening because you persisted or behaved politely.
-- **Reciprocity, Not Reward**: Politeness is not rewarded. Defiance is not punished unless the character would punish it.
-- **Authentic Language**: Profanity and coarse language are explicitly permitted. Characters speak with vocabulary true to their background. The self-censorship filter is off.
-
-That last point deserves emphasis. **NPCs can now swear if it fits their character.** In testing, I was called a "fuckboy" by a normally formal academic rival. It was earned. It was glorious. It threw me completely off guard.
-
-The retaliation system now scales with `roll_d20`: a rude user might get cold silence on a low roll, a public insult on a moderate roll, or a slap and a storm-out on a high roll. The world no longer revolves around your comfort.
-
----
-
-## 💪 Bold NPCs: Emotional Branching With Teeth
-
-The original Bold NPC block told characters to fully commit. FrankenSIM connects it to the **VAD emotional matrix** for dynamic action intensity.
-
-For each present NPC with a strong motive, the engine computes a `dynamic_constant` from their current Dominance, Arousal, and Valence. Then it generates three in-character actions **before** knowing the `npc_roll`:
-
-- **Option A**: Restrained, socially appropriate.
-- **Option B**: Bold, forward, mildly risky.
-- **Option C**: Aggressive, reckless, openly selfish.
-
-Only after the options are generated does it compute `npc_roll = (npc_seed + dynamic_constant + Scene_Index) % 20 + 1` and select the tier. This prevents the AI from tailoring the options to the roll. The choice is genuinely unpredictable.
-
-During intimate scenes, a +4 bonus pushes characters toward bolder actions, but the framework remains the same: options first, then dice.
-
-**Real Testing Example:** A greedy NPC eyeing a gold bar would, on a cautious roll, merely stare and wait. On a bold roll, he would swipe it while feigning a cough. On an aggressive roll, he would lunge, shove the user aside, and snatch it with a snarl. In my political drama, this turned a passive inheritance dispute into a shouting match where a supporting character I thought was an ally suddenly laid claim to a title I had already mentally assigned elsewhere.
-
----
-
-## 🗣️ Dialogue Overhaul: Hard Caps and Plot Requirements
-
-The original increased dialogue toggle was good. FrankenSIM tightens it with surgical precision:
-
-- **Hard Cap**: No spoken sentence may exceed 2 clauses. Long thoughts break into separate quoted sentences.
-- **Narration Cap**: Maximum 25 words per sentence, one subordinate clause allowed. No chaining independent clauses with "and" or "but."
-- **Plot Requirement**: Every line of dialogue must advance a character's goal, reveal new info, create conflict, or introduce a twist. Emotional validation caps at two sentences per NPC per turn. After that, pivot to action or shut up.
-- **Dialogue Ratio**: 50% to 70% of output must be spoken. But it must be dialogue that matters.
-
-These caps killed the run-on sentence plague. No more paragraphs that are a single seventy-word monstrosity. No more characters holding hands and processing feelings for eight paragraphs while the plot flatlines.
-
----
-
-## 🔞 The Vocabulary Mapping That Shall Not Be Named
-
-The NSFW mode already mandated vulgar slang over clinical terms. FrankenSIM adds one tiny, crucial mapping: the `Semen_Orgasm_Mapping` rule. Always use a specific four-letter word that rhymes with "sum." Never use the word that means "to arrive." This closes the last loophole where the AI would produce the clinical or ambiguous form during otherwise visceral intimate scenes. It is a small change with a large impact on tonal consistency.
-
----
-
-## 📈 Plot Momentum Upgrades: The Dice Are Your Co-Writer
-
-The original Plot Momentum block selected a narrative path (A, B, C, or D) manually or by vague pacing. FrankenSIM adds a `Selection_Modifier` driven by `roll_d20`:
-
-| Roll Range | Effect |
-|------------|--------|
-| 1-4 | Force Path_B (Conflict) or Path_C (Action). No Path_A unless impossible. |
-| 5-10 | Maintain pacing; any path allowed. |
-| 11-16 | Select Path_D (Twist) unless it breaks continuity. |
-| 17-20 | Path_D or a blended high-impact path; narrative risk acceptable. |
-
-The AI must now justify its choice, note the roll, and **execute the path's core event on-screen**. If Path_A calls for a transition, the scene must physically shift (characters stand, open a door, enter a new room) before the response ends. Emotional dialogue alone no longer satisfies this requirement. The Chekhov's Seeds list is appended directly into the Plot Momentum block, separated into Active, Locked, and Fired sections.
-
----
-
-## 🧠 Chain of Thought: The 15-Task Gauntlet
-
-The original preset had several CoT modes of 9-12 tasks. FrankenSIM's **Freaky Mode** and **Freaky Novel Mode** CoTs have been restructured into a 15-task pipeline. (Realism and Novel modes remain at their original task counts for now, as I haven't fully retrofitted them yet, the framework is ready.)
-
-Here is exactly what the 15-task CoT enforces, in order, and how it shapes every single response:
-
-| Task | Name | What It Does | Impact on Output |
-|------|------|--------------|------------------|
-| 0 | Random Number Gen | Executes `<random_engine>`, stores `roll_d20` and `npc_seed` | Locks true randomness before any scene logic |
-| 1 | Action Resolution | Applies `<action_resolution_engine>` to any risky action, sets DC, uses `roll_d20` | Determines success/failure and degree; feeds tension |
-| 2 | Vocabulary & Bans | Enforces banned words, no-echo, sentence limits, banned dialogue patterns | Prevents slop, run-ons, "You said," and ellipses |
-| 3 | Knowledge Scope | Enforces scene separation, anti-bridging, and validates Chekhov seed knowledge | Prevents omniscient NPCs and information leaks |
-| 4 | NPC Goals | Executes `<neutral_bias>`, applies `roll_d20` to retaliation intensity | Ensures NPCs pursue their own agendas, not user satisfaction |
-| 5 | Living World Sim | Advances all NPCs, handles entries/exits, fires random event table, plants seeds | Makes the world breathe; generates new Chekhov seeds |
-| 6 | Chekhov Seed Mgmt | Ages seeds, checks all lock conditions, fires or prunes with `roll_d20` | Resolves callbacks, secrets, and deferred plot threads |
-| 7 | VAD Matrix | Applies emotional shifts, updates Dominance/Arousal/Valence for each NPC | Dictates emotional tone of actions and dialogue |
-| 8 | Bold NPC Initiative | Uses VAD to compute dynamic constants, generates action options, selects via `npc_roll` | Makes NPCs proactive, bold, and unpredictable |
-| 9 | Sensory & Cinematic | Enforces literal sensory details, no figurative language (overridden in Novel mode) | Grounds scenes in physical reality |
-| 10 | Freaky Mode | Applies explicit adult language rules and anatomical variety | Ensures visceral, taboo-friendly intimate scenes |
-| 11 | Dialogue & Sounds | Enforces dialogue ratio, clause caps, character voice mimicry | Produces natural, plot-driving conversations |
-| 12 | Turn Economy & POV | Stops after NPC actions, never acts for user, applies correct POV | Maintains player agency and narrative boundaries |
-| 13 | Output Length | Enforces word and paragraph limits | Keeps responses tight and readable |
-| 14 | Plot Momentum | Assembles the final hidden block: seeds, path selection, strategy reason | Provides the AI's own roadmap for the next turn |
-
-This pipeline respects left-to-right token generation. The dice roll happens first, so the AI cannot bias the number based on the scene. Locked seeds are unlocked before firing checks, so freshly available characters get immediate opportunities. Bold NPC actions are generated before the roll, preventing the AI from crafting options that conveniently match the tier. The final block enforces the selected path in the output, preventing the AI from choosing Path_B and then writing a scene that stays in Path_A.
-
----
-
-## 🛠️ The Small Changes That Compound
-
-- **Anti-Stiff Prose** was rewritten to apply to both narration and dialogue, with explicit clause caps and a ban on "and then" chaining.
-- **The Time Header** now enforces meal schedules so NPCs stop offering breakfast at 2 AM.
-- **The Dialogue Color Palette** gained six additional colors (Cyan, Coral, Amber, Teal, Bright Red, Purple) for large-cast stories.
-- **Spotlight Selection** is included as an optional toggle: when 4+ NPCs are present, only 2-3 may speak per turn based on narrative relevance and the `npc_seed`, while others react silently. This prevents classroom scenes from becoming twelve-person round-robins.
-
----
-
-## 🧪 Real Testing Moments (All Organic)
-
-1. **The Shampoo Incident**: As described. Critical failure. Bloody nose. The AI maintained the injury across multiple scenes without prompting.
-
-2. **The Telephone Game**: A whispered secret overheard, now spreading through the student body with mutations. The Chekhov tracker shows it as a locked seed waiting for the right moment to surface.
-
-3. **The Flashlight**: Picked up 20 turns ago, forgotten by me, remembered by the AI. Confronted about it later.
-
-4. **The Timid NPC**: One compliment planted a confidence seed. Fifteen turns of subtle, altered behavior followed. Never announced.
-
-5. **The Fuckboy Incident**: A formal rival, pushed to the edge by my character's antics, snapped with language the original preset would have self-censored. It felt earned and human.
-
-6. **The Omelette War**: In a domestic scene, four characters competed for the third omelette. The spotlight selector let two speak, the others fumed silently, and the tension resolved naturally instead of cycling through every NPC's opinion.
-
----
-
-## 🔗 Tying It All Together
-
-Every feature feeds into every other. The `roll_d20` rolls at the start. It determines the random event table outcome. That outcome may trigger a Chekhov seed plant. The same roll is used by the action resolution engine if a risky action occurs. It feeds the NPC retaliation intensity. It feeds the Plot Momentum path selection. A separate `npc_seed`, also rolled at the start, drives the Bold NPC action variance and the Spotlight Selection index.
-
-The Chekhov tracker stores seeds from the Living World Engine. The Knowledge Scope task validates them. The Plot Momentum block displays them. The pruning and overcap rules keep the list manageable.
-
-The Neutral Bias constitution tells NPCs they are allowed to be hostile, to swear, to leave, to intrude, to lie, to escalate. The Living World Engine gives them the mechanics to do so. The Bold NPC branch gives them the action framework. The random dice make it unpredictable.
+See you all soon for 3.0
 
 ---
 
