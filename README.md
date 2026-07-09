@@ -1,7 +1,7 @@
- # Freaky FrankenSIM 2.0 — System Documentation
+ # Freaky FrankenSIM 2.5 — Internal System Documentation
 
-> **Author:** u/xdeadly_godx  
-> **Target Platform:** SillyTavern (OpenAI-compatible API)  
+> **Author:** u/Ok_Strategy_2420  
+> **Target Platform:** Lumiverse + SillyTavern
 > **Design Goal:** A heavily state-driven, dice-enforced simulation preset where NPCs possess full agency, arcs progress with or without the player, and narrative integrity is mechanically protected from softening or authorial override.
 
 ---
