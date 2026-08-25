@@ -358,7 +358,7 @@ If your hook **skips the tail** (`⇥ <page:output>`), your function must consci
 
 ### Function naming and collisions
 
-Functions open with `<fn:name>` and end with `⇤` or `⇥`. **There is no closing `</fn>` tag.**
+Functions open with `<fn:name>` and end with `⇤` (return to parent) or `⇥` (advance to <page:x>), followed by `</fn:name>`
 
 A card's `<fn:X>` that shares a name with a preset function **overrides it.** Don't do that accidentally. The do-not-touch list below names the core functions.
 
