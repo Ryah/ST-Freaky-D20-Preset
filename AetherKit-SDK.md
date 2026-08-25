@@ -1,10 +1,10 @@
-# AetherKit
+# AetherKit SDK
 
 **FrankenSIM's Card Authoring SDK — write your story, guarantee your pacing, own your mechanics.**
 
-AetherKit is the system that lets character card creators hook directly into FrankenSIM's reasoning engine. You write the beats; the engine executes them. You flip the genre; the engine rebuilds itself around it. You build a mechanic; the engine routes to it.
+AetherKit lets character card creators hook directly into FrankenSIM's reasoning engine. You write the beats; the engine executes them. You flip the genre; the engine rebuilds itself around it. You build a mechanic; the engine routes to it.
 
-This document is the complete reference. Start at the top if you've never seen FrankenSIM before. Skip to Part 4 if you just want the syntax.
+This document is the complete reference. Start at the top if you've never seen FrankenSIM before. Jump to **Part 4** if you only need syntax.
 
 ---
 
@@ -14,7 +14,7 @@ FrankenSIM is not a prompt that makes a chatbot act like a character. It is a **
 
 The distinction matters, because it changes what your card *is*.
 
-A conventional character card is a personality the AI wears. A FrankenSIM card is a **scenario the AI runs** — with a living world, real relationships, dice, and a narrator who is fallible on purpose. The AI isn't pretending to be your character. The AI is *simulating the world that contains your character*, turn by turn, with mechanics that persist across the entire session.
+A conventional character card is a personality the AI wears. A FrankenSIM card is a **scenario the AI runs** — with a living world, real relationships, dice, and a narrator who is fallible on purpose. The AI isn't pretending to be your character. It is *simulating the world that contains your character*, turn by turn, with mechanics that persist across the entire session.
 
 AetherKit gives you a seat inside that simulation. Most card authors will only ever use the **Spec** tier — a structured arc that the engine fires on your schedule. A few will use **Hooks** to build mechanics that don't exist anywhere else. Both are covered here.
 
@@ -31,7 +31,7 @@ These are the principles the engine is built on. You don't need to agree with th
 FrankenSIM runs on a **possession model.**
 
 - **The Reader** is the real human reading the prose.
-- **The User** (`{{user}}`) is the character the Reader inhabits — the character's persona card.
+- **The User** (`{{user}}`) is the character the Reader inhabits.
 
 The User is a real person inside the world with a backstory, relationships, plans, and secrets. The Reader has *possessed* them. The Reader experiences the world only through the User's senses, and — critically — **the Reader has not read the character cards.** They don't know the lore. They don't know your NPCs' secrets. They learn through play.
 
@@ -39,7 +39,7 @@ The User is a real person inside the world with a backstory, relationships, plan
 
 ### 2. The narrator is unreliable — and that's the User's fault, not the AI's
 
-The prose is not objective reality. The prose is **the User's experience**.
+The prose is not objective reality. The prose is **the User's experience.**
 
 The User has a perception stat — **P** (static sensorium) and **U** (scene attention). U is rolled every scene. When U is high, the prose reports the loaded tells — the beat too long, the clipped word. When U is low, the prose asserts what the User *believes*, even when it's wrong. A masked emotion reads as the mask. A missed glance doesn't exist.
 
@@ -67,9 +67,9 @@ This means your card should **never assume a specific outcome.** The User might 
 
 FrankenSIM tracks every relationship on **13 axes** — six of fondness, six of friction, and one of self-worth.
 
-Fondness axes: Eros (romantic), Ludus (playful), Philia (friendship), Pragma (practical), Storge (familial), Agape (selfless).
+Fondness axes: **Eros** (romantic), **Ludus** (playful), **Philia** (friendship), **Pragma** (practical), **Storge** (familial), **Agape** (selfless).
 
-Friction axes are their mirrors: Misos, Eris, Echthros, Stasis, Adiaphora, Phthonos. The self axis is Philautia.
+Friction axes are their mirrors: **Misos**, **Eris**, **Echthros**, **Stasis**, **Adiaphora**, **Phthonos**. The self axis is **Philautia**.
 
 The genius of the system: **fondness and friction tick independently.** A character can love someone and resent them simultaneously. High fondness doesn't erase friction. The most interesting relationships are the ones where both are high — "I love you and I can't stand that I love you."
 
@@ -83,7 +83,7 @@ Write your card's lore as if the User *already lives in the world* — because t
 
 ### 7. The ARC Engine — stories have spines
 
-FrankenSIM runs arcs: four-act story structures following **Kishōtenketsu** — Ki (introduction), Shō (development), Ten (twist), Ketsu (resolution). Each arc is a chain of beats — specific, fireable scenes that advance the story.
+FrankenSIM runs arcs: four-act story structures following **Kishōtenketsu** — **Ki** (introduction), **Shō** (development), **Ten** (twist), **Ketsu** (resolution). Each arc is a chain of beats — specific, fireable scenes that advance the story.
 
 By default, the engine *generates* arcs from your card. It reads your lore, your NPCs' backstories, their wounds and agendas, and builds a story. Sometimes it's brilliant. Sometimes it guesses wrong.
 
@@ -125,16 +125,6 @@ A function runs its body, then returns with `⇤` — to the line *after* the ca
 
 The critical rule: **`⇤` returns exactly one level.** No more. The model unwinds one call at a time. This discipline is what keeps the engine from getting lost in its own reasoning.
 
-### Why this matters to you
-
-Because the CoT is built from named pages and functions, **a card can inject its own.** Macros inside a character card resolve *after* the preset's blocks but *before* the CoT runs. That means your card can:
-
-- Set a flag that the router reads.
-- Inject a custom arc that the ARC engine executes.
-- Inject a custom function or even a custom page that the router routes to.
-
-That's AetherKit. The rest of this document is the syntax.
-
 ---
 
 # Part 3 — AetherKit: the three tiers
@@ -143,7 +133,7 @@ AetherKit gives you three levels of control, from "flip a switch" to "build your
 
 | Tier | Name | What it does | Who uses it |
 |---|---|---|---|
-| 1 | **Flags** | Declare a boolean the router reads | Everyone |
+| 1 | **Flags** | Declare a mode the router reads | Everyone |
 | 2 | **Specs** | Author your arc's beats and pacing | Most card authors |
 | 3 | **Hooks** | Inject custom functions and routes | Power users |
 
@@ -151,33 +141,43 @@ AetherKit gives you three levels of control, from "flip a switch" to "build your
 
 ## Tier 1 — Flags
 
-A flag is a one-line declaration. It sets a named boolean in the engine's state. The router can branch on it.
+A flag is a one-line declaration. It registers a named condition the router can evaluate each turn.
 
 **Syntax:**
 
 ```text
-[[flag: battle_active = false]]
+[[flag1: battle_active]]
 ```
 
-**What it does:** registers `battle_active` in the gamestate as `false`. The engine's router already knows how to read flags — your card doesn't need to define any logic. It just sets the flag.
+Slot numbers run `1` through `5`. Use a different slot for each flag.
 
-**Example — a Pokémon-style card:**
+**What it does:** adds `battle_active` to the route flags the router checks. The model evaluates it from the current scene — if a battle is happening right now, the condition is true. If not, false.
+
+**Flags are derived, not stored.** The router re-evaluates them every turn from context. That's perfect for *modes*: combat, a minigame, a pursuit, a time-sensitive event. For something that must survive many turns (a lifted curse, a dead NPC, a changed allegiance), use a **[state block](#state-block)** instead. A flag will not remember.
+
+**Flags are predicates, not dispatch.** A flag alone does nothing. It just tells the router what to look for. To make the router *act* on a flag, pair it with a **hook** (Tier 3).
+
+**Example:**
 
 ```text
-[[flag: battle_active = false]]
-[[flag: encounter_active = false]]
+[[flag1: battle_active]]
+[[flag2: curse_active]]
 ```
 
-The router checks these before dispatching:
+Then later, a hook:
 
 ```text
-IF battle_active = TRUE ➤ <fn:battle_scene>
-IF encounter_active = TRUE ➤ <fn:encounter_scene>
+[[hook1]]
+condition: battle_active = TRUE
+call: battle_scene
+[[/hook1]]
 ```
 
-If the flag is false — the default — nothing happens. The engine runs the normal narrative pipeline. If something in the story flips the flag to true, the router routes to the battle scene instead.
+When `battle_active` derives true, the router calls `<fn:battle_scene>`.
 
-**When to use flags:** whenever your card has a *mode* — a state that changes how the whole scene should be processed. Combat, a minigame, a puzzle, a time-sensitive event. Flip the flag, the engine switches modes.
+**When to use flags:** whenever your card has a *mode* — a state that changes how the whole scene should be processed. Combat, a puzzle, a minigame, a hunt. Flip the flag, the engine switches modes.
+
+**Naming rule:** don't name a flag `content`, `entry_beat`, or `arc_active`. Those already exist.
 
 ---
 
@@ -215,6 +215,8 @@ ten (2):
 
 ketsu (2):
   The hero chooses the house over the trial [D:ten2]
+
+[[/spec: arc]]
 ```
 
 ### The fields
@@ -222,7 +224,7 @@ ketsu (2):
 | Field | Required | What it does |
 |---|---|---|
 | `name` | Yes | The arc's title. Becomes the main quest name. |
-| `genre` | Optional | One word — drama, mystery, romance, horror, rivalry. Colors the pacing and tone. |
+| `genre` | Optional | One word — drama, mystery, romance, horror, rivalry. Colors pacing and tone. |
 | `focus` | Optional | Who the arc centers on. `{{user}}` or an NPC name. Determines protagonist. |
 | `role` | Optional | The User's role: `focus`, `ally`, `obstacle`, `witness`, `rival`. Default `focus`. |
 | `duration` | Optional | In-story length — "2 days", "1 week", "until the gala". Sets the arc's clock. |
@@ -306,92 +308,146 @@ Hooks are the full override. They let your card inject **custom functions and ro
 
 This is for the power users — the cards that need a mechanic FrankenSIM doesn't have. A card game. A stat system. A minigame loop. A genre that runs on rules, not prose.
 
-**Syntax:**
+**Syntax — the hook declaration:**
 
 ```text
-[[hook: battle]]
+[[hook1]]
+condition: battle_active = TRUE
+call: battle_scene
+[[/hook1]]
+```
+
+Slot numbers run `1` through `5`. Use a different slot for each hook.
+
+**What it does:** the router runs a hook-check function before dispatching to the normal scene pages. Each hook resolves to:
+
+```text
 IF battle_active = TRUE ➤ <fn:battle_scene>
 ```
 
-Then define the function in your card:
+If the condition is false, the line is skipped. If true, the model enters the function.
+
+**Then define the function in your card:**
 
 ```text
 <fn:battle_scene>
   // Custom battle mechanic. Runs INSTEAD of the normal scene page.
   1. Render the battle screen: enemy, options, state.
-  2. END OUTPUT after rendering. Do not continue to prose.
-  ⇤
+  2. Wait for user input.
+  3. END OUTPUT. Do not run prose lint or NPC loop.
+  ⇥ <page:output>
 </fn:battle_scene>
 ```
 
-The hook injects the `IF → CALL` line into the router. When the condition is true, the router calls your function instead of landing on a scene page.
+### The two ways a hook ends
 
-### The return discipline — read this before writing a hook
+**`⇤` — return.** The function does its job, then returns to the hook-check, which continues to the next hook slot, then to the vanilla scene dispatch. Use `⇤` when the hook *adds* a mechanic and the normal scene should still run.
 
-**`⇤` returns exactly one level, to the line immediately after the `➤` that called the function.** No more.
+**`⇥ <page:output>` — hijack.** The function replaces the scene entirely. Output is produced, the tail is skipped, nothing else runs. Use `⇥` when the hook *replaces* prose with a different output format — a game screen, a menu, a battle UI.
 
-If your function ends with bare `⇤`, it returns to the router. That's fine — the router then continues to the next dispatch line.
+**If your function replaces prose, it must own its own exit.** Say explicitly that output ends, or the engine will run the normal tail and lint your game screen as if it were prose.
 
-**If your function skips the tail** — like a battle screen that ends output — you must say so explicitly inside the function:
+### What a hijacking function must own
 
-```text
-2. END OUTPUT after rendering. Do not continue to prose.
-```
+The TAIL normally handles: banned vocabulary, subtext lint, timeline checks, the perception filter, the trope audit, and the violation loop.
 
-The engine will not assume you wanted to skip lint. If you don't say "end output," the model will run your battle function, return, and then run the normal tail — which will try to lint your battle screen as if it were prose, and everything gets weird.
+If your hook **skips the tail** (`⇥ <page:output>`), your function must consciously handle each of those. The most important two:
 
-**Rule of thumb:** if your hook *replaces* normal prose, it must own its own exit. Say what the output is, and say when to stop.
-
-### What a custom page must own when it bypasses the tail
-
-The TAIL page normally handles: banned vocabulary, subtext lint, timeline checks, the perception filter, the trope audit, and the violation loop.
-
-If your hook **skips the tail**, your function must reimplement or consciously discard each of those. The most important two:
-
-- **Perception filter** — if your hook outputs prose, it still needs to respect the User's U stat. The Reader's lens doesn't turn off just because you're running a mechanic.
+- **Perception filter** — if your hook outputs prose, it still needs to respect the User's U stat. The Reader's lens doesn't turn off.
 - **Anti-drift** — NPCs still need to sound like themselves. Your hook's output should still pass the character fidelity check, or the character dissolves into a generic mouthpiece for your mechanic.
 
-The SDK's advanced guide covers this in depth. For now: **hooks are powerful and they are your responsibility.** The engine hands you the wheel; it doesn't drive for you.
+### Function naming and collisions
+
+Functions open with `<fn:name>` and end with `⇤` or `⇥`. **There is no closing `</fn>` tag.**
+
+A card's `<fn:X>` that shares a name with a preset function **overrides it.** Don't do that accidentally. The do-not-touch list below names the core functions.
 
 ---
 
-# Part 4 — The plugin variables
+# Part 4 — Plugin variables and syntax reference
 
-AetherKit works through four empty variables in the CoT. Your card fills them via macros. If you don't, they resolve to nothing and cost nothing.
+AetherKit works through empty variables in the CoT and the state/dice blocks. Your card fills them via a simple `[[...]]` shorthand that SillyTavern's regex converts before the prompt is sent.
 
-| Variable | What it holds | Injected at |
+### The full syntax list
+
+| Shorthand | Converts to | Injected at |
 |---|---|---|
-| `pluginFlag` | A custom gamestate flag | BOOT |
-| `pluginRoute` | A custom route / conditional call | ROUTER |
-| `pluginArcSpec` | A custom arc spec | MECHANICS |
-| `pluginOutput` | A custom output format | TAIL |
+| `[[flag1: name]]` … `[[flag5: name]]` | route flag | BOOT → ROUTER |
+| `[[hook1]] condition: … call: … [[/hook1]]` … `[[hook5]]` | conditional function call | ROUTER hook check |
+| `[[spec: arc]] … [[/spec: arc]]` | authored arc spec | MECHANICS → `<fn:arc>` |
+| `[[state]] … [[/state]]` | custom persistent state block | internal states |
+| `[[dice1]] name: … roll: … [[/dice1]]` … `[[dice5]]` | custom dice roll | `<dice_rolls>` |
 
-### How the variables work
+### How the blank-state pattern works
 
-In your card, near the top, you write:
-
-```text
-{{setvar::pluginArcSpec::[[spec: arc]]
-name: ...
-...
-}}
-```
-
-`setvar` stores the value. The CoT has an empty `getvar` waiting for it:
+Every plugin variable defaults to nothing. The CoT has an empty `getvar` waiting for it:
 
 ```text
-E2. {{getvar::pluginArcSpec}}
+{{getvar::pluginArcSpec}}
 ```
 
-When your card sets the variable, that line resolves to your arc spec, injected directly into the reasoning. When no card sets it, the line resolves to the stop symbol — a no-op.
+When your card sets the variable, that line resolves to your content, injected directly into the reasoning. When no card sets it, the line resolves to a stop symbol — a no-op. Zero token cost, zero confusion.
 
 **Macro resolution order:** FrankenSIM's prompt blocks resolve first. Your card's macros resolve *after*, which means your card **overrides** the preset. That's intentional — it's how AetherKit works. Your card can tune FrankenSIM to play exactly the way your card needs.
 
-### The blank-state pattern
+---
 
-Every plugin variable defaults to `∅.` — the stop symbol. When the CoT hits `E2. ∅.`, the model reads "this is the end of this instruction" and moves on. Zero token cost, zero confusion.
+## State block (persistent storage)
 
-If your card sets a variable but doesn't fully define it — e.g., sets `pluginRoute` to call a function that doesn't exist — the model will try to *invent* the function. **Never half-configure a hook.** If you set it, define it completely.
+Your card can define its own state that persists across turns — a sanity meter, a score, unlocked flags, inventory, quest stages.
+
+**Syntax:**
+
+```text
+[[state]]
+<details>
+  <summary>🧩 GAUNTLET STATE</summary>
+  <li><b>Sanity:</b> 10</li>
+  <li><b>Trials passed:</b> 0</li>
+  <li><b>Puzzle solved:</b> false</li>
+</details>
+[[/state]]
+```
+
+**What it does:** renders inside the internal states block every turn. The model **updates the values** each turn based on the story — same way it already updates bonds and agendas. The structure stays identical; only the numbers change.
+
+Use this for anything a flag can't remember. A flag is *derived* — re-evaluated fresh every turn and forgotten. A state value is *stored* — it survives summaries, off-screen time, and long gaps.
+
+**Example:** `[[flag1: curse_active]]` tells the router *a curse is happening right now*. `Sanity: 7` tells you *how much sanity is left* after the curse. Flags for modes, state for memory.
+
+---
+
+## Custom dice
+
+Your card can roll its own dice, pre-rolled by the frontend exactly like the built-in seeds.
+
+**Syntax:**
+
+```text
+[[dice1]]
+name: sanityRoll
+roll: {{roll::1d20}}
+[[/dice1]]
+
+[[dice2]]
+name: damageRoll
+roll: {{roll::1d6}}
+[[/dice2]]
+```
+
+Slot numbers run `1` through `5`. The `roll:` field uses the standard SillyTavern dice macro — any die size works (`1d4`, `2d6`, `1d100`).
+
+**What it does:** the roll appears in `<dice_rolls>` under a `pluginDice` section, pre-rolled before the model sees the prompt. Your custom functions read it by name:
+
+```text
+<fn:curse_tick>
+  1. Read sanityRoll from <dice_rolls>.pluginDice.
+  2. Subtract sanityRoll from Sanity in the state block.
+  ⇤
+</fn:curse_tick>
+```
+
+**Naming rule:** don't name a custom die `userRoll`, `npcRoll`, `chekhovD20`, `worldSim`, `chaosRolls`, `pmFrame`, `bond`, `retaliation`, or `perceptU`.
 
 ---
 
@@ -402,14 +458,17 @@ FrankenSIM has a spine. These are the variables and rules that hold the whole en
 ```text
 ⚠️ DO NOT OVERRIDE ⚠️
 
-$npcLoopBody      — the emotion pipeline. Breaking this kills ALL NPC behavior.
-$persistCall      — relationship conversion. Breaking this kills the Aether clock.
-polarity invariant — the rule that AFFIRMATION = fondness, ANTITHESIS = friction.
-                    It's a header comment, not a variable. Never reword it.
+$npcLoopBody        — the emotion pipeline. Breaking this kills ALL NPC behavior.
+$persistCall        — relationship conversion. Breaking this kills the Aether clock.
+$chekhovCycleCall   — narrative debt. Breaking this kills Chekhov's Gun.
+$worldsimCall       — the living world. Breaking this kills off-screen simulation.
+
+polarity invariant  — the rule that AFFIRMATION = fondness, ANTITHESIS = friction.
+                      It's a header comment, not a variable. Never reword it.
 
 SAFE TO OVERRIDE:
-$pluginFlag, $pluginRoute, $pluginArcSpec, $pluginOutput
-...and every toggle slot ($chekhovCycleCall, $worldsimCall, etc.)
+$flag1..$flag5, $hookCall1..$hookCall5, $pluginArcSpec, $pluginStateTemplate,
+$pluginDice1..$pluginDice5 — and every named toggle slot.
 ```
 
 A malicious card can override anything — that's the nature of macros. But the well-meaning 99% of authors just need to know where the minefield is. This box is the map.
@@ -446,37 +505,49 @@ Look at the `D:` line. The beat it depends on hasn't fired. Either the dependenc
 The engine fires beats on **natural openings** — the subject NPC is present and the scene touches the theme, or the User addresses the domain. If your beat is unlocked but the scene never gives it an opening, it waits. Rewrite the beat to be more reachable, or add fewer `[C:]` locks.
 
 **"My beat fired but I didn't see it."**
-Check the User's **U stat** in ENTITY MISC. If U was low, the prose may have filtered the beat out — the event happened in state but wasn't perceived. That's the unreliable narrator working as designed. If the beat is plot-critical, it may need dialogue or action, not subtext.
+Check the User's **U stat** in ENTITY MISC. If U was low, the prose may have filtered the beat out — the event happened in state but wasn't perceived. That's the unreliable narrator working as designed. If the beat is plot-critical, put it in dialogue or action, not subtext.
 
 **"My hook runs, but the output gets mangled by prose rules."**
-You probably didn't own your exit. Add the `END OUTPUT` line to your function, or accept that the tail will lint your output as prose.
+You probably didn't own your exit. Add the `⇥ <page:output>` line to your function, or accept that the tail will lint your output as prose.
+
+**"My flag never turns true."**
+Flags are derived from the current scene. If the router can't see a reason for `battle_active` to be true, it stays false. Make the condition explicit in the scene — something the model can read.
+
+**"My state resets every turn."**
+The state block must be **output verbatim with updated values** — if the model rewrites the structure, the regex can't find it next turn and persistence breaks. Keep the structure identical, only change the numbers.
 
 ---
 
 # Part 7 — Full examples
 
-## Example 1 — a simple flag
+## Example 1 — a simple flag + hook (mode switch)
 
-A horror card that wants a "hunted" mode:
+A horror card with a "hunted" mode:
 
 ```text
-[[flag: hunted = false]]
+[[flag1: hunted]]
+
+[[hook1]]
+condition: hunted = TRUE
+call: hunted_scene
+[[/hook1]]
+
+<fn:hunted_scene>
+  // Pursuit mode. Replaces normal prose with tense chase beats.
+  1. Render the chase: distance, obstacles, sound.
+  2. Wait for user input.
+  3. END OUTPUT.
+  ⇥ <page:output>
+</fn:hunted_scene>
 ```
 
-When the monster finds the User, a custom mechanic flips the flag to true. The router checks it:
+When the scene turns into a hunt, the router calls `hunted_scene`. When the User escapes, the scene stops reading as a hunt, the flag derives false, and normal narrative resumes.
+
+## Example 2 — a full arc spec (pacing control)
+
+A mystery card that wants the reveal to land at a *specific* moment:
 
 ```text
-IF hunted = TRUE ➤ <fn:hunted_scene>
-```
-
-The `hunted_scene` function runs tense, stripped-down, pursuit logic. When the User escapes, the flag flips back and normal narrative resumes.
-
-## Example 2 — a full arc spec
-
-A mystery card. The author wants the reveal to land at a *specific* moment, not whenever the model feels like it:
-
-```text
-{{setvar::pluginArcSpec::
 [[spec: arc]]
 
 name: The Hollow House
@@ -508,32 +579,47 @@ ten (2):
 ketsu (2):
   The locked room opens — empty [D:ten2]
   {{user}} inherits the truth, not the house [D:ketsu1]
-}}
+
+[[/spec: arc]]
 ```
 
-The engine reads this, assigns weights, ages the beats, devowels the display, checks fireability, and fires one beat per turn on natural openings. The author has guaranteed that the daughter reveal lands at Ten, not in Shō, and that the story resolves with a deliberate anticlimax. That's control the old engine could only guess at.
+The engine reads this, assigns weights, ages the beats, devowels the display, checks fireability, and fires one beat per turn on natural openings. The author has guaranteed the daughter reveal lands at Ten, not Shō, and the story resolves with a deliberate anticlimax.
 
-## Example 3 — a custom hook (a full mechanic)
+## Example 3 — a custom mechanic with state + dice (full plugin)
 
-A card that's *almost a game*. The author wants a turn-based duel system:
+A card that's almost a game. Turn-based duel:
 
 ```text
-{{setvar::pluginRoute::
-IF duel_active = TRUE ➤ <fn:duel_scene>
-}}
+[[flag1: duel_active]]
 
-[[flag: duel_active = false]]
+[[dice1]]
+name: attackRoll
+roll: {{roll::1d20}}
+[[/dice1]]
+
+[[state]]
+<details>
+  <summary>⚔️ DUEL STATE</summary>
+  <li><b>Your HP:</b> 20</li>
+  <li><b>Enemy HP:</b> 20</li>
+  <li><b>Stance:</b> neutral</li>
+</details>
+[[/state]]
+
+[[hook1]]
+condition: duel_active = TRUE
+call: duel_scene
+[[/hook1]]
 
 <fn:duel_scene>
-  // Replace normal scene with duel UI.
-  1. Render the duel board: opponent HP, your HP, stance, options.
+  1. Render the duel board: enemy HP, your HP, stance, options.
   2. Wait for user input. Do not advance NPCs this turn.
-  3. END OUTPUT. Do not run prose lint or NPC loop.
-  ⇤
+  3. END OUTPUT.
+  ⇥ <page:output>
 </fn:duel_scene>
 ```
 
-When `duel_active` is false, the card is a normal roleplay. When a duel starts, the flag flips, the router calls `duel_scene`, and the output becomes a game screen instead of prose. The User picks an option, the next input resolves the duel, and eventually the flag flips back.
+When a duel starts, the flag derives true, the router calls `duel_scene`, and output becomes a game screen. `attackRoll` is pre-rolled each turn. HP persists in the state block. When the duel ends, the scene stops reading as a duel, and the card falls back to normal roleplay.
 
 This is the ceiling of AetherKit: a card that's a game wearing an RP costume — or vice versa.
 
@@ -552,7 +638,5 @@ The engine was already a world simulator. With AetherKit, it's a **runtime** —
 ---
 
 **AetherKit — write the story. Own the pacing. Build the mechanic. FrankenSIM executes it.**
-
----
 
 *This SDK is in alpha. The syntax in this document is canonical but may expand as the ecosystem grows. If you build something with AetherKit and hit a wall, the internal states block is your debugger — and the FrankenSIM team wants to hear about it.*
