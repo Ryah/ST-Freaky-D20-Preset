@@ -8,6 +8,51 @@ This document is the complete reference. Start at the top if you've never seen F
 
 ---
 
+## Table of Contents
+
+# Table of Contents
+
+- [Preface — what you are building for](#preface-what-you-are-building-for)
+- [Part 1 — The FrankenSIM worldview](#part-1-the-frankensim-worldview)
+  - [1. The Reader and the User are different people](#1-the-reader-and-the-user-are-different-people)
+  - [2. The narrator is unreliable — and that's the User's fault, not the AI's](#2-the-narrator-is-unreliable-and-thats-the-users-fault-not-the-ais)
+  - [3. The world does not revolve around the User](#3-the-world-does-not-revolve-around-the-user)
+  - [4. Dice are law](#4-dice-are-law)
+  - [5. The Aether Matrix — relationships are numbers](#5-the-aether-matrix-relationships-are-numbers)
+  - [6. Confusion is immersion](#6-confusion-is-immersion)
+  - [7. The ARC Engine — stories have spines](#7-the-arc-engine-stories-have-spines)
+- [Part 2 — How the engine executes](#part-2-how-the-engine-executes)
+  - [The page system](#the-page-system)
+  - [The function system](#the-function-system)
+- [Part 3 — AetherKit: the three tiers](#part-3-aetherkit-the-three-tiers)
+  - [Tier 1 — Flags](#tier-1-flags)
+  - [Tier 2 — Specs (the ARC hook)](#tier-2-specs-the-arc-hook)
+    - [The fields](#the-fields)
+    - [Beats](#beats)
+    - [The lock vocabulary](#the-lock-vocabulary)
+    - [The fire rule — one beat per turn](#the-fire-rule-one-beat-per-turn)
+    - [Spoilers and devoweled beats](#spoilers-and-devoweled-beats)
+  - [Tier 3 — Hooks (advanced)](#tier-3-hooks-advanced)
+    - [The two ways a hook ends](#the-two-ways-a-hook-ends)
+    - [What a hijacking function must own](#what-a-hijacking-function-must-own)
+    - [Function naming and collisions](#function-naming-and-collisions)
+- [Part 4 — Plugin variables and syntax reference](#part-4-plugin-variables-and-syntax-reference)
+  - [The full syntax list](#the-full-syntax-list)
+  - [How the blank-state pattern works](#how-the-blank-state-pattern-works)
+  - [State block (persistent storage)](#state-block-persistent-storage)
+  - [Custom dice](#custom-dice)
+- [Part 5 — The do-not-touch list](#part-5-the-do-not-touch-list)
+- [Part 6 — Debugging](#part-6-debugging)
+  - [The ARC ENGINE block](#the-arc-engine-block)
+  - [Common failures](#common-failures)
+- [Part 7 — Full examples](#part-7-full-examples)
+  - [Example 1 — a simple flag + hook (mode switch)](#example-1-a-simple-flag-hook-mode-switch)
+  - [Example 2 — a full arc spec (pacing control)](#example-2-a-full-arc-spec-pacing-control)
+  - [Example 3 — a custom mechanic with state + dice (full plugin)](#example-3-a-custom-mechanic-with-state-dice-full-plugin)
+- [Part 8 — What's possible](#part-8-whats-possible)
+
+---
+
 ## Preface — what you are building for
 
 FrankenSIM is not a prompt that makes a chatbot act like a character. It is a **world simulator** with a reasoning engine at its core.
