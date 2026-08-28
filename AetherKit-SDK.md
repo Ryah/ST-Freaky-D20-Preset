@@ -18,7 +18,7 @@ This document is the complete reference. Start at the top if you've never seen F
   - [4. Dice are law](#4-dice-are-law)
   - [5. The Aether Matrix — relationships are numbers](#5-the-aether-matrix--relationships-are-numbers)
   - [6. Confusion is immersion](#6-confusion-is-immersion)
-  - [7. The ARC Engine — stories have spines](#7-the-arc-engine--stories-have-spines)
+  - [7. The ARC Engine — spines and petals](#7-the-arc-engine--spines-and-petals)
 - [Part 2 — How the engine executes](#part-2--how-the-engine-executes)
   - [The page system](#the-page-system)
   - [The function system](#the-function-system)
@@ -31,6 +31,7 @@ This document is the complete reference. Start at the top if you've never seen F
     - [The lock vocabulary](#the-lock-vocabulary)
     - [The fire rule — one beat per turn](#the-fire-rule--one-beat-per-turn)
     - [Spoilers and devoweled beats](#spoilers-and-devoweled-beats)
+    - [Parallel Tracks](#parallel-tracks)
   - [Tier 3 — Hooks (advanced)](#tier-3--hooks-advanced)
     - [The two ways a hook ends](#the-two-ways-a-hook-ends)
     - [What a hijacking function must own](#what-a-hijacking-function-must-own)
@@ -85,13 +86,13 @@ The User is a real person inside the world with a backstory, relationships, plan
 
 The prose is not objective reality. The prose is **the User's experience.**
 
-The User has a perception stat — **P** (static sensorium) and **U** (scene attention). U is rolled every scene. When U is high, the prose reports the loaded tells — the beat too long, the clipped word. When U is low, the prose asserts what the User *believes*, even when it's wrong. A masked emotion reads as the mask. A missed glance doesn't exist.
+The User has a perception stat — **P** (static sensorium) and **U** (static surface attention, U0). The User sees the surface truly but is a naive interpreter: they see the glance, they don't know it means jealousy. The unreliability lives in the NPCs — their own P/U governs how wrong they read the scene, and their R governs how well they hide their emotion. The Reader inherits the User's senses, and the User sees only what each NPC's fallible performance shows.
 
 This means:
 
-- Never rely on subtle body language to carry critical information. The Reader may literally not see it.
-- If a reveal matters, put it in **dialogue, action, or an object** — something that survives a low-U read.
-- Subtext is for texture, not for plot. The engine will not underline it for you.
+- Never rely on subtle body language to carry critical information. The Reader may not read it as you intend.
+- If a reveal matters, put it in **dialogue, action, or an object** — something that survives a surface read.
+- Subtext is for texture, not for plot. The engine will not underline it for you. The gap does the work.
 
 The truth always lives in the **internal states block** — the hidden HTML state at the end of every response. The prose is the filtered lens. The state is what actually happened.
 
@@ -125,13 +126,13 @@ The engine follows an epistemic contract: **namedrops without glossaries, meanin
 
 Write your card's lore as if the User *already lives in the world* — because they do. Reference events and places casually. Let the Reader catch up through play. Don't write "The Accords were signed in 3021 after the war." Write "The Accords again. She always brings them up when she's scared."
 
-### 7. The ARC Engine — stories have spines
+### 7. The ARC Engine — spines and petals
 
-FrankenSIM runs arcs: four-act story structures following **Kishōtenketsu** — **Ki** (introduction), **Shō** (development), **Ten** (twist), **Ketsu** (resolution). Each arc is a chain of beats — specific, fireable scenes that advance the story.
+FrankenSIM runs arcs on a **Kishōtenketsu** spine — **Ki** (introduction), **Shō** (development), **Ten** (twist), **Ketsu** (resolution). That spine is the main story's rhythm, and it is **objective-gated**: an arc advances only when its primary objective is COMPLETED or HARD-FAILED. Time alone never advances an arc.
 
-By default, the engine *generates* arcs from your card. It reads your lore, your NPCs' backstories, their wounds and agendas, and builds a story. Sometimes it's brilliant. Sometimes it guesses wrong.
+Around that spine, FrankenSIM runs **parallel tracks** — small quest chains that all orbit a central secret. Tracks open from diegetic triggers (a fired Chekhov bullet, a worldsim event, an NPC's agenda), advance step by step, and branch on COMPLETION or FAILURE. The main arc is one track; the others are petals. The central secret is never resolved early — no single track may touch it until its designated final track.
 
-**AetherKit exists to let you stop it from guessing.** The Spec tier lets you author your own arc, beat by beat, and guarantee the engine fires it on your schedule. This is the single most powerful thing AetherKit does, and it's the main reason to adopt it.
+By default, the engine *generates* both the main arc and its tracks from your card. Sometimes it's brilliant. Sometimes it guesses wrong. **AetherKit exists to let you stop it from guessing.** The Spec tier lets you author the arc *and* its tracks, guaranteeing the engine fires them on your schedule. This is the single most powerful thing AetherKit does.
 
 ---
 
@@ -148,7 +149,7 @@ BOOT → MECHANICS → ROUTER → SCENE PAGE → TAIL → VENT → OUTPUT
 ```
 
 - **BOOT** — identity, report card, gamestate lock, scene flags.
-- **MECHANICS** — the simulation clock: agenda ticks, Chekhov cycles, ARC checks, worldsim, relationship math.
+- **MECHANICS** — the simulation clock: agenda ticks, Chekhov cycles, ARC + track checks, worldsim, relationship math.
 - **ROUTER** — the dispatcher. Reads the scene type and NPC count, lands on exactly one scene page.
 - **SCENE PAGE** (solo or ensemble) — runs the NPC loop for every spotlight character.
 - **TAIL** — the pre-flight lint: prose checks, violation loop, perception filter.
@@ -178,7 +179,7 @@ AetherKit gives you three levels of control, from "flip a switch" to "build your
 | Tier | Name | What it does | Who uses it |
 |---|---|---|---|
 | 1 | **Flags** | Declare a mode the router reads | Everyone |
-| 2 | **Specs** | Author your arc's beats and pacing | Most card authors |
+| 2 | **Specs** | Author your arc's beats, pacing, and tracks | Most card authors |
 | 3 | **Hooks** | Inject custom functions and routes | Power users |
 
 ---
@@ -227,18 +228,19 @@ When `battle_active` derives true, the router calls `<fn:battle_scene>`.
 
 ## Tier 2 — Specs (the ARC hook)
 
-This is the crown jewel. A spec lets you **author your arc's beats** so the engine fires them on your schedule instead of guessing.
+This is the crown jewel. A spec lets you **author your arc's beats and tracks** so the engine fires them on your schedule instead of guessing.
 
-**Why this matters:** by default, FrankenSIM generates arcs from your card's lore. It's usually good, but it *guesses*. It might pace things too fast or too slow. It might build toward a twist you didn't intend. A spec eliminates the guesswork — you write the story, the engine executes it.
+**Why this matters:** by default, FrankenSIM generates arcs and tracks from your card's lore. It's usually good, but it *guesses*. It might pace things too fast or too slow. It might build toward a twist you didn't intend. A spec eliminates the guesswork — you write the story, the engine executes it.
 
-The engine still owns the **machinery** — lock checking, fireability, pacing, persistence, spoiler protection. You just supply the *story contract*.
+The engine still owns the **machinery** — lock checking, fireability, pacing, persistence, spoiler protection, objective gating, vacuum escalation, divergence. You just supply the *story contract*.
 
-**Syntax:**
+**Syntax — main arc:**
 
 ```text
 [[spec: arc]]
 
 name: The Trial of the Nine
+objective: prove his innocence
 genre: drama
 focus: {{user}}
 role: focus
@@ -268,10 +270,11 @@ ketsu (2):
 | Field | Required | What it does |
 |---|---|---|
 | `name` | Yes | The arc's title. Becomes the main quest name. |
+| `objective` | Yes | One explicit, testable goal. The ONLY thing that advances the arc. |
 | `genre` | Optional | One word — drama, mystery, romance, horror, rivalry. Colors pacing and tone. |
 | `focus` | Optional | Who the arc centers on. `{{user}}` or an NPC name. Determines protagonist. |
 | `role` | Optional | The User's role: `focus`, `ally`, `obstacle`, `witness`, `rival`. Default `focus`. |
-| `duration` | Optional | In-story length — "2 days", "1 week", "until the gala". Sets the arc's clock. |
+| `duration` | Optional | The pressure fuse — in-story length ("2 days", "1 week"). It is NOT progression. When it passes, VACUUM begins: the threat escalates off-screen until the objective resolves or hard-fails. |
 
 ### The acts
 
@@ -280,7 +283,7 @@ Kishōtenketsu, four acts. You declare how many beats each act has, then list th
 - **Ki** — introduction. Establish the normal world. Foreshadow. Nothing resolves here.
 - **Shō** — development. The long stretch. Complications build toward the twist. This is where most of your beats live.
 - **Ten** — the twist. Something recontextualizes everything.
-- **Ketsu** — resolution. The new equilibrium.
+- **Ketsu** — resolution. The objective resolves — cleanly, or hard-failed.
 
 ### Beats
 
@@ -318,7 +321,7 @@ Beats can be locked behind conditions. The engine won't fire a beat until its lo
 
 ### The fire rule — one beat per turn
 
-The engine fires **at most one beat per turn.** Even if multiple beats are unlocked, it fires one and holds the rest. This is the pacing throttle, and it's why your arc won't whiplash through all 19 beats in six turns.
+The engine fires **at most one main-arc beat per turn.** Even if multiple beats are unlocked, it fires one and holds the rest. This is the pacing throttle, and it's why your arc won't whiplash through all 19 beats in six turns. Tracks may fire one track step in addition — but never two track steps in the same turn.
 
 If you want faster pacing, write *fewer* beats with bigger gaps. If you want slower, write more beats with smaller moments. The engine respects your structure.
 
@@ -326,7 +329,7 @@ If you want faster pacing, write *fewer* beats with bigger gaps. If you want slo
 
 **This is critical, and it's the most common mistake new authors make.**
 
-Arc beats are **spoilers**. They reveal where the story is going. If the Reader could see your beats, the twist in Ten would be ruined before Shō even starts.
+Arc beats and track steps are **spoilers**. They reveal where the story is going. If the Reader could see them, the twist in Ten would be ruined before Shō even starts.
 
 So the engine **devowels beat descriptions** in the user-facing internal states block. The Reader sees:
 
@@ -343,6 +346,63 @@ The mentor arrives unannounced — LOCKED
 The model can read the devoweled text. The human can't — or at least, not easily enough to spoil themselves.
 
 **What this means for you:** write your beats as **full, specific, fireable sentences.** Don't be vague to "avoid spoiling" — the devoweling handles spoilers automatically. A vague beat is a beat the engine can't fire. A specific beat is a beat the engine fires exactly where you intended. Trust the devoweling, and write beats you'd want to actually see happen.
+
+### Parallel Tracks
+
+Tracks are the engine's replacement for side quests. Each is a small chain that runs *concurrently* with the main arc, orbiting the same central secret.
+
+**Syntax — tracks:**
+
+```text
+[[spec: tracks]]
+
+  [[track: The Stalker Subplot]]
+    objective: protect the clerk
+    trigger: camera repair event
+    chain:
+      clerk asks for number → unknown texts → letters → alley → morning
+    on_completion: merge into main arc
+    on_failure: she's alone with it (permanent scar)
+  [[/track]]
+
+  [[track: The Class Politics]]
+    objective: survive the complaint investigation
+    trigger: the corridor with no camera
+    chain:
+      upperclassmen taunt → the free meal queue → a camera repair → the clerk
+    on_completion: touch central secret
+    on_failure: four expulsions
+  [[/track]]
+
+[[/spec: tracks]]
+```
+
+**Track fields:**
+
+| Field | Required | What it does |
+|---|---|---|
+| `objective` | Yes | The track's win condition. |
+| `trigger` | Yes | The diegetic event that opens the track — a fired Chekhov bullet, a worldsim event, an NPC agenda, an arc beat's fallout. Never a menu. |
+| `chain` | Yes | Ordered steps, same SPECIFICITY_GATE as arc beats. |
+| `on_completion` | Yes | Where success routes: `merge into main arc`, `touch central secret`, or name a successor track. |
+| `on_failure` | Yes | The permanent consequence, plus optionally a worse successor track. |
+
+**Track lifecycle:**
+
+```text
+dormant → active → live → closing → closed / failed
+```
+
+- `dormant` — waiting for its trigger.
+- `active` — trigger fired; the chain's first step unlocks.
+- `live` — a step is unfolding in-scene right now.
+- `closing` — the objective is near resolution.
+- `closed` — objective resolved; `on_completion` routes the consequence.
+- `failed` — objective hard-failed; `on_failure` routes the permanent scar.
+
+Tracks fire at most one step per turn, on a natural opening, exactly like main-arc beats. They advance off-screen when the User isn't present. A failed track is never removed — the consequence is state, and it colors every future arc and track.
+
+**The central secret:** no track may resolve the central secret unless it is the designated final track. All tracks orbit it, none touch it early.
 
 ---
 
@@ -397,12 +457,12 @@ The TAIL normally handles: banned vocabulary, subtext lint, timeline checks, the
 
 If your hook **skips the tail** (`⇥ <page:output>`), your function must consciously handle each of those. The most important two:
 
-- **Perception filter** — if your hook outputs prose, it still needs to respect the User's U stat. The Reader's lens doesn't turn off.
+- **Perception filter** — if your hook outputs prose, it still needs to respect the User's static surface read (U0). The Reader sees the surface; the hook must not underline subtext.
 - **Anti-drift** — NPCs still need to sound like themselves. Your hook's output should still pass the character fidelity check, or the character dissolves into a generic mouthpiece for your mechanic.
 
 ### Function naming and collisions
 
-Functions open with `<fn:name>` and end with `⇤` (return to parent) or `⇥` (advance to <page:x>), followed by `</fn:name>`
+Functions open with `<fn:name>` and end with `⇤` (return to parent) or `⇥` (advance to `<page:x>`), followed by `</fn:name>`
 
 A card's `<fn:X>` that shares a name with a preset function **overrides it.** Don't do that accidentally. The do-not-touch list below names the core functions.
 
@@ -418,7 +478,8 @@ AetherKit works through empty variables in the CoT and the state/dice blocks. Yo
 |---|---|---|
 | `[[flag1: name]]` … `[[flag5: name]]` | route flag | BOOT → ROUTER |
 | `[[hook1]] condition: … call: … [[/hook1]]` … `[[hook5]]` | conditional function call | ROUTER hook check |
-| `[[spec: arc]] … [[/spec: arc]]` | authored arc spec | MECHANICS → `<fn:arc>` |
+| `[[spec: arc]] … [[/spec: arc]]` | authored main arc spec | MECHANICS → `<fn:arc>` |
+| `[[spec: tracks]] … [[/spec: tracks]]` | authored parallel track specs | MECHANICS → `<fn:tracks>` |
 | `[[state]] … [[/state]]` | custom persistent state block | internal states |
 | `[[dice1]] name: … roll: … [[/dice1]]` … `[[dice5]]` | custom dice roll | `<dice_rolls>` |
 
@@ -428,6 +489,7 @@ Every plugin variable defaults to nothing. The CoT has an empty `getvar` waiting
 
 ```text
 {{getvar::pluginArcSpec}}
+{{getvar::pluginTracksSpec}}
 ```
 
 When your card sets the variable, that line resolves to your content, injected directly into the reasoning. When no card sets it, the line resolves to a stop symbol — a no-op. Zero token cost, zero confusion.
@@ -491,7 +553,7 @@ Slot numbers run `1` through `5`. The `roll:` field uses the standard SillyTaver
 </fn:curse_tick>
 ```
 
-**Naming rule:** don't name a custom die `userRoll`, `npcRoll`, `chekhovD20`, `worldSim`, `chaosRolls`, `pmFrame`, `bond`, `retaliation`, or `perceptU`.
+**Naming rule:** don't name a custom die `userRoll`, `npcRoll`, `chekhovD20`, `worldSim`, `chaosRolls`, `pmFrame`, `bond`, `retaliation`, `perceptU`, or `track`.
 
 ---
 
@@ -506,13 +568,15 @@ $npcLoopBody        — the emotion pipeline. Breaking this kills ALL NPC behavi
 $persistCall        — relationship conversion. Breaking this kills the Aether clock.
 $chekhovCycleCall   — narrative debt. Breaking this kills Chekhov's Gun.
 $worldsimCall       — the living world. Breaking this kills off-screen simulation.
+$arcTurnCall        — main arc lifecycle. Breaking this kills the spine.
+$trackTurnCall      — parallel tracks. Breaking this kills the petals. (if present)
 
 polarity invariant  — the rule that AFFIRMATION = fondness, ANTITHESIS = friction.
                       It's a header comment, not a variable. Never reword it.
 
 SAFE TO OVERRIDE:
-$flag1..$flag5, $hookCall1..$hookCall5, $pluginArcSpec, $pluginStateTemplate,
-$pluginDice1..$pluginDice5 — and every named toggle slot.
+$flag1..$flag5, $hookCall1..$hookCall5, $pluginArcSpec, $pluginTracksSpec,
+$pluginStateTemplate, $pluginDice1..$pluginDice5 — and every named toggle slot.
 ```
 
 A malicious card can override anything — that's the nature of macros. But the well-meaning 99% of authors just need to know where the minefield is. This box is the map.
@@ -540,6 +604,8 @@ Every beat in your arc appears here with its state:
 
 Three states: **LOCKED**, **UNLOCKED**, **FIRED**.
 
+Tracks appear in the QUESTS block with their own status: `dormant`, `active`, `live`, `closing`, `closed`, `failed`.
+
 ### Common failures
 
 **"My beat says LOCKED forever."**
@@ -549,7 +615,13 @@ Look at the `D:` line. The beat it depends on hasn't fired. Either the dependenc
 The engine fires beats on **natural openings** — the subject NPC is present and the scene touches the theme, or the User addresses the domain. If your beat is unlocked but the scene never gives it an opening, it waits. Rewrite the beat to be more reachable, or add fewer `[C:]` locks.
 
 **"My beat fired but I didn't see it."**
-Check the User's **U stat** in ENTITY MISC. If U was low, the prose may have filtered the beat out — the event happened in state but wasn't perceived. That's the unreliable narrator working as designed. If the beat is plot-critical, put it in dialogue or action, not subtext.
+The User's surface read is static U0 — the prose reports the surface, never underlines meaning. If the beat is plot-critical, put it in dialogue or action, not subtext. The event happened in state even if the Reader missed it.
+
+**"My track never opens."**
+The trigger must be *diegetic* — a fired Chekhov bullet, a worldsim event, an NPC agenda, an arc beat's fallout. If the trigger never fires, the track stays dormant. Check whether the trigger's source event actually happened in state. If it did and the track still didn't open, the trigger text is too vague for the model to match.
+
+**"My track stays active forever."**
+A track's chain advances one step per turn on natural openings, same as arc beats. If no opening exists, it waits. Like beats, rewrite the steps to be more reachable. Also check the objective: tracks advance on step completion, but the *track closes* only when the objective resolves or hard-fails.
 
 **"My hook runs, but the output gets mangled by prose rules."**
 You probably didn't own your exit. Add the `⇥ <page:output>` line to your function, or accept that the tail will lint your output as prose.
@@ -559,6 +631,9 @@ Flags are derived from the current scene. If the router can't see a reason for `
 
 **"My state resets every turn."**
 The state block must be **output verbatim with updated values** — if the model rewrites the structure, the regex can't find it next turn and persistence breaks. Keep the structure identical, only change the numbers.
+
+**"My arc advanced on time instead of objective."**
+That's a bug in your spec, not the engine. Time alone never advances an arc. If the arc advanced without the objective resolving, either the objective field is too vague for the engine to test, or a hard-fail happened off-screen and the VACUUM consequences got recorded as resolution. Check ARC_HISTORY for the outcome and DIVERGENCE.
 
 ---
 
@@ -587,14 +662,15 @@ call: hunted_scene
 
 When the scene turns into a hunt, the router calls `hunted_scene`. When the User escapes, the scene stops reading as a hunt, the flag derives false, and normal narrative resumes.
 
-## Example 2 — a full arc spec (pacing control)
+## Example 2 — a full arc spec + parallel track (pacing control)
 
-A mystery card that wants the reveal to land at a *specific* moment:
+A mystery card that wants the reveal to land at a *specific* moment, with a stalker subplot orbiting it:
 
 ```text
 [[spec: arc]]
 
 name: The Hollow House
+objective: learn the truth about the previous owner
 genre: mystery
 focus: {{user}}
 role: focus
@@ -625,9 +701,22 @@ ketsu (2):
   {{user}} inherits the truth, not the house [D:ketsu1]
 
 [[/spec: arc]]
+
+[[spec: tracks]]
+
+  [[track: The Stalker]]
+    objective: protect the clerk
+    trigger: the camera repair
+    chain:
+      clerk asks for number → unknown texts → letters → alley → morning
+    on_completion: merge into main arc
+    on_failure: she's alone with it (permanent scar)
+  [[/track]]
+
+[[/spec: tracks]]
 ```
 
-The engine reads this, assigns weights, ages the beats, devowels the display, checks fireability, and fires one beat per turn on natural openings. The author has guaranteed the daughter reveal lands at Ten, not Shō, and the story resolves with a deliberate anticlimax.
+The engine reads this, assigns weights, ages the beats and track steps, devowels the display, checks fireability, and fires one main beat + one track step per turn on natural openings. The author has guaranteed the daughter reveal lands at Ten, not Shō, and the stalker subplot runs *in parallel*, never touching the central secret until its own chain completes.
 
 ## Example 3 — a custom mechanic with state + dice (full plugin)
 
@@ -673,14 +762,14 @@ This is the ceiling of AetherKit: a card that's a game wearing an RP costume —
 
 AetherKit turns FrankenSIM from "a preset that runs your card" into "an engine your card programs."
 
-The tiers are designed so that **most authors only ever write a spec** — and the spec alone fixes the single biggest complaint about FrankenSIM: that the ARC Engine guesses. With AetherKit, it stops guessing. Your card plays out exactly as you designed it, beat by beat, paced the way you intended, with the twist landing where you put it.
+The tiers are designed so that **most authors only ever write a spec** — and the spec alone fixes the single biggest complaint about FrankenSIM: that the ARC Engine guesses. With AetherKit, it stops guessing. Your card plays out exactly as you designed it, beat by beat, track by track, paced the way you intended, with the twist landing where you put it and the side stories running in parallel like real life.
 
 For the authors who go further, Hooks open the door to a different kind of product entirely — a card that's a game, a minigame, a mechanic, a genre the engine didn't have. The card owns its own rules, and FrankenSIM executes them.
 
-The engine was already a world simulator. With AetherKit, it's a **runtime** — and your card is the program.
+The engine was already a world simulator. With AetherKit, it's a **runtime** — and your card is the program. A program with a spine, a set of nerves, and a secret at the center that no one touches until the very end.
 
 ---
 
-**AetherKit — write the story. Own the pacing. Build the mechanic. FrankenSIM executes it.**
+**AetherKit — write the story. Own the pacing. Branch the world. FrankenSIM executes it.**
 
 *This SDK is in alpha. The syntax in this document is canonical but may expand as the ecosystem grows. If you build something with AetherKit and hit a wall, the internal states block is your debugger — and the FrankenSIM team wants to hear about it.*
