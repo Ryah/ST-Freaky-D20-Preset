@@ -520,9 +520,3 @@ log net changes only
 | No cadence map | **Full prime schedule** for Matrix, Strata, Dam — no collisions |
 | Crack accs ticked but never converted | **Dam persist section** — convert + decay on distinct primes |
 | Philautia ghost line in persist | **Removed** — flagged as open question in Matrix |
-
----
-
-That's the revision. The cadence map is now a standalone reference, the persist function includes the Dam crack lifecycle, and everything that was implicit about "where does this fire" is explicit.
-
-Want me to output this as a `.md` file for download, or keep iterating in chat?
