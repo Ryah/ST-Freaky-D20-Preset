@@ -1,5 +1,5 @@
 # The FrankenWIRE / TeleWire TRP Guide
-### Tag Recall Prompting (TRP) & The Mathematical Token Floor for LLMs
+### Tag Recall Prompting (TRP) & The Mathematical Token Floor for LLMs made by u/dptgreg
 
 ---
 
