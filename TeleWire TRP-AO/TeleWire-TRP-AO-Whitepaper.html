@@ -374,7 +374,7 @@
 
 <body>
     <main class="page">
-        <header class="masthead"><span>Ryah / FrankenSIM · Vexa</span><span>Technical design · Version 1.2</span>
+        <header class="masthead"><span>Ryah / FrankenSIM · Vexa</span><span>Technical design · Version 1.3</span>
         </header>
         <details class="contents">
             <summary>Contents</summary>
@@ -385,146 +385,113 @@
                     href="#5-scope-notation-and-semantic-preservation">5. Scope, notation, and semantic
                     preservation</a><a href="#6-persistent-state-and-host-boundaries">6. Persistent state and host
                     boundaries</a><a href="#7-a-turn-level-walkthrough">7. A turn-level walkthrough</a><a
-                    href="#8-implementation-evidence-and-current-limits">8. Implementation evidence and current
+                    href="#8-implementation-evidence-and-token-measurements">8. Implementation evidence and current
                     limits</a><a href="#9-evaluation-plan">9. Evaluation plan</a><a
                     href="#10-engineering-contribution">10. Engineering contribution</a><a
                     href="#references-and-reproducibility">References and reproducibility</a></nav>
         </details>
-        <article class="document">
-            <h1>TeleWire TRP-AO</h1>
-            <h2>Attention-Optimized Tag Recall Prompting for Stateful LLM Simulation</h2>
-            <p><strong>Attention-Optimized · FrankenSIM / Vexa · formerly FrankenWIRE</strong><br />
-                <strong>Project author:</strong> Ryah<br />
-                <strong>Document:</strong> Technical design whitepaper, version 1.2 · November 3, 2026
-            </p>
-            <h3>Abstract</h3>
-            <p>TeleWire TRP-AO (Attention-Optimized), previously documented as FrankenWIRE, is a symbolic
-                prompt-authoring approach used in the FrankenSIM/Vexa interactive simulation project. It combines
-                compact rule modules with distinctive Unicode and emoji cues, then references those rules through a
-                staged page-and-function workflow. Its design objective is semantic density with explicit salience:
-                preserve short instructions while spending a small token premium on recognizable markers for operations,
-                relationships, and control flow.</p>
-            <p>Base TeleWire Tag Recall Prompting (TRP) prioritizes token compactness. The author reports that TRP-AO
-                typically uses 5–10% more tokens than that compact baseline, depending on complexity, while reporting
-                30–50% savings versus expanded prompt wording. This revision distinguishes those author-reported
-                observations from reproduced local counts: three illustrative expression pairs save approximately 39–57%
-                under two reference encodings. The proposed attention benefit remains a design hypothesis rather than a
-                demonstrated consequence of token rarity. The paper also describes scoped constraints, conditional
-                routes, parameterized procedures, persistent state, and an evaluation plan for behavioral effects.</p>
-            <p>The author also reports ongoing development testing of <strong>targeted semantic loading</strong>:
-                choosing repeated state markers to favor a desired interpretation of an otherwise overloaded concept.
-                The Ludus/🎲 case illustrates this contextual-framing strategy; its qualitative development evidence is
-                distinct from the general rarity-driven attention hypothesis.</p>
-            <h2 id="1-problem-and-design-goals">1. Problem and design goals</h2>
-            <p>A stateful language-model simulation must coordinate several concerns within each response: what
-                participants know, which actions are possible, how events progress, how characters speak, and which
-                facts survive into the next turn. When these concerns are interleaved in a long instruction document, a
-                small edit can obscure a condition, create a competing rule, or change an output field that another
-                component expects.</p>
-            <p>TRP-AO addresses both representation efficiency and specification maintenance. Rules need identifiable
-                homes; procedures need explicit entry points; serialized state needs stable fields. The design targets
-                five practical outcomes:</p>
-            <ul>
-                <li><strong>Traceability:</strong> connect a behavior to its rule module and the procedure that checks
-                    it.</li>
-                <li><strong>Salient semantic cues:</strong> use compact, distinctive markers to signal instruction roles
-                    and recall established operations.</li>
-                <li><strong>Local edits:</strong> revise a concern without unnecessarily repeating or rewriting other
-                    concerns.</li>
-                <li><strong>Continuity:</strong> carry established simulation facts forward through a defined state
-                    envelope.</li>
-                <li><strong>Reviewability:</strong> expose reference drift, conflicting constraints, and missing route
-                    exits during inspection.</li>
-            </ul>
-            <p>Compactness supports these goals when it preserves meaning. Token count is one objective; distinguishable
-                instruction roles and stable interpretation are others.</p>
-            <h2 id="2-design-lineage-and-the-vexa-adaptation">2. Design lineage and the Vexa adaptation</h2>
-            <p>The supplied TeleWire TRP guide proposes short tags, key-value properties, substitution arrows, and
-                explicit recall of named rules. Its compactness objective favors segmentation that avoids spending
-                multiple tokens where a compact representation is available. The author's TRP-AO adaptation retains that
-                organization but deliberately broadens the symbolic vocabulary. The earlier working name FrankenWIRE is
-                retained in existing artifact paths for compatibility.</p>
-            <p>Vexa uses pipes, Unicode arrows, uppercase stage labels, underscore names, comparison operators, and
-                numbered procedures. These express relationships and mechanical conditions that would be lost in a
-                universal conversion to flat properties and replacement arrows. Their presence reflects an intentional
-                optimization tradeoff, rather than merely departures from a formatting guide.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Approach</th>
-                        <th>Primary representation objective</th>
-                        <th>Tradeoff</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Base TeleWire TRP</td>
-                        <td>Minimize token cost while retaining the intended instruction</td>
-                        <td>Favor economical segmentation and a restricted notation</td>
-                    </tr>
-                    <tr>
-                        <td>TeleWire TRP-AO</td>
-                        <td>Retain compactness while making instruction roles more distinct</td>
-                        <td>Accept some additional marker cost for semantic cues and explicit structure</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>The author's approximate 5–10% overhead compares AO with the compact TRP baseline. The reported 30–50%
-                savings compares compact prompting with expanded wording. These percentages have different denominators
-                and do not contradict one another. No paired base-TRP/AO corpus was supplied for independently
-                reproducing the overhead range in this revision.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Element</th>
-                        <th>Vexa interpretation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>&lt;knowledge_sanity&gt;</code></td>
-                        <td>Named module defining knowledge constraints</td>
-                    </tr>
-                    <tr>
-                        <td><code>scope: spoken dialogue only</code></td>
-                        <td>Explicit applicability of a rule</td>
-                    </tr>
-                    <tr>
-                        <td><code>condition → consequence</code></td>
-                        <td>Implication or substitution, interpreted in context</td>
-                    </tr>
-                    <tr>
-                        <td><code>IF ct%3=0</code></td>
-                        <td>A conditional turn-based instruction</td>
-                    </tr>
-                    <tr>
-                        <td><code>➤ &lt;fn:...&gt;</code> / <code>⇤</code></td>
-                        <td>Procedure invocation and return</td>
-                    </tr>
-                    <tr>
-                        <td><code>⇥ &lt;page:...&gt;</code></td>
-                        <td>Transition to another stage</td>
-                    </tr>
-                    <tr>
-                        <td><code>&lt;state:...&gt;</code></td>
-                        <td>Named part of the persistent output structure</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>These symbols form an authoring convention. Their meanings are specified by the prompt and its host
-                integration rather than a formal grammar enforced by a standalone compiler. Existing names and scopes
-                take precedence over cosmetic normalization.</p>
-            <h2 id="3-architecture">3. Architecture</h2>
-            <p>The design separates three concerns within a prompt specification:</p>
-            <ol>
-                <li><strong>Declarative modules</strong> describe standing rules and constraints.</li>
-                <li><strong>Procedural pages and functions</strong> organize which decisions and checks are requested
-                    for the current turn.</li>
-                <li><strong>State and output contracts</strong> describe what must be emitted and retained.</li>
-            </ol>
-            <p>The host surrounds this specification with character data, conversation history, macro values, and
-                rendering behavior. A useful conceptual view is:</p>
-            <pre><code class="language-text">Rules + character data + prior state + user input + host values
+        <article class="document"><h1>TeleWire TRP-AO</h1>
+<h2 id="attention-optimized-tag-recall-prompting-for-stateful-llm-simulation">Attention-Optimized Tag Recall Prompting for Stateful LLM Simulation</h2>
+<p><strong>Attention-Optimized · FrankenSIM / Vexa · formerly FrankenWIRE</strong><br />
+<strong>Method designer and project developer:</strong> Ryah<br />
+<strong>Whitepaper drafting, source review, and token analysis:</strong> Cindy, an LLM agent<br />
+<strong>Document:</strong> Technical design whitepaper, version 1.3 · November 3, 2026</p>
+<h3>Abstract</h3>
+<p>TeleWire TRP-AO (Attention-Optimized), previously documented as FrankenWIRE, is a symbolic prompt-authoring approach used in the FrankenSIM/Vexa interactive simulation project. It combines compact rule modules with distinctive Unicode and emoji cues, then references those rules through a staged page-and-function workflow. Its design objective is semantic density with explicit salience: preserve short instructions while spending a small token premium on recognizable markers for operations, relationships, and control flow.</p>
+<p>Base TeleWire Tag Recall Prompting (TRP) prioritizes token compactness. A reproducible comparison of 17 AO samples against reconstructed compact base-TRP counterparts measured <strong>12.94–13.82% AO overhead</strong> across the selected mix, and <strong>9.72–10.17%</strong> across its twelve rule modules. Three separate illustrative expression pairs measured <strong>39–57% savings against expanded prose</strong>. These counts quantify the representation tradeoff; the behavioral value of the markers is a separate evaluation question.</p>
+<p>Ryah also uses <strong>targeted semantic loading</strong> in development: choosing recurring state markers to reinforce the intended interpretation of an overloaded concept. The Ludus/🎲 case documents the observed problem, intervention, and intended behavior. This paper presents that development account alongside source inspection and scripted token measurements.</p>
+<h3>Authorship and verification process</h3>
+<p>Ryah designed the TRP-AO adaptation, developed the FrankenSIM/Vexa implementation, and supplied its design rationale and development observations. Cindy, an LLM agent, drafted and revised this whitepaper, inspected the supplied source, constructed comparison fixtures, and ran the token-counting scripts. References to Ryah identify the method's designer and developer; the document's explanatory voice and analysis were written by Cindy.</p>
+<p>The verification process distinguishes <strong>source inspection</strong>, <strong>scripted measurements</strong>, <strong>Ryah's development observations</strong>, and <strong>proposed behavioral tests</strong>. Numerical results come from deterministic tokenizer runs on published paired strings, rather than an LLM's estimate of token cost. The base reconstructions and prose expansions were authored by Cindy and remain inspectable, so readers can assess the comparison choices and reproduce the counts.</p>
+<p>This division makes the drafting and checking process explicit. Its evidentiary value comes from traceable sources, disclosed comparison choices, and reproducible calculations. LLM involvement alone does not establish reduced bias or independent validation: fixture selection and interpretation still involve judgment, and the work was performed within Ryah's project workflow.</p>
+<h2 id="1-problem-and-design-goals">1. Problem and design goals</h2>
+<p>A stateful language-model simulation must coordinate several concerns within each response: what participants know, which actions are possible, how events progress, how characters speak, and which facts survive into the next turn. When these concerns are interleaved in a long instruction document, a small edit can obscure a condition, create a competing rule, or change an output field that another component expects.</p>
+<p>TRP-AO addresses both representation efficiency and specification maintenance. Rules need identifiable homes; procedures need explicit entry points; serialized state needs stable fields. The design targets five practical outcomes:</p>
+<ul>
+<li><strong>Traceability:</strong> connect a behavior to its rule module and the procedure that checks it.</li>
+<li><strong>Salient semantic cues:</strong> use compact, distinctive markers to signal instruction roles and recall established operations.</li>
+<li><strong>Local edits:</strong> revise a concern without unnecessarily repeating or rewriting other concerns.</li>
+<li><strong>Continuity:</strong> carry established simulation facts forward through a defined state envelope.</li>
+<li><strong>Reviewability:</strong> expose reference drift, conflicting constraints, and missing route exits during inspection.</li>
+</ul>
+<p>Compactness supports these goals when it preserves meaning. Token count is one objective; distinguishable instruction roles and stable interpretation are others.</p>
+<h2 id="2-design-lineage-and-the-vexa-adaptation">2. Design lineage and the Vexa adaptation</h2>
+<p>The supplied TeleWire TRP guide proposes short tags, key-value properties, substitution arrows, and explicit recall of named rules. Its compactness objective favors segmentation that avoids spending multiple tokens where a compact representation is available. Ryah's TRP-AO adaptation retains that organization but deliberately broadens the symbolic vocabulary. The earlier working name FrankenWIRE is retained in existing artifact paths for compatibility.</p>
+<p>Vexa uses pipes, Unicode arrows, uppercase stage labels, underscore names, comparison operators, and numbered procedures. These express relationships and mechanical conditions that would be lost in a universal conversion to flat properties and replacement arrows. Their presence reflects an intentional optimization tradeoff, rather than merely departures from a formatting guide.</p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Primary representation objective</th>
+<th>Tradeoff</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base TeleWire TRP</td>
+<td>Minimize token cost while retaining the intended instruction</td>
+<td>Favor economical segmentation and a restricted notation</td>
+</tr>
+<tr>
+<td>TeleWire TRP-AO</td>
+<td>Retain compactness while making instruction roles more distinct</td>
+<td>Accept some additional marker cost for semantic cues and explicit structure</td>
+</tr>
+</tbody>
+</table>
+<p>Ryah's earlier 5–10% estimate describes AO overhead against compact base TRP; the reported 30–50% savings uses expanded wording as its denominator. The reconstructed comparison in section 8 measures about 10% overhead for rule modules and 13–14% for the selected mixed pack. These results refine the earlier estimate without treating it as a universal bound.</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Vexa interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>⇥ &lt;page:...&gt;</code></td>
+<td>Transition to another stage</td>
+</tr>
+<tr>
+<td><code>&lt;knowledge_sanity&gt;</code></td>
+<td>Named module defining knowledge constraints</td>
+</tr>
+<tr>
+<td><code>&lt;state:...&gt;</code></td>
+<td>Named part of the persistent output structure</td>
+</tr>
+<tr>
+<td><code>➤ &lt;fn:...&gt;</code> / <code>⇤</code></td>
+<td>Procedure invocation and return</td>
+</tr>
+<tr>
+<td><code>clause | clause</code></td>
+<td>Compact separation of related clauses or alternatives</td>
+</tr>
+<tr>
+<td><code>condition → consequence</code></td>
+<td>Implication or substitution, interpreted in context</td>
+</tr>
+<tr>
+<td><code>IF ct%3=0</code></td>
+<td>A conditional turn-based instruction</td>
+</tr>
+<tr>
+<td><code>scope: spoken dialogue only</code></td>
+<td>Explicit applicability of a rule</td>
+</tr>
+</tbody>
+</table>
+<p>These symbols form an authoring convention. Their meanings are specified by the prompt and its host integration rather than a formal grammar enforced by a standalone compiler. Existing names and scopes take precedence over cosmetic normalization.</p>
+<h2 id="3-architecture">3. Architecture</h2>
+<p>The design separates three concerns within a prompt specification:</p>
+<ol>
+<li><strong>Declarative modules</strong> describe standing rules and constraints.</li>
+<li><strong>Procedural pages and functions</strong> organize which decisions and checks are requested for the current turn.</li>
+<li><strong>State and output contracts</strong> describe what must be emitted and retained.</li>
+</ol>
+<p>The host surrounds this specification with character data, conversation history, macro values, and rendering behavior. A useful conceptual view is:</p>
+<pre><code class="language-text">Rules + character data + prior state + user input + host values
                               ↓
                     Model-guided page route
                               ↓
@@ -532,76 +499,58 @@
                               ↓
              Host rendering and subsequent prompt assembly
 </code></pre>
-            <p>The diagram describes intended data flow. It does not imply that the model follows an enforced execution
-                engine or that every serialized state update is correct.</p>
-            <h3>Declarative modules</h3>
-            <p>The inspected preset uses <code>&lt;sys&gt;</code> for general instructions,
-                <code>&lt;knowledge_sanity&gt;</code> and <code>&lt;epistemic_contract&gt;</code> for information
-                boundaries, <code>&lt;npc_voice&gt;</code> for speech, <code>&lt;prose&gt;</code> for narration style,
-                and <code>&lt;format&gt;</code> for output targets. Other modules define world events, relationships,
-                and spatial state.
-            </p>
-            <p>Grouping rules by concern provides a named location for revision. It also allows procedures to refer back
-                to a rule's scope instead of reproducing its full wording each time. Module naming is preserved exactly
-                when another prompt section, macro, or renderer depends on it.</p>
-            <h3>Procedural routing</h3>
-            <p>The normal Antithesis route observed in Vexa Alpha v5 is:</p>
-            <pre><code class="language-text">boot → mechanics → router → solo OR ensemble → tail → aux → output
+<p>The diagram shows the prompt and host data flow. Page routing is interpreted by the model; the host handles context assembly and rendering.</p>
+<h3>Declarative modules</h3>
+<p>The inspected preset uses <code>&lt;sys&gt;</code> for general instructions, <code>&lt;knowledge_sanity&gt;</code> and <code>&lt;epistemic_contract&gt;</code> for information boundaries, <code>&lt;npc_voice&gt;</code> for speech, <code>&lt;prose&gt;</code> for narration style, and <code>&lt;format&gt;</code> for output targets. Other modules define world events, relationships, and spatial state.</p>
+<p>Grouping rules by concern provides a named location for revision. It also allows procedures to refer back to a rule's scope instead of reproducing its full wording each time. Module naming is preserved exactly when another prompt section, macro, or renderer depends on it.</p>
+<h3>Procedural routing</h3>
+<p>The normal Antithesis route observed in Vexa Alpha v5 is:</p>
+<pre><code class="language-text">boot → mechanics → router → solo OR ensemble → tail → aux → output
 </code></pre>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Stage</th>
-                        <th>Intended responsibility</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>boot</code></td>
-                        <td>Establish turn context, scene flags, and continuity requirements</td>
-                    </tr>
-                    <tr>
-                        <td><code>mechanics</code></td>
-                        <td>Process narrative systems, participant turns, and optional world events</td>
-                    </tr>
-                    <tr>
-                        <td><code>router</code></td>
-                        <td>Apply conditional calls and select a scene-processing route</td>
-                    </tr>
-                    <tr>
-                        <td><code>solo</code> / <code>ensemble</code></td>
-                        <td>Process spotlight participants and their interaction targets</td>
-                    </tr>
-                    <tr>
-                        <td><code>tail</code></td>
-                        <td>Apply style, knowledge, continuity, and presentation checks</td>
-                    </tr>
-                    <tr>
-                        <td><code>aux</code></td>
-                        <td>Accommodate additional decisions not covered earlier</td>
-                    </tr>
-                    <tr>
-                        <td><code>output</code></td>
-                        <td>Produce the response and required state envelope</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>The router distinguishes the scene paths by spotlight count: at most one participant selects
-                <code>solo</code>; two or more selects <code>ensemble</code>. Functions supply reusable procedures
-                within this route. Their notation borrows familiar concepts such as calls, parameters, loops, and
-                returns, while remaining instructions interpreted by the model.
-            </p>
-            <h2 id="4-tag-recall-and-attention-oriented-markers">4. Tag recall and attention-oriented markers</h2>
-            <p>TRP connects a named rule module to a decision or check later in the prompt. In this design,
-                <em>recall</em> means referring the model back to an available tagged specification. It does not
-                describe vector retrieval, external search, or a separate memory database.
-            </p>
-            <p>For example, the knowledge module asks that a participant's knowledge have an information vector:
-                observation, a message, testimony, evidence, or common knowledge. A later procedure can check whether a
-                proposed action relies on a fact that actually reached that participant.</p>
-            <p>The following is a simplified explanatory example, not a verbatim extraction or a drop-in replacement for
-                the preset:</p>
-            <pre><code class="language-text">&lt;knowledge_sanity&gt;
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Intended responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aux</code></td>
+<td>Accommodate additional decisions not covered earlier</td>
+</tr>
+<tr>
+<td><code>boot</code></td>
+<td>Establish turn context, scene flags, and continuity requirements</td>
+</tr>
+<tr>
+<td><code>mechanics</code></td>
+<td>Process narrative systems, participant turns, and optional world events</td>
+</tr>
+<tr>
+<td><code>output</code></td>
+<td>Produce the response and required state envelope</td>
+</tr>
+<tr>
+<td><code>router</code></td>
+<td>Apply conditional calls and select a scene-processing route</td>
+</tr>
+<tr>
+<td><code>solo</code> / <code>ensemble</code></td>
+<td>Process spotlight participants and their interaction targets</td>
+</tr>
+<tr>
+<td><code>tail</code></td>
+<td>Apply style, knowledge, continuity, and presentation checks</td>
+</tr>
+</tbody>
+</table>
+<p>The router distinguishes the scene paths by spotlight count: at most one participant selects <code>solo</code>; two or more selects <code>ensemble</code>. Functions supply reusable procedures within this route. Their notation borrows familiar concepts such as calls, parameters, loops, and returns, while remaining instructions interpreted by the model.</p>
+<h2 id="4-tag-recall-and-attention-oriented-markers">4. Tag recall and attention-oriented markers</h2>
+<p>TRP connects a named rule module to a decision or check later in the prompt. In this design, <em>recall</em> means referring the model back to an available tagged specification. It does not describe vector retrieval, external search, or a separate memory database.</p>
+<p>For example, the knowledge module asks that a participant's knowledge have an information vector: observation, a message, testimony, evidence, or common knowledge. A later procedure can check whether a proposed action relies on a fact that actually reached that participant.</p>
+<p>The following is a simplified explanatory example, not a verbatim extraction or a drop-in replacement for the preset:</p>
+<pre><code class="language-text">&lt;knowledge_sanity&gt;
 scope: participant knowledge
 sources: observation | message | testimony | evidence | common knowledge
 no source → unaware of that fact
@@ -613,69 +562,40 @@ no source → unaware of that fact
 ⇤
 &lt;/fn:knowledge_check&gt;
 </code></pre>
-            <h3>Semantically loaded cues</h3>
-            <p>A marker can recall a definition much longer than its surface representation. Once the notation is
-                established, <code>∀</code> indicates application to each relevant item; <code>∅</code> represents a
-                null result or skipped effect; <code>➤</code> signals a procedure call; <code>⇥</code> signals a page
-                transition. An emoji can identify a relationship axis without spelling out the axis name on every state
-                entry. The intended compression comes from reusing a stable meaning, not from a symbol creating meaning
-                without a definition.</p>
-            <p>The author's attention-oriented hypothesis is that uncommon, semantically loaded markers stand out from
-                surrounding prose and help the model distinguish instruction types and recall the associated rules.
-                Consistent marker roles and explicit recall are central to that design. Definitions, legends, and
-                invocation context still consume tokens and belong in whole-prompt accounting.</p>
-            <p>The term <em>Attention-Optimized</em> names this design objective. Rarity alone does not establish that a
-                model must attend to a marker or comply with its meaning. In the standard Transformer formulation,
-                attention weights depend on query/key compatibility; there is no general rarity-priority rule [6].
-                Controlled comparisons can distinguish effects of marker choice from changes in surrounding instructions
-                for a particular model.</p>
-            <h3>Targeted semantic loading: the Ludus/🎲 development case</h3>
-            <p>The author uses <strong>targeted semantic loading</strong> to describe deliberate contextual framing
-                through the choice and repetition of a symbol. The target is the interpretation associated with a field:
-                which part of an overloaded concept should remain active as state is repeatedly emitted and read.</p>
-            <p>The Aether Matrix uses twelve relationship axes—six fondness axes and six friction axes—to represent
-                relationships extending beyond romance. Its names draw on love-related vocabulary, but the matrix and
-                its combinations are project-specific; they are not a standardized twelve-axis ancient theory. Related
-                modern love-style terminology appears in John Alan Lee's typology [8]. Here, <strong>Ludus is intended
-                    to act as a playfulness modifier</strong> whose expression depends on the other axes:</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Intended combination</th>
-                        <th>Contextual expression</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>High Eros + high Ludus</td>
-                        <td>Playful romantic attraction</td>
-                    </tr>
-                    <tr>
-                        <td>High Storge + high Ludus</td>
-                        <td>Playful familial interaction, such as sibling teasing</td>
-                    </tr>
-                    <tr>
-                        <td>High Philia + high Ludus</td>
-                        <td>Close friendship expressed through joking and banter</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>These are intended examples, not exhaustive or deterministic relationship classifications. The full
-                matrix, established relationship, and character context still govern expression.</p>
-            <p>In development, the author observed Ludus drifting into a dominant flirting signal across otherwise
-                different relationships. They attributed this to the romantic framing of the love vocabulary and the
-                model's tendency toward romance/drama in their fictional scenarios. That is a reported diagnosis from
-                this project, not a measured universal genre bias. The problem was semantic overreach: the label's
-                romantic associations displaced its intended modifier role.</p>
-            <p>The intervention changed the definition and recurring representation. <strong>🎲 binds Ludus to game/play
-                    in the initial legend; subsequent Internal States use the emoji without repeating the word.</strong>
-                The inspected enabled prompt contains “Ludus” once, in the axis legend, followed by
-                <code>Emit emoji only. Never axis names.</code> Its pair-state template stores the axis as
-                <code>🎲[v,a]</code>. This verifies the source convention; live chat-history adherence was not
-                independently inspected.
-            </p>
-            <p>The intended feedback path is:</p>
-            <pre><code class="language-text">Define Ludus with 🎲 as game/play
+<h3>Semantically loaded cues</h3>
+<p>A marker can recall a definition much longer than its surface representation. Once the notation is established, <code>∀</code> indicates application to each relevant item; <code>∅</code> represents a null result or skipped effect; <code>➤</code> signals a procedure call; <code>⇥</code> signals a page transition. An emoji can identify a relationship axis without spelling out the axis name on every state entry. The intended compression comes from reusing a stable meaning, not from a symbol creating meaning without a definition.</p>
+<p>Ryah's attention-oriented hypothesis is that uncommon, semantically loaded markers stand out from surrounding prose and help the model distinguish instruction types and recall the associated rules. Consistent marker roles and explicit recall are central to that design. Definitions, legends, and invocation context still consume tokens and belong in whole-prompt accounting.</p>
+<p>The term <em>Attention-Optimized</em> names this design objective. Rarity alone does not establish that a model must attend to a marker or comply with its meaning. In the standard Transformer formulation, attention weights depend on query/key compatibility; there is no general rarity-priority rule [6]. Controlled comparisons can distinguish effects of marker choice from changes in surrounding instructions for a particular model.</p>
+<h3>Targeted semantic loading: the Ludus/🎲 development case</h3>
+<p>Ryah uses <strong>targeted semantic loading</strong> to describe deliberate contextual framing through the choice and repetition of a symbol. The target is the interpretation associated with a field: which part of an overloaded concept should remain active as state is repeatedly emitted and read.</p>
+<p>The Aether Matrix uses twelve relationship axes—six fondness axes and six friction axes—to represent relationships extending beyond romance. Its names draw on love-related vocabulary, but the matrix and its combinations are project-specific; they are not a standardized twelve-axis ancient theory. Related modern love-style terminology appears in John Alan Lee's typology [8]. Here, <strong>Ludus is intended to act as a playfulness modifier</strong> whose expression depends on the other axes:</p>
+<table>
+<thead>
+<tr>
+<th>Intended combination</th>
+<th>Contextual expression</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>High Eros + high Ludus</td>
+<td>Playful romantic attraction</td>
+</tr>
+<tr>
+<td>High Philia + high Ludus</td>
+<td>Close friendship expressed through joking and banter</td>
+</tr>
+<tr>
+<td>High Storge + high Ludus</td>
+<td>Playful familial interaction, such as sibling teasing</td>
+</tr>
+</tbody>
+</table>
+<p>These are intended examples, not exhaustive or deterministic relationship classifications. The full matrix, established relationship, and character context still govern expression.</p>
+<p>During development, Ryah observed Ludus drifting into a dominant flirting signal across otherwise different relationships. Ryah attributed this to the romantic framing of the love vocabulary and romance/drama tendencies in the fictional scenarios being tested. The observed problem was semantic overreach: the label's romantic associations displaced its intended modifier role. Section 9 proposes a controlled comparison of that diagnosis and intervention.</p>
+<p>The intervention changed the definition and recurring representation. <strong>🎲 binds Ludus to game/play in the initial legend; subsequent Internal States use the emoji without repeating the word.</strong> Cindy confirmed that the inspected enabled prompt contains “Ludus” once, in the axis legend, followed by <code>Emit emoji only. Never axis names.</code> Its pair-state template stores the axis as <code>🎲[v,a]</code>.</p>
+<p>The intended feedback path is:</p>
+<pre><code class="language-text">Define Ludus with 🎲 as game/play
                   ↓
 Carry 🎲, without the word, in recurring relationship state
                   ↓
@@ -683,342 +603,268 @@ Repeated play-oriented framing when state returns to context
                   ↓
 Express playfulness through the other active relationship axes
 </code></pre>
-            <p>The author describes this as repetition bias and semantic priming: reinforce the desired association
-                while reducing repeated exposure to the overloaded label. Emoji choice therefore carries a semantic
-                purpose as well as a compactness or salience purpose. Replacing 🎲 with a romantic symbol, an arbitrary
-                marker, or the word “Ludus” everywhere would change that intervention even if the numeric values stayed
-                identical. This concerns conditioning within context, not a claim of model-weight training.</p>
-            <p>This is an <strong>actively used, author-reported development-tested strategy</strong>. The qualitative
-                failure mode, intervention, and intended behavior are documented here; model/version details,
-                before/after transcripts, and quantitative effect sizes have not been supplied for independent
-                reproduction. That limits the strength of a general causal claim while preserving the author's reported
-                testing history.</p>
-            <h2 id="5-scope-notation-and-semantic-preservation">5. Scope, notation, and semantic preservation</h2>
-            <p>The dialect permits concise rules without making every rule use the same syntax. Substitution is useful
-                when a desired alternative can be stated clearly. An explicit prohibition remains useful when an
-                exclusion itself is the required boundary.</p>
-            <p>Scope is especially important. In the inspected preset, <code>&lt;npc_voice&gt;</code> governs spoken
-                dialogue, while <code>&lt;banned_vocabulary&gt;</code> applies to both speech and narration. Merging
-                those blocks or dropping the scope statement could change behavior even if the resulting prompt were
-                shorter.</p>
-            <p>Symbolic differences also carry meaning. <code>A→B</code> can express direction; <code>A↔B</code> can
-                describe a pair; <code>⇥ &lt;page:output&gt;</code> describes a route transition. A style rewrite must
-                preserve those distinctions. The same applies to macro names, state keys, function parameters, units,
-                ranges, and exception conditions.</p>
-            <p>A practical review question is: <strong>Can the revised specification recover the same actor, condition,
-                    action, scope, and retained state?</strong> If the answer is uncertain, the edit requires more than
-                a punctuation cleanup.</p>
-            <h2 id="6-persistent-state-and-host-boundaries">6. Persistent state and host boundaries</h2>
-            <p>Vexa requests a terminal <code>&lt;internal_states&gt;</code> structure containing records for the world,
-                locations, participants, relationships, narrative tracks, and other ongoing concerns. Within the
-                simulation, the design treats that structure as the continuity record for established world facts.</p>
-            <p>Spatial records illustrate the value of a stable contract. Room identifiers, coordinates, floor
-                membership, and adjacency links must stay consistent across turns if a map renderer is to represent the
-                same place. Renaming a field or reconstructing geometry during an unrelated prose edit can change the
-                visible result.</p>
-            <p>The design therefore distinguishes two kinds of control:</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Control</th>
-                        <th>Responsibility and limit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Prompt-level instruction</td>
-                        <td>Requests decisions, sequencing, and output; execution remains model-dependent</td>
-                    </tr>
-                    <tr>
-                        <td>Host-level integration</td>
-                        <td>Resolves supported macros, assembles context, and applies configured parsing/rendering
-                            rules; exact behavior depends on the installed host</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>An instruction to preserve state does not itself provide durable storage. Continuity depends on emitted
-                records being retained, included in later context, and interpreted consistently. Likewise, declaring a
-                procedure or extension slot does not prove that a host converter or consumer is connected.</p>
-            <h2 id="7-a-turn-level-walkthrough">7. A turn-level walkthrough</h2>
-            <p>Consider a user entering a room where two established participants are already present.</p>
-            <ol>
-                <li><strong>Context:</strong> boot establishes the current location, turn, and scene flags using the
-                    available conversation and state.</li>
-                <li><strong>World progression:</strong> mechanics requests participant turns and the optional
-                    world-event pass. Vexa explicitly places the latter after ordinary world turns and gives it a
-                    single-event budget.</li>
-                <li><strong>Routing:</strong> the spotlight count selects the ensemble path.</li>
-                <li><strong>Participant decisions:</strong> procedures refer to identity, goals, knowledge, and
-                    relationship-related state for each relevant participant and target.</li>
-                <li><strong>Checks:</strong> tail requests continuity, knowledge, prose, and presentation checks before
-                    output.</li>
-                <li><strong>Serialization:</strong> the response is produced with the required header and updated state
-                    records for subsequent turns.</li>
-            </ol>
-            <p>This walkthrough explains the intended route. It is not a recorded trial. A valid test would need to
-                inspect the assembled prompt and the observable response/state pair under controlled conditions.</p>
-            <h2 id="8-implementation-evidence-and-current-limits">8. Implementation evidence and current limits</h2>
-            <p>This paper is grounded in the preset snapshot <code>[Lumi] Vexa - Alpha v5.json</code>, inspected on
-                November 3, 2026. The file contains <strong>63 prompt blocks</strong>, of which <strong>58 are
-                    enabled</strong> and <strong>40 are enabled with nonempty content</strong>. Empty or marker blocks
-                are included in the first two counts; these numbers describe configuration structure, not runtime work
-                or performance.</p>
-            <p>Inspection supports the presence of tagged rule modules, symbolic guards, parameterized procedures, the
-                documented route, and a serialized state template. The project also contains a reusable agent skill
-                documenting the modified dialect and its differences from the supplied guide.</p>
-            <p>The same inspection identified unresolved reference names, competing dialogue-ratio instructions, and a
-                malformed function closing delimiter. These are specification-maintenance issues to resolve before
-                treating the snapshot as a validated reference implementation. The presence of a route or check in text
-                does not prove that every model follows it.</p>
-            <h3>Author-reported token observations</h3>
-            <p>The author reports repeated savings typically around <strong>30–50% relative to expanded prompt
-                    wording</strong>, and estimates <strong>5–10% overhead relative to compact base TRP</strong>,
-                depending on complexity. These reports are part of the method's stated motivation. Historical paired
-                texts, tokenizer identities, and sample counts were not provided with this clarification, so this paper
-                attributes those ranges rather than presenting them as a reproduced corpus benchmark.</p>
-            <h3>Reproduced illustrative counts</h3>
-            <p>For this revision, three compact expressions were paired with documentation-authored English expansions
-                and counted with <code>tiktoken</code> 0.14.0. These are small, transparent examples rather than a
-                representative evaluation dataset. Both reference encodings are explicitly selected counters, not a
-                claim to match the user's production model or billed usage.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Expression</th>
-                        <th><code>cl100k_base</code>: prose → AO</th>
-                        <th>Saved</th>
-                        <th><code>o200k_base</code>: prose → AO</th>
-                        <th>Saved</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>AGE ∀ g +1</code></td>
-                        <td>11 → 5</td>
-                        <td>54.5%</td>
-                        <td>11 → 6</td>
-                        <td>45.5%</td>
-                    </tr>
-                    <tr>
-                        <td><code>IF ct%3=0 ➤ &lt;fn:chekhov_fire&gt;</code></td>
-                        <td>28 → 17</td>
-                        <td>39.3%</td>
-                        <td>27 → 16</td>
-                        <td>40.7%</td>
-                    </tr>
-                    <tr>
-                        <td><code>n ∉ K(g) → add n</code></td>
-                        <td>21 → 9</td>
-                        <td>57.1%</td>
-                        <td>21 → 9</td>
-                        <td>57.1%</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>The exact English expansions were:</p>
-            <ol>
-                <li>“Increase the age of every gossip record g by one.”</li>
-                <li>“If the current turn count ct is divisible by three, call chekhov_fire; after the function returns,
-                    continue with the next instruction.”</li>
-                <li>“If participant n does not belong to the gossip witness set K(g), add participant n to that set.”
-                </li>
-            </ol>
-            <p>These comparisons assume the meanings of <code>g</code>, <code>ct</code>, <code>K(g)</code>, and the
-                call/return notation are already established. They exclude definition/legend costs, prompt wrappers,
-                macro expansion, output tokens, and provider formatting. Intended semantic correspondence was reviewed
-                for illustration; no generation-based equivalence test was run. The full strings and results are
-                recorded in <code>token-evidence.json</code>; <code>token-evidence.py</code> reproduces the counts [5].
-            </p>
-            <h3>Marker cost and measurement boundaries</h3>
-            <p>Many useful markers cost one to three tokens in the reference encodings, but glyph count and token count
-                are different quantities. Some compound symbols and emojis cost more, and preceding spaces can change
-                segmentation [7]. Selected standalone counts are:</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Marker</th>
-                        <th><code>cl100k_base</code></th>
-                        <th><code>o200k_base</code></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>→</code></td>
-                        <td>1</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td><code>∀</code></td>
-                        <td>2</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td><code>➤</code></td>
-                        <td>2</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td><code>⇥</code></td>
-                        <td>3</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td><code>ℱ̄</code></td>
-                        <td>4</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td><code>🌶️</code></td>
-                        <td>4</td>
-                        <td>3</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>Shorter text can produce real token savings, as the expression counts show. Smaller character count by
-                itself is not proof of fewer tokens: vocabulary, bytes, and context determine segmentation. This
-                distinction preserves the token-efficiency claim while making its measurement reproducible.</p>
-            <p>The Ludus case adds author-reported qualitative development testing of contextual framing, supported by
-                inspection of the legend and recurring state format. No controlled compliance, attention,
-                state-accuracy, quality, or latency benchmark is reported here. Mathematical token minima, universal
-                one-token costs, and guaranteed attention/adherence are not established by these counts or by that
-                development account.</p>
-            <h2 id="9-evaluation-plan">9. Evaluation plan</h2>
-            <p>A useful evaluation should compare observable outcomes under a fixed model/version, host configuration,
-                sampler settings, character data, and starting state. First resolve known contradictory instructions so
-                that a failure has an unambiguous expected result.</p>
-            <p>Compare expanded prose, compact base TRP, and TRP-AO under equivalent task and rule semantics. Add
-                ablations that replace AO symbols with ASCII/word equivalents and remove explicit recall while keeping
-                the rule content. That separates compression from marker selection and route/recall effects. Treat
-                changes in meaning as a confound rather than a compression gain.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Question</th>
-                        <th>Proposed measurement</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Are requested constraints followed?</td>
-                        <td>Passed applicable constraints divided by all applicable constraints</td>
-                    </tr>
-                    <tr>
-                        <td>Does state remain consistent?</td>
-                        <td>Valid retained/updated fields divided by fields checked against the fixture</td>
-                    </tr>
-                    <tr>
-                        <td>Are knowledge boundaries respected?</td>
-                        <td>Unsupported knowledge events in predefined scenes</td>
-                    </tr>
-                    <tr>
-                        <td>Does routing affect observable output?</td>
-                        <td>Expected route-dependent behavior across isolated, multi-participant, and mode-switch cases
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Is there an efficiency tradeoff?</td>
-                        <td>Assembled-input tokens, output tokens, latency, and estimated cost under the same
-                            configuration</td>
-                    </tr>
-                    <tr>
-                        <td>Do AO markers improve observable adherence?</td>
-                        <td>Same-task compliance and state scores with marker/recall ablations; rarity alone is not the
-                            outcome measure</td>
-                    </tr>
-                    <tr>
-                        <td>Does targeted semantic loading preserve Ludus as a modifier?</td>
-                        <td>Unwarranted flirting in friendship/familial scenes at fixed relationship values, alongside
-                            retention of intended playfulness and appropriate romantic expression when Eros/context
-                            support it</td>
-                    </tr>
-                    <tr>
-                        <td>Is the specification easier to maintain?</td>
-                        <td>Time and errors for equivalent scoped edits, including reference repair</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p>Use repeated trials and publish trial counts and variation. For subjective quality, use blinded scoring
-                criteria and keep it separate from mechanical correctness. A model-written explanation of following the
-                route is not an execution trace; assess visible outputs and state, with host instrumentation where
-                available.</p>
-            <p>For the Ludus case, hold the numeric matrix, persona, relationship, scene, and model configuration fixed
-                while comparing repeated word labels, word-plus-emoji labels, and emoji-only state after the same
-                definition. Add a token-budget-matched arbitrary-symbol control where feasible. Assess whether outcomes
-                depend on the play-associated symbol, removal of the repeated word, or their combination; do not treat
-                ordinary sibling/friend playfulness as evidence of flirting.</p>
-            <p>This controlled behavioral evaluation and the base-TRP/AO overhead comparison have not been conducted
-                here. The author reports their own ongoing development testing; the fragment token counts above have
-                been independently reproduced within the documentation workflow.</p>
-            <h2 id="10-engineering-contribution">10. Engineering contribution</h2>
-            <p>The work demonstrates an applied prompt-design tradeoff: retain compact symbolic instructions while
-                allocating additional tokens to distinctive semantic cues and explicit procedural structure. It combines
-                tagged rule recall with Vexa's page/function workflow and persistent simulation contracts, while
-                preserving scope and host interfaces.</p>
-            <p>Relevant engineering work includes prompt architecture, context organization, interface maintenance,
-                state modeling, and test design. The paper makes no claim to invent XML tagging, symbolic notation,
-                state serialization, or modular procedures. Its contribution lies in their project-specific composition
-                and the accompanying implementation documentation.</p>
-            <p>Targeted semantic loading extends that contribution to representation choices inside persistent state:
-                select a symbol for the association it should reinforce, then preserve its binding across repeated
-                context. The Ludus example documents the author's development process and motivates a specific, testable
-                framing comparison.</p>
-            <h2 id="references-and-reproducibility">References and reproducibility</h2>
-            <p><strong>[1] Implementation snapshot.</strong> Ryah, <em>[Lumi] Vexa — Alpha v5</em>, inspected November
-                3, 2026. Source artifact: <code>New folder/[Lumi] Vexa - Alpha v5.json</code>. SHA-256:
-                <code>a26276225f8beccd06bfc0cddde916d485541c2cd0607614c13a0547fa2dbd88</code>.
-            </p>
-            <p><strong>[2] Dialect comparison.</strong> <em>Observed FrankenSIM / Vexa dialect</em>, project reference
-                dated November 3, 2026:
-                <code>.agents/skills/frankensim-frankenwire-syntax/references/vexa-v5-dialect.md</code>. Records syntax
-                evidence and unresolved issues by block name.
-            </p>
-            <p><strong>[3] Design background.</strong> <em>The FrankenWIRE / TeleWire TRP Guide</em>, user-supplied at
-                <a href="https://paste.adamedia.cc/9">paste.adamedia.cc/9</a>, retrieved November 1, 2026. The archived
-                UTF-8 document has SHA-256
-                <code>e2c2bbd1b1dff35e8a78c928de32de5435309fbf97d77edcd809f40b087b7ef2</code>. TRP-AO adapts its
-                compactness-oriented grammar; this revision distinguishes reproduced token counts, author-reported
-                experience, and untested behavioral guarantees.
-            </p>
-            <p><strong>[4] Author clarification and notation.</strong> On November 3, 2026, Ryah named the method
-                TeleWire TRP-AO, explained its compactness/salience tradeoff, and reported the token ranges above. The
-                supplied <a
-                    href="https://github.com/Ryah/ST-Freaky-D20-Preset/blob/c223e8c7a6539e57a063fde135412d0dca40bfe3/NOTATION.md">NOTATION.md</a>,
-                document revision <code>c223e8c7a6539e57a063fde135412d0dca40bfe3</code>, provides mathematical/operator
-                meanings. Snapshot SHA-256:
-                <code>fb5bc1ab50309e216292f393aac0d424df4d0950c3f720b84059bf5a43450d7a</code>. It predates portions of
-                the current boot protocol and Antithesis library; current preset definitions take precedence. For
-                example, its two definitions of the all-axis set <code>Ψ</code> differ on inclusion of self-axis
-                <code>Φ</code>; that glossary inconsistency is not a new rule for the preset.
-            </p>
-            <p><strong>[5] Reproduced token examples.</strong> <a
-                    href="token-evidence.py"><code>token-evidence.py</code></a> and <a
-                    href="token-evidence.json"><code>token-evidence.json</code></a>, distributed alongside this paper.
-                Run <code>python token-evidence.py</code> with <code>tiktoken</code> installed; the recorded version is
-                0.14.0. Fixtures are documentation-authored comparisons, not the author's historical dataset. No model
-                generation is performed.</p>
-            <p><strong>[6] Attention formulation.</strong> Vaswani et al., <a
-                    href="https://arxiv.org/html/1706.03762v7#S3.SS2"><em>Attention Is All You Need</em>, section
-                    3.2</a>. Cited to explain attention-weight computation, not as evidence validating TRP-AO.</p>
-            <p><strong>[7] Tokenization background.</strong> Hugging Face, <a
-                    href="https://huggingface.co/docs/transformers/tokenizer_summary"><em>Tokenization
-                        algorithms</em></a>. Explains vocabulary-dependent subword and byte-level segmentation; this is
-                why character savings and token savings must be distinguished.</p>
-            <p><strong>[8] Love-style terminology.</strong> John Alan Lee, <a
-                    href="https://journals.sagepub.com/doi/10.1177/014616727700300204"><em>A Typology of Styles of
-                        Loving</em></a>, <em>Personality and Social Psychology Bulletin</em>, 3(2), 173–182 (1977); the
-                article also cites Lee's <em>Colours of Love</em> (1973). This is related terminology, not a claim that
-                Lee's six styles define the project's twelve independent axes or its intended Ludus combinations.</p>
-            <p><strong>[9] Targeted semantic loading development account.</strong> Ryah's explanation supplied November
-                3, 2026: the observed Ludus-to-flirting drift, the intended contextual combinations, the
-                definition/emoji intervention, and active development use. Source inspection confirms the one-occurrence
-                legend and emoji-only state instruction in implementation snapshot [1]. The reported behavioral testing
-                has not been independently reproduced here.</p>
-            <p>Hashes identify the inspected sources without requiring disclosure of the private preset. This paper is a
-                standalone design account; reproducing runtime results would require the implementation, compatible host
-                configuration, and an executed evaluation protocol.</p>
-        </article>
-        <footer class="footer">TeleWire TRP-AO · Attention-Optimized · November 3, 2026<br>Reproduced token examples and
-            author-reported development testing; controlled evaluation proposed.</footer>
+<p>Ryah describes this as repetition bias and semantic priming: reinforce the desired association while reducing repeated exposure to the overloaded label. Emoji choice therefore carries a semantic purpose as well as a compactness or salience purpose. Replacing 🎲 with a romantic symbol, an arbitrary marker, or the word “Ludus” everywhere would change that intervention even if the numeric values stayed identical. This concerns conditioning within context, not a claim of model-weight training.</p>
+<p>Ryah actively uses and tests this strategy during development. Cindy's source inspection confirms the implementation. The behavioral evidence available for this paper is Ryah's qualitative account; a quantified effect size requires matched trials and recorded outputs.</p>
+<h2 id="5-scope-notation-and-semantic-preservation">5. Scope, notation, and semantic preservation</h2>
+<p>The dialect permits concise rules without making every rule use the same syntax. Substitution is useful when a desired alternative can be stated clearly. An explicit prohibition remains useful when an exclusion itself is the required boundary.</p>
+<p>Scope is especially important. In the inspected preset, <code>&lt;npc_voice&gt;</code> governs spoken dialogue, while <code>&lt;banned_vocabulary&gt;</code> applies to both speech and narration. Merging those blocks or dropping the scope statement could change behavior even if the resulting prompt were shorter.</p>
+<p>Symbolic differences also carry meaning. <code>A→B</code> can express direction; <code>A↔B</code> can describe a pair; <code>⇥ &lt;page:output&gt;</code> describes a route transition. A style rewrite must preserve those distinctions. The same applies to macro names, state keys, function parameters, units, ranges, and exception conditions.</p>
+<p>A practical review question is: <strong>Can the revised specification recover the same actor, condition, action, scope, and retained state?</strong> If the answer is uncertain, the edit requires more than a punctuation cleanup.</p>
+<h2 id="6-persistent-state-and-host-boundaries">6. Persistent state and host boundaries</h2>
+<p>Vexa requests a terminal <code>&lt;internal_states&gt;</code> structure containing records for the world, locations, participants, relationships, narrative tracks, and other ongoing concerns. Within the simulation, the design treats that structure as the continuity record for established world facts.</p>
+<p>Spatial records illustrate the value of a stable contract. Room identifiers, coordinates, floor membership, and adjacency links must stay consistent across turns if a map renderer is to represent the same place. Renaming a field or reconstructing geometry during an unrelated prose edit can change the visible result.</p>
+<p>The design therefore distinguishes two kinds of control:</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Responsibility and limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Host-level integration</td>
+<td>Resolves supported macros, assembles context, and applies configured parsing/rendering rules; exact behavior depends on the installed host</td>
+</tr>
+<tr>
+<td>Prompt-level instruction</td>
+<td>Requests decisions, sequencing, and output; execution remains model-dependent</td>
+</tr>
+</tbody>
+</table>
+<p>An instruction to preserve state does not itself provide durable storage. Continuity depends on emitted records being retained, included in later context, and interpreted consistently. Likewise, declaring a procedure or extension slot does not prove that a host converter or consumer is connected.</p>
+<h2 id="7-a-turn-level-walkthrough">7. A turn-level walkthrough</h2>
+<p>Consider a user entering a room where two established participants are already present.</p>
+<ol>
+<li><strong>Context:</strong> boot establishes the current location, turn, and scene flags using the available conversation and state.</li>
+<li><strong>World progression:</strong> mechanics requests participant turns and the optional world-event pass. Vexa explicitly places the latter after ordinary world turns and gives it a single-event budget.</li>
+<li><strong>Routing:</strong> the spotlight count selects the ensemble path.</li>
+<li><strong>Participant decisions:</strong> procedures refer to identity, goals, knowledge, and relationship-related state for each relevant participant and target.</li>
+<li><strong>Checks:</strong> tail requests continuity, knowledge, prose, and presentation checks before output.</li>
+<li><strong>Serialization:</strong> the response is produced with the required header and updated state records for subsequent turns.</li>
+</ol>
+<p>This walkthrough illustrates the route specified in the preset. Section 9 defines how to test its observable outputs and state updates.</p>
+<h2 id="8-implementation-evidence-and-token-measurements">8. Implementation evidence and token measurements</h2>
+<p>This paper is grounded in the preset snapshot <code>[Lumi] Vexa - Alpha v5.json</code>, inspected on November 3, 2026. The file contains <strong>63 prompt blocks</strong>, of which <strong>58 are enabled</strong> and <strong>40 are enabled with nonempty content</strong>. Empty or marker blocks are included in the first two counts; these numbers describe configuration structure, not runtime work or performance.</p>
+<p>Inspection supports the presence of tagged rule modules, symbolic guards, parameterized procedures, the documented route, and a serialized state template. The project also contains a reusable agent skill documenting the modified dialect and its differences from the supplied guide.</p>
+<p>Cindy also identified unresolved reference names, competing dialogue-ratio instructions, and a malformed function closing delimiter. These are maintenance findings in the inspected snapshot. They remain relevant to runtime acceptance and do not affect the deterministic counts of the frozen strings below.</p>
+<h3>Ryah's development estimates</h3>
+<p>Ryah reports repeated savings typically around <strong>30–50% relative to expanded prompt wording</strong>, and initially estimated <strong>5–10% overhead relative to compact base TRP</strong>. These are development estimates. Cindy measured the comparisons below from explicit fixtures to give the paper reproducible numerical evidence.</p>
+<h3>Measured AO overhead against reconstructed compact base TRP</h3>
+<p>Cindy froze <strong>17 source-derived AO samples</strong> before tokenization and authored compact base-style counterparts using the supplied TRP guide: twelve complete rule modules, three procedural excerpts, one axis legend, and one matrix state row. The AO strings match the inspected snapshot after newline normalization. Counts use <code>tiktoken</code> 0.14.0 with two explicit reference encodings [10].</p>
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Encoding</th>
+<th style="text-align:right">Reconstructed base</th>
+<th style="text-align:right">AO</th>
+<th style="text-align:right">AO overhead</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All 17 samples, once each</td>
+<td><code>cl100k_base</code></td>
+<td style="text-align:right">2,098</td>
+<td style="text-align:right">2,388</td>
+<td style="text-align:right">+13.82%</td>
+</tr>
+<tr>
+<td>All 17 samples, once each</td>
+<td><code>o200k_base</code></td>
+<td style="text-align:right">2,086</td>
+<td style="text-align:right">2,356</td>
+<td style="text-align:right">+12.94%</td>
+</tr>
+<tr>
+<td>Twelve rule modules</td>
+<td><code>cl100k_base</code></td>
+<td style="text-align:right">1,691</td>
+<td style="text-align:right">1,863</td>
+<td style="text-align:right">+10.17%</td>
+</tr>
+<tr>
+<td>Twelve rule modules</td>
+<td><code>o200k_base</code></td>
+<td style="text-align:right">1,688</td>
+<td style="text-align:right">1,852</td>
+<td style="text-align:right">+9.72%</td>
+</tr>
+<tr>
+<td>Three procedural excerpts</td>
+<td><code>cl100k_base</code></td>
+<td style="text-align:right">290</td>
+<td style="text-align:right">344</td>
+<td style="text-align:right">+18.62%</td>
+</tr>
+<tr>
+<td>Three procedural excerpts</td>
+<td><code>o200k_base</code></td>
+<td style="text-align:right">283</td>
+<td style="text-align:right">333</td>
+<td style="text-align:right">+17.67%</td>
+</tr>
+</tbody>
+</table>
+<p>AO overhead is <code>100 × (AO / base − 1)</code>, calculated from each group's strings joined with two newlines. <strong>The measured estimate is about 10% for these rule modules and 13–14% for this mixed selection.</strong> The range reflects the two encodings, not a statistical confidence interval. The base texts are reconstructions, and the selection is a stratified convenience sample. Intended meaning was reviewed; behavioral equivalence was not tested. These are exact counts for the published strings and a sample-based estimate of AO cost, rather than a whole-preset overhead measurement.</p>
+<p>An additional control replaced Unicode markers with ASCII equivalents while retaining the AO wording. Across the twelve rule modules, AO cost only <strong>0.22% more</strong> under either encoding. Most of the roughly 10% AO-versus-reconstruction gap in those modules therefore comes from changes to tags, wording, and format, rather than the net cost of Unicode markers alone.</p>
+<p>The isolated matrix row adds <strong>35–39 tokens</strong> over short axis labels, or <strong>66–74%</strong> on that small row. In a separate denominator check, replacing only the legend and row labels inside the otherwise unchanged full state template gives <strong>1.66–1.89%</strong> overhead. Neither percentage measures a live conversation: actual state cost depends on emitted records and retained history. Short labels also change the targeted semantic-loading intervention.</p>
+<p>The <a href="trp-base-comparison/report.md">comparison report</a>, <a href="trp-base-comparison/pairs.md">all paired strings</a>, and <a href="trp-base-comparison/results.json">recorded results</a> expose the reconstruction choices and diagnostics. Run <code>python docs/frankenwire/trp-base-comparison/compare.py</code> from the repository root to reproduce them.</p>
+<h3>Measured illustrative savings against expanded prose</h3>
+<p>Cindy paired three compact expressions with explicit English expansions and counted them with <code>tiktoken</code> 0.14.0. The table reports measured savings for those examples. Both encodings are reference counters; production-model tokenization and billed usage are outside this measurement.</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th><code>cl100k_base</code>: prose → AO</th>
+<th>Saved</th>
+<th><code>o200k_base</code>: prose → AO</th>
+<th>Saved</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AGE ∀ g +1</code></td>
+<td>11 → 5</td>
+<td>54.5%</td>
+<td>11 → 6</td>
+<td>45.5%</td>
+</tr>
+<tr>
+<td><code>IF ct%3=0 ➤ &lt;fn:chekhov_fire&gt;</code></td>
+<td>28 → 17</td>
+<td>39.3%</td>
+<td>27 → 16</td>
+<td>40.7%</td>
+</tr>
+<tr>
+<td><code>n ∉ K(g) → add n</code></td>
+<td>21 → 9</td>
+<td>57.1%</td>
+<td>21 → 9</td>
+<td>57.1%</td>
+</tr>
+</tbody>
+</table>
+<p>The exact English expansions were:</p>
+<ol>
+<li>“Increase the age of every gossip record g by one.”</li>
+<li>“If the current turn count ct is divisible by three, call chekhov_fire; after the function returns, continue with the next instruction.”</li>
+<li>“If participant n does not belong to the gossip witness set K(g), add participant n to that set.”</li>
+</ol>
+<p>These comparisons assume the meanings of <code>g</code>, <code>ct</code>, <code>K(g)</code>, and the call/return notation are already established. They exclude definition/legend costs, prompt wrappers, macro expansion, output tokens, and provider formatting. Intended semantic correspondence was reviewed for illustration; no generation-based equivalence test was run. The full strings and results are recorded in <code>token-evidence.json</code>; <code>token-evidence.py</code> reproduces the counts [5].</p>
+<h3>Marker cost and measurement boundaries</h3>
+<p>Many useful markers cost one to three tokens in the reference encodings, but glyph count and token count are different quantities. Some compound symbols and emojis cost more, and preceding spaces can change segmentation [7]. Selected standalone counts are:</p>
+<table>
+<thead>
+<tr>
+<th>Marker</th>
+<th><code>cl100k_base</code></th>
+<th><code>o200k_base</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>→</code></td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>⇥</code></td>
+<td>3</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>∀</code></td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>➤</code></td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>🌶️</code></td>
+<td>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>ℱ̄</code></td>
+<td>4</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>Shorter text can produce real token savings, as the expression counts show. Smaller character count by itself is not proof of fewer tokens: vocabulary, bytes, and context determine segmentation. This distinction preserves the token-efficiency claim while making its measurement reproducible.</p>
+<p>The measurements establish token cost for the disclosed strings. Ryah's Ludus account supplies qualitative behavioral evidence, and source inspection establishes how the intervention is encoded. Controlled measurements of adherence, state accuracy, quality, and latency remain the next evaluation step.</p>
+<h2 id="9-evaluation-plan">9. Evaluation plan</h2>
+<p>A useful evaluation should compare observable outcomes under a fixed model/version, host configuration, sampler settings, character data, and starting state. First resolve known contradictory instructions so that a failure has an unambiguous expected result.</p>
+<p>Compare expanded prose, compact base TRP, and TRP-AO under equivalent task and rule semantics. Add ablations that replace AO symbols with ASCII/word equivalents and remove explicit recall while keeping the rule content. That separates compression from marker selection and route/recall effects. Treat changes in meaning as a confound rather than a compression gain.</p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Proposed measurement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Are knowledge boundaries respected?</td>
+<td>Unsupported knowledge events in predefined scenes</td>
+</tr>
+<tr>
+<td>Are requested constraints followed?</td>
+<td>Passed applicable constraints divided by all applicable constraints</td>
+</tr>
+<tr>
+<td>Do AO markers improve observable adherence?</td>
+<td>Same-task compliance and state scores with marker/recall ablations; rarity alone is not the outcome measure</td>
+</tr>
+<tr>
+<td>Does routing affect observable output?</td>
+<td>Expected route-dependent behavior across isolated, multi-participant, and mode-switch cases</td>
+</tr>
+<tr>
+<td>Does state remain consistent?</td>
+<td>Valid retained/updated fields divided by fields checked against the fixture</td>
+</tr>
+<tr>
+<td>Does targeted semantic loading preserve Ludus as a modifier?</td>
+<td>Unwarranted flirting in friendship/familial scenes at fixed relationship values, alongside retention of intended playfulness and appropriate romantic expression when Eros/context support it</td>
+</tr>
+<tr>
+<td>Is there an efficiency tradeoff?</td>
+<td>Assembled-input tokens, output tokens, latency, and estimated cost under the same configuration</td>
+</tr>
+<tr>
+<td>Is the specification easier to maintain?</td>
+<td>Time and errors for equivalent scoped edits, including reference repair</td>
+</tr>
+</tbody>
+</table>
+<p>Use repeated trials and publish trial counts and variation. For subjective quality, use blinded scoring criteria and keep it separate from mechanical correctness. A model-written explanation of following the route is not an execution trace; assess visible outputs and state, with host instrumentation where available.</p>
+<p>For the Ludus case, hold the numeric matrix, persona, relationship, scene, and model configuration fixed while comparing repeated word labels, word-plus-emoji labels, and emoji-only state after the same definition. Add a token-budget-matched arbitrary-symbol control where feasible. Assess whether outcomes depend on the play-associated symbol, removal of the repeated word, or their combination; do not treat ordinary sibling/friend playfulness as evidence of flirting.</p>
+<p>The token comparisons in section 8 are complete and reproducible. The controlled behavioral evaluation described in this section remains proposed; it would extend the available source evidence and development observations with matched output trials.</p>
+<h2 id="10-engineering-contribution">10. Engineering contribution</h2>
+<p>The work demonstrates an applied prompt-design tradeoff: retain compact symbolic instructions while allocating additional tokens to distinctive semantic cues and explicit procedural structure. It combines tagged rule recall with Vexa's page/function workflow and persistent simulation contracts, while preserving scope and host interfaces.</p>
+<p>Relevant engineering work includes prompt architecture, context organization, interface maintenance, state modeling, and test design. The paper makes no claim to invent XML tagging, symbolic notation, state serialization, or modular procedures. Its contribution lies in their project-specific composition and the accompanying implementation documentation.</p>
+<p>Targeted semantic loading extends that contribution to representation choices inside persistent state: select a symbol for the association it should reinforce, then preserve its binding across repeated context. The Ludus example documents Ryah's development process and motivates a specific, testable framing comparison.</p>
+<h2 id="references-and-reproducibility">References and reproducibility</h2>
+<p><strong>[1] Implementation snapshot.</strong> Ryah, <em>[Lumi] Vexa — Alpha v5</em>, inspected November 3, 2026. Source artifact: <code>New folder/[Lumi] Vexa - Alpha v5.json</code>. SHA-256: <code>a26276225f8beccd06bfc0cddde916d485541c2cd0607614c13a0547fa2dbd88</code>.</p>
+<p><strong>[2] Dialect comparison.</strong> <em>Observed FrankenSIM / Vexa dialect</em>, project reference dated November 3, 2026: <code>.agents/skills/frankensim-frankenwire-syntax/references/vexa-v5-dialect.md</code>. Records syntax evidence and unresolved issues by block name.</p>
+<p><strong>[3] Design background.</strong> <em>The FrankenWIRE / TeleWire TRP Guide</em>, user-supplied at the <a href="https://github.com/Ryah/ST-Freaky-D20-Preset/wiki/FrankenWire-TRP">FrankenSIM GitHub Wiki</a>, retrieved November 1, 2026. The archived UTF-8 document has SHA-256 <code>e2c2bbd1b1dff35e8a78c928de32de5435309fbf97d77edcd809f40b087b7ef2</code>. TRP-AO adapts its compactness-oriented grammar; this revision distinguishes reproduced token counts, Ryah's development observations, and proposed behavioral tests.</p>
+<p><strong>[4] Author clarification and notation.</strong> On November 3, 2026, Ryah named the method TeleWire TRP-AO, explained its compactness/salience tradeoff, and reported the token ranges above. The supplied <a href="https://github.com/Ryah/ST-Freaky-D20-Preset/blob/c223e8c7a6539e57a063fde135412d0dca40bfe3/NOTATION.md">NOTATION.md</a>, document revision <code>c223e8c7a6539e57a063fde135412d0dca40bfe3</code>, provides mathematical/operator meanings. Snapshot SHA-256: <code>fb5bc1ab50309e216292f393aac0d424df4d0950c3f720b84059bf5a43450d7a</code>. It predates portions of the current boot protocol and Antithesis library; current preset definitions take precedence. For example, its two definitions of the all-axis set <code>Ψ</code> differ on inclusion of self-axis <code>Φ</code>; that glossary inconsistency is not a new rule for the preset.</p>
+<p><strong>[5] Reproduced token examples.</strong> <a href="token-evidence.py"><code>token-evidence.py</code></a> and <a href="token-evidence.json"><code>token-evidence.json</code></a>, distributed alongside this paper. Run <code>python token-evidence.py</code> with <code>tiktoken</code> installed; the recorded version is 0.14.0. Cindy authored the English expansions for this comparison; they are separate from Ryah’s historical development examples. No model generation is performed.</p>
+<p><strong>[6] Attention formulation.</strong> Vaswani et al., <a href="https://arxiv.org/html/1706.03762v7#S3.SS2"><em>Attention Is All You Need</em>, section 3.2</a>. Cited to explain attention-weight computation, not as evidence validating TRP-AO.</p>
+<p><strong>[7] Tokenization background.</strong> Hugging Face, <a href="https://huggingface.co/docs/transformers/tokenizer_summary"><em>Tokenization algorithms</em></a>. Explains vocabulary-dependent subword and byte-level segmentation; this is why character savings and token savings must be distinguished.</p>
+<p><strong>[8] Love-style terminology.</strong> John Alan Lee, <a href="https://journals.sagepub.com/doi/10.1177/014616727700300204"><em>A Typology of Styles of Loving</em></a>, <em>Personality and Social Psychology Bulletin</em>, 3(2), 173–182 (1977); the article also cites Lee's <em>Colours of Love</em> (1973). This is related terminology, not a claim that Lee's six styles define the project's twelve independent axes or its intended Ludus combinations.</p>
+<p><strong>[9] Targeted semantic loading development account.</strong> Ryah's explanation supplied November 3, 2026: the observed Ludus-to-flirting drift, the intended contextual combinations, the definition/emoji intervention, and active development use. Source inspection confirms the one-occurrence legend and emoji-only state instruction in implementation snapshot [1]. Cindy inspected the implementation; the behavioral account is supplied by Ryah.</p>
+<p><strong>[10] Reconstructed compact-base comparison.</strong> Cindy, November 3, 2026. <a href="trp-base-comparison/report.md">Report</a>, <a href="trp-base-comparison/fixtures.json">frozen fixtures</a>, <a href="trp-base-comparison/results.json">results</a>, and <a href="trp-base-comparison/compare.py">counting script</a>. Seventeen primary pairs frozen before counting, with separate ASCII-marker and state-template diagnostics; <code>tiktoken</code> 0.14.0, <code>cl100k_base</code> and <code>o200k_base</code>. Fixture SHA-256: <code>a78b7e6ba11f76b616ab56c96e2ef4e48970b1b253e65b8fd2af7acf210bc700</code>. The base side is Cindy's reconstruction, not a historical base-TRP corpus.</p>
+<p>Hashes identify the inspected sources without requiring disclosure of the private preset. This paper is a standalone design account; reproducing runtime results would require the implementation, compatible host configuration, and an executed evaluation protocol.</p>
+</article>
+        <footer class="footer">TeleWire TRP-AO · November 3, 2026<br>Method and implementation: Ryah · Drafting and token analysis: Cindy<br>Reproducible token measurements; controlled behavioral evaluation proposed.</footer>
     </main>
 </body>
 
