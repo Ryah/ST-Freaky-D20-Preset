@@ -1,0 +1,223 @@
+{
+  "purpose": "Illustrative stored-fragment counts; not a representative preset benchmark.",
+  "backend": "tiktoken",
+  "version": "0.14.0",
+  "evidence_scope": {
+    "fixtures": "Documentation-authored expansions and AO expressions; not the author's historical before/after corpus.",
+    "assumptions": "g means a gossip record, ct is the tick count, K(g) is its witness set; arrow and function semantics are already defined.",
+    "excluded": "Legend/setup costs, assembled prompt wrappers, macro expansion, provider formatting, output tokens, attention and behavioral outcomes.",
+    "semantics": "Intended equivalence for illustration; no generation-based equivalence test was run.",
+    "ao_overhead_vs_base_trp": "Not measured; author reports approximately 5-10% depending on complexity.",
+    "author_reported_savings": "Typically 30-50% versus expanded prompt wording; historical raw pairs and tokenizer metadata were not supplied here."
+  },
+  "encodings": {
+    "cl100k_base": {
+      "fixtures": [
+        {
+          "name": "gossip_age",
+          "expanded": "Increase the age of every gossip record g by one.",
+          "ao": "AGE ∀ g +1",
+          "expanded_tokens": 11,
+          "ao_tokens": 5,
+          "saved_tokens": 6,
+          "savings_percent": 54.5,
+          "expanded_characters": 49,
+          "ao_characters": 10
+        },
+        {
+          "name": "conditional_call",
+          "expanded": "If the current turn count ct is divisible by three, call chekhov_fire; after the function returns, continue with the next instruction.",
+          "ao": "IF ct%3=0 ➤ <fn:chekhov_fire>",
+          "expanded_tokens": 28,
+          "ao_tokens": 17,
+          "saved_tokens": 11,
+          "savings_percent": 39.3,
+          "expanded_characters": 134,
+          "ao_characters": 29
+        },
+        {
+          "name": "membership",
+          "expanded": "If participant n does not belong to the gossip witness set K(g), add participant n to that set.",
+          "ao": "n ∉ K(g) → add n",
+          "expanded_tokens": 21,
+          "ao_tokens": 9,
+          "saved_tokens": 12,
+          "savings_percent": 57.1,
+          "expanded_characters": 95,
+          "ao_characters": 16
+        }
+      ],
+      "markers": [
+        {
+          "text": "→",
+          "standalone_tokens": 1,
+          "space_prefixed_tokens": 1
+        },
+        {
+          "text": "∀",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 1
+        },
+        {
+          "text": "≥",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 1
+        },
+        {
+          "text": "∈",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 1
+        },
+        {
+          "text": "∅",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "➤",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "⇥",
+          "standalone_tokens": 3,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "⇤",
+          "standalone_tokens": 3,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "↺",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "Ψ",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "ℱ̄",
+          "standalone_tokens": 4,
+          "space_prefixed_tokens": 4
+        },
+        {
+          "text": "🌶️",
+          "standalone_tokens": 4,
+          "space_prefixed_tokens": 4
+        },
+        {
+          "text": "🎲",
+          "standalone_tokens": 3,
+          "space_prefixed_tokens": 3
+        }
+      ]
+    },
+    "o200k_base": {
+      "fixtures": [
+        {
+          "name": "gossip_age",
+          "expanded": "Increase the age of every gossip record g by one.",
+          "ao": "AGE ∀ g +1",
+          "expanded_tokens": 11,
+          "ao_tokens": 6,
+          "saved_tokens": 5,
+          "savings_percent": 45.5,
+          "expanded_characters": 49,
+          "ao_characters": 10
+        },
+        {
+          "name": "conditional_call",
+          "expanded": "If the current turn count ct is divisible by three, call chekhov_fire; after the function returns, continue with the next instruction.",
+          "ao": "IF ct%3=0 ➤ <fn:chekhov_fire>",
+          "expanded_tokens": 27,
+          "ao_tokens": 16,
+          "saved_tokens": 11,
+          "savings_percent": 40.7,
+          "expanded_characters": 134,
+          "ao_characters": 29
+        },
+        {
+          "name": "membership",
+          "expanded": "If participant n does not belong to the gossip witness set K(g), add participant n to that set.",
+          "ao": "n ∉ K(g) → add n",
+          "expanded_tokens": 21,
+          "ao_tokens": 9,
+          "saved_tokens": 12,
+          "savings_percent": 57.1,
+          "expanded_characters": 95,
+          "ao_characters": 16
+        }
+      ],
+      "markers": [
+        {
+          "text": "→",
+          "standalone_tokens": 1,
+          "space_prefixed_tokens": 1
+        },
+        {
+          "text": "∀",
+          "standalone_tokens": 1,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "≥",
+          "standalone_tokens": 1,
+          "space_prefixed_tokens": 1
+        },
+        {
+          "text": "∈",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "∅",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "➤",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "⇥",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "⇤",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "↺",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "Ψ",
+          "standalone_tokens": 1,
+          "space_prefixed_tokens": 2
+        },
+        {
+          "text": "ℱ̄",
+          "standalone_tokens": 4,
+          "space_prefixed_tokens": 4
+        },
+        {
+          "text": "🌶️",
+          "standalone_tokens": 3,
+          "space_prefixed_tokens": 3
+        },
+        {
+          "text": "🎲",
+          "standalone_tokens": 2,
+          "space_prefixed_tokens": 2
+        }
+      ]
+    }
+  }
+}
