@@ -1,6 +1,29 @@
-# TeleWire TRP-AO versus reconstructed compact TeleWire TRP
+# Token comparison: Markdown prose, compact TeleWire TRP, and TRP-AO
 
 Token-count estimate · November 3, 2026
+
+## Ordinary Markdown prose baseline
+
+Cindy authored normal Markdown versions of the same samples using headings, bullets, numbered steps, and full sentences. The texts were frozen before counting, without a target token reduction. Required identifiers and output syntax remain; instruction module wrappers become headings. The original AO/base fixtures are unchanged.
+
+| Scope | Encoding | Markdown prose | Compact base | AO | Base savings | AO savings |
+|---|---|---:|---:|---:|---:|---:|
+| 16 instruction/setup samples | `cl100k_base` | 2,705 | 2,045 | 2,296 | 24.40% | 15.12% |
+| 16 instruction/setup samples | `o200k_base` | 2,690 | 2,033 | 2,268 | 24.42% | 15.69% |
+| 12 rule modules | `cl100k_base` | 2,229 | 1,691 | 1,863 | 24.14% | 16.42% |
+| 12 rule modules | `o200k_base` | 2,225 | 1,688 | 1,852 | 24.13% | 16.76% |
+| 3 procedures | `cl100k_base` | 346 | 290 | 344 | 16.18% | 0.58% |
+| 3 procedures | `o200k_base` | 341 | 283 | 333 | 17.01% | 2.35% |
+| 17 samples including state row | `cl100k_base` | 2,797 | 2,098 | 2,388 | 24.99% | 14.62% |
+| 17 samples including state row | `o200k_base` | 2,778 | 2,086 | 2,356 | 24.91% | 15.19% |
+
+Savings use `100 × (1 − compact / Markdown)`. Counts include Markdown punctuation and headings, with the same two-newline joining rule as the AO/base comparison. These are direct counts for one authored prose baseline; wording choices affect the estimate.
+
+The 16 instruction/setup samples are the primary prose comparison. The seventeenth sample is serialized state, not an instruction: the prose baseline keeps the exact AO state row as a shared output contract. Compact base keeps its existing short-label row. Its mixed-pack savings therefore include that state-label difference. The prose legend retains emoji mappings to preserve the AO output contract and semantic associations.
+
+No generation-based equivalence test was run. The [Markdown fixtures](prose-fixtures.json) and [all three versions](pairs.md) make semantic coverage and editorial choices inspectable. This baseline was added after the original AO/base results were known; it does not turn the convenience sample into a representative corpus.
+
+Markdown-fixture SHA-256: `7561444c00cec52af426c46e81c454068e1fe00292a0ef0e9946cf82993d806d`.
 
 ## Result
 
@@ -77,10 +100,12 @@ From the repository root:
 
 ```powershell
 python docs/frankenwire/trp-base-comparison/compare.py
+python docs/frankenwire/trp-base-comparison/render.py
 ```
 
-- [All source/base pairs](pairs.md): inspect the conversion decisions and per-sample counts.
+- [All three versions](pairs.md): inspect the conversion decisions and per-sample counts.
 - [Frozen fixtures](fixtures.json): full strings, source locations, and conversion notes.
+- [Markdown prose fixtures](prose-fixtures.json): ordinary instruction versions and output-contract policy.
 - [Measured results](results.json): group totals, individual counts, descriptive statistics, and ASCII controls.
 - [State-template diagnostic](state-context.json): full paired diagnostic text.
 
@@ -88,4 +113,4 @@ The JSON also contains explicitly artificial repeated-row scenarios. They keep t
 
 Source preset SHA-256: `a26276225f8beccd06bfc0cddde916d485541c2cd0607614c13a0547fa2dbd88`. Frozen-fixture SHA-256: `a78b7e6ba11f76b616ab56c96e2ef4e48970b1b253e65b8fd2af7acf210bc700`.
 
-Existing whitepapers and their newer workspace copies were left unchanged. This report adds a separate reconstructed-base estimate; it does not replace the earlier AO-versus-expanded-prose examples.
+The whitepaper summarizes these measurements. The original three expression-level prose examples remain a separate illustrative comparison.

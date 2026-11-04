@@ -5,13 +5,13 @@
 **Attention-Optimized · FrankenSIM / Vexa · formerly FrankenWIRE**\
 **Method designer and project developer:** Ryah\
 **Whitepaper drafting, source review, and token analysis:** Cindy, an LLM agent\
-**Document:** Technical design whitepaper, version 1.3 · November 3, 2026
+**Document:** Technical design whitepaper, version 1.4 · November 3, 2026
 
 ### Abstract
 
 TeleWire TRP-AO (Attention-Optimized), previously documented as FrankenWIRE, is a symbolic prompt-authoring approach used in the FrankenSIM/Vexa interactive simulation project. It combines compact rule modules with distinctive Unicode and emoji cues, then references those rules through a staged page-and-function workflow. Its design objective is semantic density with explicit salience: preserve short instructions while spending a small token premium on recognizable markers for operations, relationships, and control flow.
 
-Base TeleWire Tag Recall Prompting (TRP) prioritizes token compactness. A reproducible comparison of 17 AO samples against reconstructed compact base-TRP counterparts measured **12.94–13.82% AO overhead** across the selected mix, and **9.72–10.17%** across its twelve rule modules. Three separate illustrative expression pairs measured **39–57% savings against expanded prose**. These counts quantify the representation tradeoff; the behavioral value of the markers is a separate evaluation question.
+Base TeleWire Tag Recall Prompting (TRP) prioritizes token compactness. A reproducible comparison of 17 AO samples against reconstructed compact base-TRP counterparts measured **12.94–13.82% AO overhead** across the selected mix, and **9.72–10.17%** across its twelve rule modules. Against ordinary Markdown prose versions of sixteen instruction/setup samples, AO measured **15.12–15.69% savings**, and compact base TRP **24.40–24.42%**. Three separate expression-level examples measured **39–57% savings against their English expansions**. These counts quantify the representation tradeoff; the behavioral value of the markers is a separate evaluation question.
 
 Ryah also uses **targeted semantic loading** in development: choosing recurring state markers to reinforce the intended interpretation of an overloaded concept. The Ludus/🎲 case documents the observed problem, intervention, and intended behavior. This paper presents that development account alongside source inspection and scripted token measurements.
 
@@ -246,6 +246,25 @@ The isolated matrix row adds **35–39 tokens** over short axis labels, or **66�
 
 The [comparison report](trp-base-comparison/report.md), [all paired strings](trp-base-comparison/pairs.md), and [recorded results](trp-base-comparison/results.json) expose the reconstruction choices and diagnostics. Run `python docs/frankenwire/trp-base-comparison/compare.py` from the repository root to reproduce them.
 
+### Ordinary Markdown instruction baseline
+
+Cindy added ordinary prose versions of the same samples using Markdown headings, bullets, numbered steps, and full sentences. The baseline was written and frozen before its token counts were run, without a target savings rate. It was added after the original AO/base comparison. The original source excerpts and compact-base reconstructions are unchanged.
+
+| Instruction/setup scope | Encoding | Markdown | Compact base | AO | Base savings | AO savings |
+|---|---|---:|---:|---:|---:|---:|
+| All sixteen | `cl100k_base` | 2,705 | 2,045 | 2,296 | 24.40% | 15.12% |
+| All sixteen | `o200k_base` | 2,690 | 2,033 | 2,268 | 24.42% | 15.69% |
+| Twelve rule modules | `cl100k_base` | 2,229 | 1,691 | 1,863 | 24.14% | 16.42% |
+| Twelve rule modules | `o200k_base` | 2,225 | 1,688 | 1,852 | 24.13% | 16.76% |
+| Three procedures | `cl100k_base` | 346 | 290 | 344 | 16.18% | 0.58% |
+| Three procedures | `o200k_base` | 341 | 283 | 333 | 17.01% | 2.35% |
+
+**Across these sixteen instruction/setup samples, AO saves about 15–16% against concise Markdown instructions; compact base TRP saves about 24%.** Savings use `100 × (1 − compact / Markdown)`. Headings and Markdown punctuation are included. These are counts for one authored prose rendering, so the result depends on wording and does not measure how all instruction writers compose prompts. Required identifiers, examples, conditions, and output syntax are retained; no model-generation equivalence test was run.
+
+The serialized matrix row is not a prose instruction and is excluded from this primary comparison. The separate seventeen-sample mixed-pack diagnostic retains the exact AO state row in the prose baseline as a shared output contract; base retains its earlier short-label row. The prose axis legend retains the required emoji mappings. Full strings and mixed-pack totals are available in [10].
+
+The smaller savings here than in the three expression examples below reflect a different baseline and sample: concise, complete Markdown instructions versus selected expanded expressions. The measurements describe their respective strings; the expression examples do not establish a general 39–57% reduction for full instruction modules.
+
 ### Measured illustrative savings against expanded prose
 
 Cindy paired three compact expressions with explicit English expansions and counted them with `tiktoken` 0.14.0. The table reports measured savings for those examples. Both encodings are reference counters; production-model tokenization and billed usage are outside this measurement.
@@ -332,6 +351,6 @@ Targeted semantic loading extends that contribution to representation choices in
 
 **[9] Targeted semantic loading development account.** Ryah's explanation supplied November 3, 2026: the observed Ludus-to-flirting drift, the intended contextual combinations, the definition/emoji intervention, and active development use. Source inspection confirms the one-occurrence legend and emoji-only state instruction in implementation snapshot [1]. Cindy inspected the implementation; the behavioral account is supplied by Ryah.
 
-**[10] Reconstructed compact-base comparison.** Cindy, November 3, 2026. [Report](trp-base-comparison/report.md), [frozen fixtures](trp-base-comparison/fixtures.json), [results](trp-base-comparison/results.json), and [counting script](trp-base-comparison/compare.py). Seventeen primary pairs frozen before counting, with separate ASCII-marker and state-template diagnostics; `tiktoken` 0.14.0, `cl100k_base` and `o200k_base`. Fixture SHA-256: `a78b7e6ba11f76b616ab56c96e2ef4e48970b1b253e65b8fd2af7acf210bc700`. The base side is Cindy's reconstruction, not a historical base-TRP corpus.
+**[10] Reconstructed compact-base comparison.** Cindy, November 3, 2026. [Report](trp-base-comparison/report.md), [frozen fixtures](trp-base-comparison/fixtures.json), [results](trp-base-comparison/results.json), and [counting script](trp-base-comparison/compare.py). Seventeen primary pairs frozen before counting, with separate ASCII-marker and state-template diagnostics; `tiktoken` 0.14.0, `cl100k_base` and `o200k_base`. Fixture SHA-256: `a78b7e6ba11f76b616ab56c96e2ef4e48970b1b253e65b8fd2af7acf210bc700`. The base side is Cindy's reconstruction, not a historical base-TRP corpus. Additional [Markdown prose fixtures](trp-base-comparison/prose-fixtures.json) provide the ordinary-instruction baseline; SHA-256: `7561444c00cec52af426c46e81c454068e1fe00292a0ef0e9946cf82993d806d`. They were authored and frozen separately after the original comparison.
 
 Hashes identify the inspected sources without requiring disclosure of the private preset. This paper is a standalone design account; reproducing runtime results would require the implementation, compatible host configuration, and an executed evaluation protocol.

@@ -110,12 +110,42 @@ def run():
             'extra_tokens': context_ao - context_base,
             'ao_over_control_percent': overhead(context_ao, context_base),
         }
+    prose_raw = (ROOT / 'prose-fixtures.json').read_bytes()
+    prose = json.loads(prose_raw)
+    prose_index = {f['id']: f for f in prose['fixtures']}
+    assert set(prose_index) == {f['id'] for f in data['fixtures']}
+    report['markdown_baseline'] = {
+        'fixtures_sha256': hashlib.sha256(prose_raw.replace(b'\r\n', b'\n')).hexdigest(),
+        'policy': prose['policy'], 'state_policy': prose['state_policy'],
+        'savings_formula': '100 * (1 - compact_tokens / markdown_tokens)',
+        'encodings': {},
+    }
+    for name, result in report['encodings'].items():
+        enc = tiktoken.get_encoding(name)
+        for row in result['samples']:
+            tokens = len(enc.encode(prose_index[row['id']]['markdown']))
+            row.update(markdown_tokens=tokens,
+                       ao_savings_vs_markdown_percent=round(100 * (1-row['ao_tokens']/tokens), 2),
+                       base_savings_vs_markdown_percent=round(100 * (1-row['base_tokens']/tokens), 2))
+        subsets = {'rules': [f for f in data['fixtures'] if f['group']=='rules'],
+                   'procedures': [f for f in data['fixtures'] if f['group']=='procedures'],
+                   'instructions_and_setup': [f for f in data['fixtures'] if f['group']!='state'],
+                   'mixed_pack': data['fixtures']}
+        totals = {}
+        for scope, fixtures in subsets.items():
+            counts = {key: len(enc.encode('\n\n'.join(f[key] for f in fixtures))) for key in ('ao','base')}
+            counts['markdown'] = len(enc.encode('\n\n'.join(prose_index[f['id']]['markdown'] for f in fixtures)))
+            totals[scope] = {'samples':len(fixtures), **{key+'_tokens':value for key,value in counts.items()},
+                             'ao_savings_percent':round(100*(1-counts['ao']/counts['markdown']),2),
+                             'base_savings_percent':round(100*(1-counts['base']/counts['markdown']),2)}
+        report['markdown_baseline']['encodings'][name] = totals
     return data, report
 
 
 def write_pair_review(data, report):
-    text = ['# AO and reconstructed base comparison pairs', '',
-            'All samples were fixed before token counting. Base versions are reconstructed experimental text, not historical base blocks or importable preset replacements.', '',
+    prose = {f['id']: f['markdown'] for f in json.loads((ROOT/'prose-fixtures.json').read_text(encoding='utf-8'))['fixtures']}
+    text = ['# Markdown prose, compact base, and AO comparison samples', '',
+            'The original AO/base pairs were frozen before their first count. The Markdown baseline was authored later and frozen before its own first count. These are experimental comparison texts, not importable preset replacements.', '',
             data['conversion_policy'], '']
     counts = {name: {r['id']: r for r in result['samples']}
               for name, result in report['encodings'].items()}
@@ -124,10 +154,11 @@ def write_pair_review(data, report):
                  f"Source: `{f['source_block']}`. {f['conversion_notes']}", '',
                  '**AO — exact source excerpt**', '', '```text', f['ao'], '```', '',
                  '**Base — manual reconstruction**', '', '```text', f['base'], '```', '',
-                 '| Encoding | Base | AO | AO difference |', '|---|---:|---:|---:|']
+                 '**Ordinary Markdown prose — authored baseline**', '', '```markdown', prose[f['id']], '```', '',
+                 '| Encoding | Markdown | Base | AO | AO savings vs Markdown | Base savings vs Markdown |', '|---|---:|---:|---:|---:|---:|']
         for name, index in counts.items():
             row = index[f['id']]
-            text.append(f"| `{name}` | {row['base_tokens']} | {row['ao_tokens']} | {row['ao_overhead_percent']:+.2f}% |")
+            text.append(f"| `{name}` | {row['markdown_tokens']} | {row['base_tokens']} | {row['ao_tokens']} | {row['ao_savings_vs_markdown_percent']:.2f}% | {row['base_savings_vs_markdown_percent']:.2f}% |")
         text += ['']
     (ROOT/'pairs.md').write_text('\n'.join(text) + '\n', encoding='utf-8')
 
@@ -139,7 +170,7 @@ def write_report(data, report):
     rule_ranges = [r['groups']['rules']['joined_ao_overhead_percent'] for r in encodings.values()]
     iqrs = [r['groups']['rules']['sample_IQR_percent'] for r in encodings.values()]
     text = [
-        '# TeleWire TRP-AO versus reconstructed compact TeleWire TRP', '',
+        '# Token comparison: Markdown prose, compact TeleWire TRP, and TRP-AO', '',
         'Token-count estimate · November 3, 2026', '',
         '## Result', '',
         f"Across **all 17 selected examples counted once each**, AO used **{min(pack_ranges):.2f}–{max(pack_ranges):.2f}% more tokens** than the reconstructed compact base versions. This is a selected mixed pack, not a measured full prompt.", '',
@@ -194,15 +225,30 @@ def write_report(data, report):
         'The result is an empirical count for these specific paired strings and an estimate of reconstruction cost. It should not be generalized into a whole-preset or universal AO overhead without a larger corpus and the actual target tokenizer.', '',
         '## Reproduce and inspect', '',
         'From the repository root:', '',
-        '```powershell', 'python docs/frankenwire/trp-base-comparison/compare.py', '```', '',
-        '- [All source/base pairs](pairs.md): inspect the conversion decisions and per-sample counts.',
+        '```powershell', 'python docs/frankenwire/trp-base-comparison/compare.py', 'python docs/frankenwire/trp-base-comparison/render.py', '```', '',
+        '- [All three versions](pairs.md): inspect the conversion decisions and per-sample counts.',
         '- [Frozen fixtures](fixtures.json): full strings, source locations, and conversion notes.',
+        '- [Markdown prose fixtures](prose-fixtures.json): ordinary instruction versions and output-contract policy.',
         '- [Measured results](results.json): group totals, individual counts, descriptive statistics, and ASCII controls.',
         '- [State-template diagnostic](state-context.json): full paired diagnostic text.', '',
         'The JSON also contains explicitly artificial repeated-row scenarios. They keep this selected static pack once and repeat only a matrix row; they are not measurements of an actual chat or full repeated state blocks.', '',
         f"Source preset SHA-256: `{data['source_sha256']}`. Frozen-fixture SHA-256: `{report['fixtures_sha256']}`.", '',
-        'Existing whitepapers and their newer workspace copies were left unchanged. This report adds a separate reconstructed-base estimate; it does not replace the earlier AO-versus-expanded-prose examples.',
+        'The whitepaper summarizes these measurements. The original three expression-level prose examples remain a separate illustrative comparison.',
     ]
+    baseline = report['markdown_baseline']
+    section = ['## Ordinary Markdown prose baseline', '',
+               'Cindy authored normal Markdown versions of the same samples using headings, bullets, numbered steps, and full sentences. The texts were frozen before counting, without a target token reduction. Required identifiers and output syntax remain; instruction module wrappers become headings. The original AO/base fixtures are unchanged.', '',
+               '| Scope | Encoding | Markdown prose | Compact base | AO | Base savings | AO savings |',
+               '|---|---|---:|---:|---:|---:|---:|']
+    for scope, label in [('instructions_and_setup','16 instruction/setup samples'),('rules','12 rule modules'),('procedures','3 procedures'),('mixed_pack','17 samples including state row')]:
+        for name, totals in baseline['encodings'].items():
+            s = totals[scope]
+            section.append(f"| {label} | `{name}` | {s['markdown_tokens']:,} | {s['base_tokens']:,} | {s['ao_tokens']:,} | {s['base_savings_percent']:.2f}% | {s['ao_savings_percent']:.2f}% |")
+    section += ['', 'Savings use `100 × (1 − compact / Markdown)`. Counts include Markdown punctuation and headings, with the same two-newline joining rule as the AO/base comparison. These are direct counts for one authored prose baseline; wording choices affect the estimate.', '',
+                'The 16 instruction/setup samples are the primary prose comparison. The seventeenth sample is serialized state, not an instruction: the prose baseline keeps the exact AO state row as a shared output contract. Compact base keeps its existing short-label row. Its mixed-pack savings therefore include that state-label difference. The prose legend retains emoji mappings to preserve the AO output contract and semantic associations.', '',
+                'No generation-based equivalence test was run. The [Markdown fixtures](prose-fixtures.json) and [all three versions](pairs.md) make semantic coverage and editorial choices inspectable. This baseline was added after the original AO/base results were known; it does not turn the convenience sample into a representative corpus.', '',
+                f"Markdown-fixture SHA-256: `{baseline['fixtures_sha256']}`.", '']
+    text[4:4] = section
     (ROOT/'report.md').write_text('\n'.join(text) + '\n', encoding='utf-8')
 
 
@@ -213,6 +259,8 @@ if __name__ == '__main__':
     write_report(data, report)
     for name, result in report['encodings'].items():
         print(name)
+        prose = report['markdown_baseline']['encodings'][name]['instructions_and_setup']
+        print(f"  16 instruction/setup samples: {prose['markdown_tokens']} Markdown, {prose['base_tokens']} base, {prose['ao_tokens']} AO; savings {prose['base_savings_percent']}% base / {prose['ao_savings_percent']}% AO")
         for group, s in result['groups'].items():
             print(f"  {group}: {s['joined_base_tokens']} base, {s['joined_ao_tokens']} AO, {s['joined_ao_overhead_percent']:+.2f}%; ASCII control {s['joined_ao_over_ascii_control_percent']:+.2f}%")
         for row in result['samples']:

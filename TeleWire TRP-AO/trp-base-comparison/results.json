@@ -121,7 +121,10 @@
           "ascii_control_tokens": 134,
           "ao_minus_base_tokens": 3,
           "ao_overhead_percent": 2.29,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 174,
+          "ao_savings_vs_markdown_percent": 22.99,
+          "base_savings_vs_markdown_percent": 24.71
         },
         {
           "id": "dedup",
@@ -131,7 +134,10 @@
           "ascii_control_tokens": 42,
           "ao_minus_base_tokens": 0,
           "ao_overhead_percent": 0.0,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 50,
+          "ao_savings_vs_markdown_percent": 16.0,
+          "base_savings_vs_markdown_percent": 16.0
         },
         {
           "id": "intro",
@@ -141,7 +147,10 @@
           "ascii_control_tokens": 49,
           "ao_minus_base_tokens": 4,
           "ao_overhead_percent": 8.89,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 62,
+          "ao_savings_vs_markdown_percent": 20.97,
+          "base_savings_vs_markdown_percent": 27.42
         },
         {
           "id": "knowledge",
@@ -151,7 +160,10 @@
           "ascii_control_tokens": 237,
           "ao_minus_base_tokens": 22,
           "ao_overhead_percent": 10.23,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 309,
+          "ao_savings_vs_markdown_percent": 23.3,
+          "base_savings_vs_markdown_percent": 30.42
         },
         {
           "id": "creation",
@@ -161,7 +173,10 @@
           "ascii_control_tokens": 224,
           "ao_minus_base_tokens": 14,
           "ao_overhead_percent": 6.67,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 323,
+          "ao_savings_vs_markdown_percent": 30.65,
+          "base_savings_vs_markdown_percent": 34.98
         },
         {
           "id": "tfdy",
@@ -171,7 +186,10 @@
           "ascii_control_tokens": 314,
           "ao_minus_base_tokens": 14,
           "ao_overhead_percent": 4.67,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 362,
+          "ao_savings_vs_markdown_percent": 13.26,
+          "base_savings_vs_markdown_percent": 17.13
         },
         {
           "id": "matrix",
@@ -181,7 +199,10 @@
           "ascii_control_tokens": 141,
           "ao_minus_base_tokens": 17,
           "ao_overhead_percent": 13.71,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 159,
+          "ao_savings_vs_markdown_percent": 11.32,
+          "base_savings_vs_markdown_percent": 22.01
         },
         {
           "id": "dam",
@@ -191,7 +212,10 @@
           "ascii_control_tokens": 140,
           "ao_minus_base_tokens": 20,
           "ao_overhead_percent": 16.39,
-          "ao_over_ascii_control_percent": 1.43
+          "ao_over_ascii_control_percent": 1.43,
+          "markdown_tokens": 174,
+          "ao_savings_vs_markdown_percent": 18.39,
+          "base_savings_vs_markdown_percent": 29.89
         },
         {
           "id": "format",
@@ -201,7 +225,10 @@
           "ascii_control_tokens": 119,
           "ao_minus_base_tokens": 19,
           "ao_overhead_percent": 19.0,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 109,
+          "ao_savings_vs_markdown_percent": -9.17,
+          "base_savings_vs_markdown_percent": 8.26
         },
         {
           "id": "notebook",
@@ -211,7 +238,10 @@
           "ascii_control_tokens": 103,
           "ao_minus_base_tokens": 26,
           "ao_overhead_percent": 33.77,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 107,
+          "ao_savings_vs_markdown_percent": 3.74,
+          "base_savings_vs_markdown_percent": 28.04
         },
         {
           "id": "combat",
@@ -221,7 +251,10 @@
           "ascii_control_tokens": 151,
           "ao_minus_base_tokens": 9,
           "ao_overhead_percent": 6.25,
-          "ao_over_ascii_control_percent": 1.32
+          "ao_over_ascii_control_percent": 1.32,
+          "markdown_tokens": 174,
+          "ao_savings_vs_markdown_percent": 12.07,
+          "base_savings_vs_markdown_percent": 17.24
         },
         {
           "id": "gfx",
@@ -231,7 +264,10 @@
           "ascii_control_tokens": 205,
           "ao_minus_base_tokens": 24,
           "ao_overhead_percent": 13.26,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 226,
+          "ao_savings_vs_markdown_percent": 9.29,
+          "base_savings_vs_markdown_percent": 19.91
         },
         {
           "id": "chekhov_load",
@@ -241,7 +277,10 @@
           "ascii_control_tokens": 73,
           "ao_minus_base_tokens": 4,
           "ao_overhead_percent": 5.56,
-          "ao_over_ascii_control_percent": 4.11
+          "ao_over_ascii_control_percent": 4.11,
+          "markdown_tokens": 95,
+          "ao_savings_vs_markdown_percent": 20.0,
+          "base_savings_vs_markdown_percent": 24.21
         },
         {
           "id": "mechanics",
@@ -251,7 +290,10 @@
           "ascii_control_tokens": 177,
           "ao_minus_base_tokens": 45,
           "ao_overhead_percent": 31.91,
-          "ao_over_ascii_control_percent": 5.08
+          "ao_over_ascii_control_percent": 5.08,
+          "markdown_tokens": 158,
+          "ao_savings_vs_markdown_percent": -17.72,
+          "base_savings_vs_markdown_percent": 10.76
         },
         {
           "id": "gossip_plant",
@@ -261,7 +303,10 @@
           "ascii_control_tokens": 80,
           "ao_minus_base_tokens": 5,
           "ao_overhead_percent": 6.49,
-          "ao_over_ascii_control_percent": 2.5
+          "ao_over_ascii_control_percent": 2.5,
+          "markdown_tokens": 93,
+          "ao_savings_vs_markdown_percent": 11.83,
+          "base_savings_vs_markdown_percent": 17.2
         },
         {
           "id": "axis_legend",
@@ -271,7 +316,10 @@
           "ascii_control_tokens": 63,
           "ao_minus_base_tokens": 25,
           "ao_overhead_percent": 39.06,
-          "ao_over_ascii_control_percent": 41.27
+          "ao_over_ascii_control_percent": 41.27,
+          "markdown_tokens": 130,
+          "ao_savings_vs_markdown_percent": 31.54,
+          "base_savings_vs_markdown_percent": 50.77
         },
         {
           "id": "matrix_state_row",
@@ -281,7 +329,10 @@
           "ascii_control_tokens": 53,
           "ao_minus_base_tokens": 39,
           "ao_overhead_percent": 73.58,
-          "ao_over_ascii_control_percent": 73.58
+          "ao_over_ascii_control_percent": 73.58,
+          "markdown_tokens": 92,
+          "ao_savings_vs_markdown_percent": 0.0,
+          "base_savings_vs_markdown_percent": 42.39
         }
       ],
       "synthetic_pack_state_repetition_scenarios": [
@@ -379,7 +430,10 @@
           "ascii_control_tokens": 133,
           "ao_minus_base_tokens": 4,
           "ao_overhead_percent": 3.1,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 174,
+          "ao_savings_vs_markdown_percent": 23.56,
+          "base_savings_vs_markdown_percent": 25.86
         },
         {
           "id": "dedup",
@@ -389,7 +443,10 @@
           "ascii_control_tokens": 41,
           "ao_minus_base_tokens": 0,
           "ao_overhead_percent": 0.0,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 50,
+          "ao_savings_vs_markdown_percent": 18.0,
+          "base_savings_vs_markdown_percent": 18.0
         },
         {
           "id": "intro",
@@ -399,7 +456,10 @@
           "ascii_control_tokens": 49,
           "ao_minus_base_tokens": 4,
           "ao_overhead_percent": 8.89,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 62,
+          "ao_savings_vs_markdown_percent": 20.97,
+          "base_savings_vs_markdown_percent": 27.42
         },
         {
           "id": "knowledge",
@@ -409,7 +469,10 @@
           "ascii_control_tokens": 234,
           "ao_minus_base_tokens": 20,
           "ao_overhead_percent": 9.35,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 308,
+          "ao_savings_vs_markdown_percent": 24.03,
+          "base_savings_vs_markdown_percent": 30.52
         },
         {
           "id": "creation",
@@ -419,7 +482,10 @@
           "ascii_control_tokens": 224,
           "ao_minus_base_tokens": 16,
           "ao_overhead_percent": 7.66,
-          "ao_over_ascii_control_percent": 0.45
+          "ao_over_ascii_control_percent": 0.45,
+          "markdown_tokens": 323,
+          "ao_savings_vs_markdown_percent": 30.34,
+          "base_savings_vs_markdown_percent": 35.29
         },
         {
           "id": "tfdy",
@@ -429,7 +495,10 @@
           "ascii_control_tokens": 313,
           "ao_minus_base_tokens": 14,
           "ao_overhead_percent": 4.67,
-          "ao_over_ascii_control_percent": 0.32
+          "ao_over_ascii_control_percent": 0.32,
+          "markdown_tokens": 361,
+          "ao_savings_vs_markdown_percent": 13.02,
+          "base_savings_vs_markdown_percent": 16.9
         },
         {
           "id": "matrix",
@@ -439,7 +508,10 @@
           "ascii_control_tokens": 141,
           "ao_minus_base_tokens": 17,
           "ao_overhead_percent": 13.71,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 159,
+          "ao_savings_vs_markdown_percent": 11.32,
+          "base_savings_vs_markdown_percent": 22.01
         },
         {
           "id": "dam",
@@ -449,7 +521,10 @@
           "ascii_control_tokens": 139,
           "ao_minus_base_tokens": 19,
           "ao_overhead_percent": 15.57,
-          "ao_over_ascii_control_percent": 1.44
+          "ao_over_ascii_control_percent": 1.44,
+          "markdown_tokens": 174,
+          "ao_savings_vs_markdown_percent": 18.97,
+          "base_savings_vs_markdown_percent": 29.89
         },
         {
           "id": "format",
@@ -459,7 +534,10 @@
           "ascii_control_tokens": 120,
           "ao_minus_base_tokens": 18,
           "ao_overhead_percent": 17.65,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 110,
+          "ao_savings_vs_markdown_percent": -9.09,
+          "base_savings_vs_markdown_percent": 7.27
         },
         {
           "id": "notebook",
@@ -469,7 +547,10 @@
           "ascii_control_tokens": 102,
           "ao_minus_base_tokens": 26,
           "ao_overhead_percent": 34.21,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 105,
+          "ao_savings_vs_markdown_percent": 2.86,
+          "base_savings_vs_markdown_percent": 27.62
         },
         {
           "id": "combat",
@@ -479,7 +560,10 @@
           "ascii_control_tokens": 150,
           "ao_minus_base_tokens": 7,
           "ao_overhead_percent": 4.9,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 172,
+          "ao_savings_vs_markdown_percent": 12.79,
+          "base_savings_vs_markdown_percent": 16.86
         },
         {
           "id": "gfx",
@@ -489,7 +573,10 @@
           "ascii_control_tokens": 202,
           "ao_minus_base_tokens": 19,
           "ao_overhead_percent": 10.38,
-          "ao_over_ascii_control_percent": 0.0
+          "ao_over_ascii_control_percent": 0.0,
+          "markdown_tokens": 227,
+          "ao_savings_vs_markdown_percent": 11.01,
+          "base_savings_vs_markdown_percent": 19.38
         },
         {
           "id": "chekhov_load",
@@ -499,7 +586,10 @@
           "ascii_control_tokens": 70,
           "ao_minus_base_tokens": 2,
           "ao_overhead_percent": 2.86,
-          "ao_over_ascii_control_percent": 2.86
+          "ao_over_ascii_control_percent": 2.86,
+          "markdown_tokens": 93,
+          "ao_savings_vs_markdown_percent": 22.58,
+          "base_savings_vs_markdown_percent": 24.73
         },
         {
           "id": "mechanics",
@@ -509,7 +599,10 @@
           "ascii_control_tokens": 172,
           "ao_minus_base_tokens": 44,
           "ao_overhead_percent": 32.35,
-          "ao_over_ascii_control_percent": 4.65
+          "ao_over_ascii_control_percent": 4.65,
+          "markdown_tokens": 155,
+          "ao_savings_vs_markdown_percent": -16.13,
+          "base_savings_vs_markdown_percent": 12.26
         },
         {
           "id": "gossip_plant",
@@ -519,7 +612,10 @@
           "ascii_control_tokens": 80,
           "ao_minus_base_tokens": 4,
           "ao_overhead_percent": 5.19,
-          "ao_over_ascii_control_percent": 1.25
+          "ao_over_ascii_control_percent": 1.25,
+          "markdown_tokens": 93,
+          "ao_savings_vs_markdown_percent": 12.9,
+          "base_savings_vs_markdown_percent": 17.2
         },
         {
           "id": "axis_legend",
@@ -529,7 +625,10 @@
           "ascii_control_tokens": 61,
           "ao_minus_base_tokens": 21,
           "ao_overhead_percent": 33.87,
-          "ao_over_ascii_control_percent": 36.07
+          "ao_over_ascii_control_percent": 36.07,
+          "markdown_tokens": 124,
+          "ao_savings_vs_markdown_percent": 33.06,
+          "base_savings_vs_markdown_percent": 50.0
         },
         {
           "id": "matrix_state_row",
@@ -539,7 +638,10 @@
           "ascii_control_tokens": 53,
           "ao_minus_base_tokens": 35,
           "ao_overhead_percent": 66.04,
-          "ao_over_ascii_control_percent": 66.04
+          "ao_over_ascii_control_percent": 66.04,
+          "markdown_tokens": 88,
+          "ao_savings_vs_markdown_percent": 0.0,
+          "base_savings_vs_markdown_percent": 39.77
         }
       ],
       "synthetic_pack_state_repetition_scenarios": [
@@ -579,6 +681,82 @@
         "full_template_short_label_control_tokens": 3371,
         "extra_tokens": 56,
         "ao_over_control_percent": 1.66
+      }
+    }
+  },
+  "markdown_baseline": {
+    "fixtures_sha256": "7561444c00cec52af426c46e81c454068e1fe00292a0ef0e9946cf82993d806d",
+    "policy": "Written and frozen before counting. Use clear headings, sentences, bullets and numbered steps; no deliberate padding or target savings. Preserve rules, examples, order, counts, exceptions, and required identifiers. Prose headings replace module wrappers; protected references and output syntax remain. This is one authored ordinary-prose baseline, not a sample of typical writers.",
+    "state_policy": "The matrix state row is serialized output rather than prose instructions. Retain the exact AO row as a shared output contract in the prose pack. Report 16 instruction/setup samples separately from the 17-sample mixed pack; base retains its previously frozen short-label row. The mixed pack therefore includes differing state-label conventions.",
+    "savings_formula": "100 * (1 - compact_tokens / markdown_tokens)",
+    "encodings": {
+      "cl100k_base": {
+        "rules": {
+          "samples": 12,
+          "ao_tokens": 1863,
+          "base_tokens": 1691,
+          "markdown_tokens": 2229,
+          "ao_savings_percent": 16.42,
+          "base_savings_percent": 24.14
+        },
+        "procedures": {
+          "samples": 3,
+          "ao_tokens": 344,
+          "base_tokens": 290,
+          "markdown_tokens": 346,
+          "ao_savings_percent": 0.58,
+          "base_savings_percent": 16.18
+        },
+        "instructions_and_setup": {
+          "samples": 16,
+          "ao_tokens": 2296,
+          "base_tokens": 2045,
+          "markdown_tokens": 2705,
+          "ao_savings_percent": 15.12,
+          "base_savings_percent": 24.4
+        },
+        "mixed_pack": {
+          "samples": 17,
+          "ao_tokens": 2388,
+          "base_tokens": 2098,
+          "markdown_tokens": 2797,
+          "ao_savings_percent": 14.62,
+          "base_savings_percent": 24.99
+        }
+      },
+      "o200k_base": {
+        "rules": {
+          "samples": 12,
+          "ao_tokens": 1852,
+          "base_tokens": 1688,
+          "markdown_tokens": 2225,
+          "ao_savings_percent": 16.76,
+          "base_savings_percent": 24.13
+        },
+        "procedures": {
+          "samples": 3,
+          "ao_tokens": 333,
+          "base_tokens": 283,
+          "markdown_tokens": 341,
+          "ao_savings_percent": 2.35,
+          "base_savings_percent": 17.01
+        },
+        "instructions_and_setup": {
+          "samples": 16,
+          "ao_tokens": 2268,
+          "base_tokens": 2033,
+          "markdown_tokens": 2690,
+          "ao_savings_percent": 15.69,
+          "base_savings_percent": 24.42
+        },
+        "mixed_pack": {
+          "samples": 17,
+          "ao_tokens": 2356,
+          "base_tokens": 2086,
+          "markdown_tokens": 2778,
+          "ao_savings_percent": 15.19,
+          "base_savings_percent": 24.91
+        }
       }
     }
   }
