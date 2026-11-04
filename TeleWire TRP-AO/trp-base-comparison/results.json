@@ -1,0 +1,585 @@
+{
+  "backend": "tiktoken",
+  "version": "0.14.0",
+  "fixtures_sha256": "a78b7e6ba11f76b616ab56c96e2ef4e48970b1b253e65b8fd2af7acf210bc700",
+  "artifact_hash_policy": "JSON file hashes normalize CRLF to LF; encoded sample strings remain unchanged.",
+  "source_sha256": "a26276225f8beccd06bfc0cddde916d485541c2cd0607614c13a0547fa2dbd88",
+  "formula": "100 * (AO_tokens / reconstructed_base_tokens - 1); positive means AO is larger",
+  "selection": "Fixed before counting: 12 complete declarative modules across system, perception, character creation, emotion, formatting, memory, combat and presentation; 3 complete procedural excerpts; 1 setup legend; 1 state row. Stratified convenience sample, not random or all-preset coverage.",
+  "conversion_policy": "Counterfactual manual base-style rendering from the archived base guide; concise flat properties, short lowercase module tags, ASCII arrows, words for symbolic operators, spaces or commas for lists. Preserve information, rule order, counts, exceptions, triggers and examples. Protected macros, function/state identifiers and literal host wrappers are retained even when they contain punctuation. Original contradictions are retained. All conversions are offline experimental text, not an importable preset.",
+  "limits": "Intended semantic coverage manually checked, not model-tested equivalence. No historical base corpus, generation, attention test, or provider-billed measurement. Reconstruction and verbosity choices influence the results. Values are unexpanded stored text, with source placeholders retained. Groups must not be pooled as though they were a whole prompt.",
+  "ascii_control_definition": "Fixed symbol-to-ASCII substitutions in otherwise unchanged AO text. Diagnostic control, not a base-TRP-compliant reconstruction or a behavior-equivalence claim.",
+  "ascii_substitutions": {
+    "🌶️": "E",
+    "🎲": "L",
+    "🤝": "Ph",
+    "🛠️": "Pr",
+    "🏠": "Sg",
+    "🕊️": "Ag",
+    "😠": "M",
+    "🥊": "Er",
+    "❄️": "Ec",
+    "🪨": "St",
+    "🌫️": "Ad",
+    "🐍": "Pt",
+    "→": "->",
+    "↔": "<->",
+    "⇄": "<->",
+    "∀": "all",
+    "∅": "none",
+    "≥": ">=",
+    "≤": "<=",
+    "≠": "!=",
+    "±": "+/-",
+    "×": "x",
+    "➤": "call",
+    "⇤": "return",
+    "⇥": "next",
+    "↺": "each",
+    "↳": "loop",
+    "↑": "up",
+    "↓": "down",
+    "°": " degrees",
+    "—": "-",
+    "–": "-",
+    "“": "\"",
+    "”": "\"",
+    "’": "'"
+  },
+  "encodings": {
+    "cl100k_base": {
+      "groups": {
+        "rules": {
+          "samples": 12,
+          "joined_ao_tokens": 1863,
+          "joined_base_tokens": 1691,
+          "joined_ascii_control_tokens": 1859,
+          "joined_ao_overhead_percent": 10.17,
+          "joined_ao_over_ascii_control_percent": 0.22,
+          "median_sample_overhead_percent": 9.56,
+          "sample_min_percent": 0.0,
+          "sample_max_percent": 33.77,
+          "sample_IQR_percent": [
+            5.86,
+            14.38
+          ],
+          "sum_separately_counted_ao_tokens": 1863,
+          "sum_separately_counted_base_tokens": 1691
+        },
+        "procedures": {
+          "samples": 3,
+          "joined_ao_tokens": 344,
+          "joined_base_tokens": 290,
+          "joined_ascii_control_tokens": 330,
+          "joined_ao_overhead_percent": 18.62,
+          "joined_ao_over_ascii_control_percent": 4.24,
+          "median_sample_overhead_percent": 6.49,
+          "sample_min_percent": 5.56,
+          "sample_max_percent": 31.91,
+          "sample_IQR_percent": [
+            6.03,
+            19.2
+          ],
+          "sum_separately_counted_ao_tokens": 344,
+          "sum_separately_counted_base_tokens": 290
+        },
+        "setup": {
+          "samples": 1,
+          "joined_ao_tokens": 89,
+          "joined_base_tokens": 64,
+          "joined_ascii_control_tokens": 63,
+          "joined_ao_overhead_percent": 39.06,
+          "joined_ao_over_ascii_control_percent": 41.27,
+          "median_sample_overhead_percent": 39.06,
+          "sample_min_percent": 39.06,
+          "sample_max_percent": 39.06,
+          "sample_IQR_percent": null,
+          "sum_separately_counted_ao_tokens": 89,
+          "sum_separately_counted_base_tokens": 64
+        },
+        "state": {
+          "samples": 1,
+          "joined_ao_tokens": 92,
+          "joined_base_tokens": 53,
+          "joined_ascii_control_tokens": 53,
+          "joined_ao_overhead_percent": 73.58,
+          "joined_ao_over_ascii_control_percent": 73.58,
+          "median_sample_overhead_percent": 73.58,
+          "sample_min_percent": 73.58,
+          "sample_max_percent": 73.58,
+          "sample_IQR_percent": null,
+          "sum_separately_counted_ao_tokens": 92,
+          "sum_separately_counted_base_tokens": 53
+        }
+      },
+      "samples": [
+        {
+          "id": "constants",
+          "group": "rules",
+          "ao_tokens": 134,
+          "base_tokens": 131,
+          "ascii_control_tokens": 134,
+          "ao_minus_base_tokens": 3,
+          "ao_overhead_percent": 2.29,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "dedup",
+          "group": "rules",
+          "ao_tokens": 42,
+          "base_tokens": 42,
+          "ascii_control_tokens": 42,
+          "ao_minus_base_tokens": 0,
+          "ao_overhead_percent": 0.0,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "intro",
+          "group": "rules",
+          "ao_tokens": 49,
+          "base_tokens": 45,
+          "ascii_control_tokens": 49,
+          "ao_minus_base_tokens": 4,
+          "ao_overhead_percent": 8.89,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "knowledge",
+          "group": "rules",
+          "ao_tokens": 237,
+          "base_tokens": 215,
+          "ascii_control_tokens": 237,
+          "ao_minus_base_tokens": 22,
+          "ao_overhead_percent": 10.23,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "creation",
+          "group": "rules",
+          "ao_tokens": 224,
+          "base_tokens": 210,
+          "ascii_control_tokens": 224,
+          "ao_minus_base_tokens": 14,
+          "ao_overhead_percent": 6.67,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "tfdy",
+          "group": "rules",
+          "ao_tokens": 314,
+          "base_tokens": 300,
+          "ascii_control_tokens": 314,
+          "ao_minus_base_tokens": 14,
+          "ao_overhead_percent": 4.67,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "matrix",
+          "group": "rules",
+          "ao_tokens": 141,
+          "base_tokens": 124,
+          "ascii_control_tokens": 141,
+          "ao_minus_base_tokens": 17,
+          "ao_overhead_percent": 13.71,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "dam",
+          "group": "rules",
+          "ao_tokens": 142,
+          "base_tokens": 122,
+          "ascii_control_tokens": 140,
+          "ao_minus_base_tokens": 20,
+          "ao_overhead_percent": 16.39,
+          "ao_over_ascii_control_percent": 1.43
+        },
+        {
+          "id": "format",
+          "group": "rules",
+          "ao_tokens": 119,
+          "base_tokens": 100,
+          "ascii_control_tokens": 119,
+          "ao_minus_base_tokens": 19,
+          "ao_overhead_percent": 19.0,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "notebook",
+          "group": "rules",
+          "ao_tokens": 103,
+          "base_tokens": 77,
+          "ascii_control_tokens": 103,
+          "ao_minus_base_tokens": 26,
+          "ao_overhead_percent": 33.77,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "combat",
+          "group": "rules",
+          "ao_tokens": 153,
+          "base_tokens": 144,
+          "ascii_control_tokens": 151,
+          "ao_minus_base_tokens": 9,
+          "ao_overhead_percent": 6.25,
+          "ao_over_ascii_control_percent": 1.32
+        },
+        {
+          "id": "gfx",
+          "group": "rules",
+          "ao_tokens": 205,
+          "base_tokens": 181,
+          "ascii_control_tokens": 205,
+          "ao_minus_base_tokens": 24,
+          "ao_overhead_percent": 13.26,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "chekhov_load",
+          "group": "procedures",
+          "ao_tokens": 76,
+          "base_tokens": 72,
+          "ascii_control_tokens": 73,
+          "ao_minus_base_tokens": 4,
+          "ao_overhead_percent": 5.56,
+          "ao_over_ascii_control_percent": 4.11
+        },
+        {
+          "id": "mechanics",
+          "group": "procedures",
+          "ao_tokens": 186,
+          "base_tokens": 141,
+          "ascii_control_tokens": 177,
+          "ao_minus_base_tokens": 45,
+          "ao_overhead_percent": 31.91,
+          "ao_over_ascii_control_percent": 5.08
+        },
+        {
+          "id": "gossip_plant",
+          "group": "procedures",
+          "ao_tokens": 82,
+          "base_tokens": 77,
+          "ascii_control_tokens": 80,
+          "ao_minus_base_tokens": 5,
+          "ao_overhead_percent": 6.49,
+          "ao_over_ascii_control_percent": 2.5
+        },
+        {
+          "id": "axis_legend",
+          "group": "setup",
+          "ao_tokens": 89,
+          "base_tokens": 64,
+          "ascii_control_tokens": 63,
+          "ao_minus_base_tokens": 25,
+          "ao_overhead_percent": 39.06,
+          "ao_over_ascii_control_percent": 41.27
+        },
+        {
+          "id": "matrix_state_row",
+          "group": "state",
+          "ao_tokens": 92,
+          "base_tokens": 53,
+          "ascii_control_tokens": 53,
+          "ao_minus_base_tokens": 39,
+          "ao_overhead_percent": 73.58,
+          "ao_over_ascii_control_percent": 73.58
+        }
+      ],
+      "synthetic_pack_state_repetition_scenarios": [
+        {
+          "row_repetitions": 1,
+          "ao_tokens": 2388,
+          "base_tokens": 2098,
+          "ao_overhead_percent": 13.82
+        },
+        {
+          "row_repetitions": 10,
+          "ao_tokens": 3216,
+          "base_tokens": 2575,
+          "ao_overhead_percent": 24.89
+        },
+        {
+          "row_repetitions": 50,
+          "ao_tokens": 6896,
+          "base_tokens": 4695,
+          "ao_overhead_percent": 46.88
+        }
+      ]
+    },
+    "o200k_base": {
+      "groups": {
+        "rules": {
+          "samples": 12,
+          "joined_ao_tokens": 1852,
+          "joined_base_tokens": 1688,
+          "joined_ascii_control_tokens": 1848,
+          "joined_ao_overhead_percent": 9.72,
+          "joined_ao_over_ascii_control_percent": 0.22,
+          "median_sample_overhead_percent": 9.12,
+          "sample_min_percent": 0.0,
+          "sample_max_percent": 34.21,
+          "sample_IQR_percent": [
+            4.84,
+            14.18
+          ],
+          "sum_separately_counted_ao_tokens": 1852,
+          "sum_separately_counted_base_tokens": 1688
+        },
+        "procedures": {
+          "samples": 3,
+          "joined_ao_tokens": 333,
+          "joined_base_tokens": 283,
+          "joined_ascii_control_tokens": 322,
+          "joined_ao_overhead_percent": 17.67,
+          "joined_ao_over_ascii_control_percent": 3.42,
+          "median_sample_overhead_percent": 5.19,
+          "sample_min_percent": 2.86,
+          "sample_max_percent": 32.35,
+          "sample_IQR_percent": [
+            4.03,
+            18.77
+          ],
+          "sum_separately_counted_ao_tokens": 333,
+          "sum_separately_counted_base_tokens": 283
+        },
+        "setup": {
+          "samples": 1,
+          "joined_ao_tokens": 83,
+          "joined_base_tokens": 62,
+          "joined_ascii_control_tokens": 61,
+          "joined_ao_overhead_percent": 33.87,
+          "joined_ao_over_ascii_control_percent": 36.07,
+          "median_sample_overhead_percent": 33.87,
+          "sample_min_percent": 33.87,
+          "sample_max_percent": 33.87,
+          "sample_IQR_percent": null,
+          "sum_separately_counted_ao_tokens": 83,
+          "sum_separately_counted_base_tokens": 62
+        },
+        "state": {
+          "samples": 1,
+          "joined_ao_tokens": 88,
+          "joined_base_tokens": 53,
+          "joined_ascii_control_tokens": 53,
+          "joined_ao_overhead_percent": 66.04,
+          "joined_ao_over_ascii_control_percent": 66.04,
+          "median_sample_overhead_percent": 66.04,
+          "sample_min_percent": 66.04,
+          "sample_max_percent": 66.04,
+          "sample_IQR_percent": null,
+          "sum_separately_counted_ao_tokens": 88,
+          "sum_separately_counted_base_tokens": 53
+        }
+      },
+      "samples": [
+        {
+          "id": "constants",
+          "group": "rules",
+          "ao_tokens": 133,
+          "base_tokens": 129,
+          "ascii_control_tokens": 133,
+          "ao_minus_base_tokens": 4,
+          "ao_overhead_percent": 3.1,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "dedup",
+          "group": "rules",
+          "ao_tokens": 41,
+          "base_tokens": 41,
+          "ascii_control_tokens": 41,
+          "ao_minus_base_tokens": 0,
+          "ao_overhead_percent": 0.0,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "intro",
+          "group": "rules",
+          "ao_tokens": 49,
+          "base_tokens": 45,
+          "ascii_control_tokens": 49,
+          "ao_minus_base_tokens": 4,
+          "ao_overhead_percent": 8.89,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "knowledge",
+          "group": "rules",
+          "ao_tokens": 234,
+          "base_tokens": 214,
+          "ascii_control_tokens": 234,
+          "ao_minus_base_tokens": 20,
+          "ao_overhead_percent": 9.35,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "creation",
+          "group": "rules",
+          "ao_tokens": 225,
+          "base_tokens": 209,
+          "ascii_control_tokens": 224,
+          "ao_minus_base_tokens": 16,
+          "ao_overhead_percent": 7.66,
+          "ao_over_ascii_control_percent": 0.45
+        },
+        {
+          "id": "tfdy",
+          "group": "rules",
+          "ao_tokens": 314,
+          "base_tokens": 300,
+          "ascii_control_tokens": 313,
+          "ao_minus_base_tokens": 14,
+          "ao_overhead_percent": 4.67,
+          "ao_over_ascii_control_percent": 0.32
+        },
+        {
+          "id": "matrix",
+          "group": "rules",
+          "ao_tokens": 141,
+          "base_tokens": 124,
+          "ascii_control_tokens": 141,
+          "ao_minus_base_tokens": 17,
+          "ao_overhead_percent": 13.71,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "dam",
+          "group": "rules",
+          "ao_tokens": 141,
+          "base_tokens": 122,
+          "ascii_control_tokens": 139,
+          "ao_minus_base_tokens": 19,
+          "ao_overhead_percent": 15.57,
+          "ao_over_ascii_control_percent": 1.44
+        },
+        {
+          "id": "format",
+          "group": "rules",
+          "ao_tokens": 120,
+          "base_tokens": 102,
+          "ascii_control_tokens": 120,
+          "ao_minus_base_tokens": 18,
+          "ao_overhead_percent": 17.65,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "notebook",
+          "group": "rules",
+          "ao_tokens": 102,
+          "base_tokens": 76,
+          "ascii_control_tokens": 102,
+          "ao_minus_base_tokens": 26,
+          "ao_overhead_percent": 34.21,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "combat",
+          "group": "rules",
+          "ao_tokens": 150,
+          "base_tokens": 143,
+          "ascii_control_tokens": 150,
+          "ao_minus_base_tokens": 7,
+          "ao_overhead_percent": 4.9,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "gfx",
+          "group": "rules",
+          "ao_tokens": 202,
+          "base_tokens": 183,
+          "ascii_control_tokens": 202,
+          "ao_minus_base_tokens": 19,
+          "ao_overhead_percent": 10.38,
+          "ao_over_ascii_control_percent": 0.0
+        },
+        {
+          "id": "chekhov_load",
+          "group": "procedures",
+          "ao_tokens": 72,
+          "base_tokens": 70,
+          "ascii_control_tokens": 70,
+          "ao_minus_base_tokens": 2,
+          "ao_overhead_percent": 2.86,
+          "ao_over_ascii_control_percent": 2.86
+        },
+        {
+          "id": "mechanics",
+          "group": "procedures",
+          "ao_tokens": 180,
+          "base_tokens": 136,
+          "ascii_control_tokens": 172,
+          "ao_minus_base_tokens": 44,
+          "ao_overhead_percent": 32.35,
+          "ao_over_ascii_control_percent": 4.65
+        },
+        {
+          "id": "gossip_plant",
+          "group": "procedures",
+          "ao_tokens": 81,
+          "base_tokens": 77,
+          "ascii_control_tokens": 80,
+          "ao_minus_base_tokens": 4,
+          "ao_overhead_percent": 5.19,
+          "ao_over_ascii_control_percent": 1.25
+        },
+        {
+          "id": "axis_legend",
+          "group": "setup",
+          "ao_tokens": 83,
+          "base_tokens": 62,
+          "ascii_control_tokens": 61,
+          "ao_minus_base_tokens": 21,
+          "ao_overhead_percent": 33.87,
+          "ao_over_ascii_control_percent": 36.07
+        },
+        {
+          "id": "matrix_state_row",
+          "group": "state",
+          "ao_tokens": 88,
+          "base_tokens": 53,
+          "ascii_control_tokens": 53,
+          "ao_minus_base_tokens": 35,
+          "ao_overhead_percent": 66.04,
+          "ao_over_ascii_control_percent": 66.04
+        }
+      ],
+      "synthetic_pack_state_repetition_scenarios": [
+        {
+          "row_repetitions": 1,
+          "ao_tokens": 2356,
+          "base_tokens": 2086,
+          "ao_overhead_percent": 12.94
+        },
+        {
+          "row_repetitions": 10,
+          "ao_tokens": 3148,
+          "base_tokens": 2563,
+          "ao_overhead_percent": 22.82
+        },
+        {
+          "row_repetitions": 50,
+          "ao_tokens": 6668,
+          "base_tokens": 4683,
+          "ao_overhead_percent": 42.39
+        }
+      ]
+    }
+  },
+  "state_context_diagnostic": {
+    "purpose": "Follow-up denominator diagnostic after initial counts; only axis legend and matrix-row labels change in the complete state-template source. This is NOT a full base-TRP conversion, a new primary fixture, or captured state.",
+    "input_sha256": "785d18dc45d7eac790cd0c2acb548204d55c556b2db6d6ead7ad9a28ae3602e9",
+    "counts": {
+      "cl100k_base": {
+        "full_template_ao_tokens": 3444,
+        "full_template_short_label_control_tokens": 3380,
+        "extra_tokens": 64,
+        "ao_over_control_percent": 1.89
+      },
+      "o200k_base": {
+        "full_template_ao_tokens": 3427,
+        "full_template_short_label_control_tokens": 3371,
+        "extra_tokens": 56,
+        "ao_over_control_percent": 1.66
+      }
+    }
+  }
+}

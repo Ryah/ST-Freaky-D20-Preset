@@ -41,16 +41,16 @@ Vexa uses pipes, Unicode arrows, uppercase stage labels, underscore names, compa
 
 The author's approximate 5–10% overhead compares AO with the compact TRP baseline. The reported 30–50% savings compares compact prompting with expanded wording. These percentages have different denominators and do not contradict one another. No paired base-TRP/AO corpus was supplied for independently reproducing the overhead range in this revision.
 
-| Element                       | Vexa interpretation                                   |
-| ----------------------------- | ----------------------------------------------------- |
-| `⇥ <page:...>`                | Transition to another stage                           |
-| `<knowledge_sanity>`          | Named module defining knowledge constraints           |
-| `<state:...>`                 | Named part of the persistent output structure         |
-| `➤ <fn:...>` / `⇤`            | Procedure invocation and return                       |
-| `clause | clause`             | Compact separation of related clauses or alternatives |
-| `condition → consequence`     | Implication or substitution, interpreted in context   |
-| `IF ct%3=0`                   | A conditional turn-based instruction                  |
-| `scope: spoken dialogue only` | Explicit applicability of a rule                      |
+| Element                       | Vexa interpretation                                 |
+| ----------------------------- | --------------------------------------------------- |
+| `⇥ <page:...>`                | Transition to another stage                         |
+| `<knowledge_sanity>`          | Named module defining knowledge constraints         |
+| `<state:...>`                 | Named part of the persistent output structure       |
+| `➤ <fn:...>` / `⇤`            | Procedure invocation and return                     |
+| `clause`                      | `clause`                                            | Compact separation of related clauses or alternatives |
+| `condition → consequence`     | Implication or substitution, interpreted in context |
+| `IF ct%3=0`                   | A conditional turn-based instruction                |
+| `scope: spoken dialogue only` | Explicit applicability of a rule                    |
 
 These symbols form an authoring convention. Their meanings are specified by the prompt and its host integration rather than a formal grammar enforced by a standalone compiler. Existing names and scopes take precedence over cosmetic normalization.
 
